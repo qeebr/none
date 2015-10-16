@@ -1,0 +1,21 @@
+# gems_square.png / gems_square_merged.png
+
+TODO replace placeholder
+Origin:
+Puzzle game graphics by Kenney Vleugels (www.kenney.nl)
+
+Licence:
+You may use these graphics in personal and commercial projects.
+Credit (www.kenney.nl) would be nice but is not mandatory.
+
+Changes:
+Merged single gems into one png file.
+
+# cursor.png
+
+Origin:
+http://opengameart.org/content/knights-glove-mouse-cursor-0
+
+Licence:
+CC-BY-SA 3.0
+http://creativecommons.org/licenses/by-sa/3.0/
