@@ -269,7 +269,7 @@ public class GameField extends AbsStructObject<EngineObject> {
 
     private void updateBrickTransform(Brick brick, int row, int column) {
         TransformComponent transform = (TransformComponent) brick.find(TransformComponent.NAME).get();
-        transform.setPosition(new Vector3d(calcBrickX(column), calcBrickY(row), 0));
+        transform.getPosition().set(new Vector3d(calcBrickX(column), calcBrickY(row), 0));
     }
 
     private int calcBrickY(int row) {

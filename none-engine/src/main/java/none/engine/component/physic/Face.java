@@ -11,10 +11,12 @@ public class Face {
 
     private List<Vector3d> vertices;
     private Vector3d normalVector;
+    private Vector3d publicNormalVector;
 
     public Face(List<Vector3d> vertices, Vector3d normalVector) {
         this.vertices = vertices;
         this.normalVector = normalVector;
+        this.publicNormalVector = new Vector3d();
     }
 
     public List<Vector3d> getVertices() {
@@ -22,6 +24,10 @@ public class Face {
     }
 
     public Vector3d getNormalVector() {
-        return normalVector;
+        publicNormalVector.x = normalVector.x;
+        publicNormalVector.y = normalVector.y;
+        publicNormalVector.z = normalVector.z;
+
+        return publicNormalVector;
     }
 }

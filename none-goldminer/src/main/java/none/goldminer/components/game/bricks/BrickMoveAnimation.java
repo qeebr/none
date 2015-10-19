@@ -20,6 +20,7 @@ public class BrickMoveAnimation extends AbsObject {
     private final TransformComponent transform;
     private Vector3d vector;
     private Vector3d destination;
+    private Vector3d tmp;
 
     private int state = STOPPED;
     private int timer;
@@ -27,24 +28,31 @@ public class BrickMoveAnimation extends AbsObject {
     public BrickMoveAnimation(UUID id, Game game, EngineObject parent, TransformComponent transform) {
         super(NAME, id, game, parent);
         this.transform = transform;
+        this.tmp = new Vector3d();
     }
 
     @Override
     public void update(int delta) {
         if (state == RUNNING) {
             timer += delta;
-            transform.setPosition(transform.getPosition().add(vector.mul(delta)));
+
+            tmp.set(vector);
+            transform.getPosition().add(tmp.mul(delta));
             if (timer >= ANIMATION_TIME) {
                 state = STOPPED;
                 timer = 0;
-                transform.setPosition(destination);
+                transform.getPosition().set(destination);
             }
         }
     }
 
     public void doAnimation(int x, int y) {
         destination = new Vector3d(x, y, 0);
-        Vector3d diff = destination.sub(transform.getPosition());
+
+        Vector3d diff = new Vector3d();
+        diff.set(destination);
+        diff.sub(transform.getPosition());
+
         double velocity = diff.length() / (ANIMATION_TIME);
 
         vector = diff.normalize().mul(velocity);

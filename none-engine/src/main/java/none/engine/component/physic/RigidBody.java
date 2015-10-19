@@ -49,10 +49,6 @@ public abstract class RigidBody extends AbsObject {
         return velocity;
     }
 
-    public void setVelocity(Vector3d velocity) {
-        this.velocity = velocity;
-    }
-
     public boolean isOnFloor() {
         return onFloor;
     }

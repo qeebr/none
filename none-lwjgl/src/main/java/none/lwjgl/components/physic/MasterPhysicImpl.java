@@ -58,7 +58,7 @@ public class MasterPhysicImpl extends MasterPhysic {
             TransformComponent objectTransform = (TransformComponent) object.find(TransformComponent.NAME).get();
             RigidBodyImpl objectBody = (RigidBodyImpl) object.find(RigidBodyImpl.NAME).get();
 
-            //Only moveable objects can move.
+            //Only moveable objects can collide.
             if (objectBody.getType() != RigidBody.Type.Moveable) {
                 continue;
             }
@@ -66,9 +66,6 @@ public class MasterPhysicImpl extends MasterPhysic {
             boolean onFloor = false;
             Vector3d newPosition = update(deltaInMs, objectBody, objectTransform);
 
-            //TODO replace this simple equals.
-            //In case this object stands still no computation needed.
-            //if (objectBody.getVelocity().sameVector(new Vector3d(), 0.000001)) {
             if (objectBody.getVelocity().equals(new Vector3d())) {
                 continue;
             }
@@ -80,9 +77,8 @@ public class MasterPhysicImpl extends MasterPhysic {
                     onFloor = true; //This is not entirely true.
                     Vector3d normal = new Vector3d(0, 1, 0); // And this is also not correct.
 
-                    Vector3d velocity = objectBody.getVelocity().reflect(normal);
-                    velocity = new Vector3d(velocity.x, 0, velocity.z);
-                    objectBody.setVelocity(velocity);
+                    objectBody.getVelocity().reflect(normal);
+                    objectBody.getVelocity().y = 0;//And here...
 
                     newPosition = new Vector3d(newPosition.x, objectTransform.getPosition().y, newPosition.z);
                     break;
@@ -91,7 +87,7 @@ public class MasterPhysicImpl extends MasterPhysic {
 
 
             objectBody.setOnFloor(onFloor);
-            objectTransform.setPosition(newPosition);
+            objectTransform.getPosition().set(newPosition);
         }
     }
 
@@ -106,12 +102,18 @@ public class MasterPhysicImpl extends MasterPhysic {
         //Eulers-Method.
         Vector3d forceSum = new Vector3d(0, 0, 0);
         for (Vector3d force : rigidBody.getForces()) {
-            forceSum = forceSum.add(force);
+            forceSum.add(force);
         }
 
+        Vector3d oldPosition = new Vector3d();
+        oldPosition.set(transformComponent.getPosition());
+
         Vector3d acceleration = forceSum.div(rigidBody.getMass());
-        rigidBody.setVelocity(rigidBody.getVelocity().add(acceleration.mul(deltaInMs)));
-        acceleration = transformComponent.getPosition().add(rigidBody.getVelocity().mul(deltaInMs));
+        rigidBody.getVelocity().add(acceleration.mul(deltaInMs));
+
+        Vector3d velocity = new Vector3d();
+        velocity.set(rigidBody.getVelocity());
+        acceleration = oldPosition.add(velocity.mul(deltaInMs));
 
         return acceleration;
     }

@@ -96,21 +96,21 @@ public class FallingCube extends AbsStructObject<EngineObject> implements Scene 
     public void update(int delta) {
 
         if (cubeBody.isOnFloor() && keyboard.isCommandClicked(JUMP)) {
-            cubeBody.setVelocity(cubeBody.getVelocity().add(new Vector3d(0, 0.001, 0)));
+            cubeBody.getVelocity().add(new Vector3d(0, 0.001, 0));
         }
 
         double speed = 0.0007;
 
         if (keyboard.isCommandClicked(MOVE_FORWARD)) {
-            cubeBody.setVelocity(cubeBody.getVelocity().add(new Vector3d(0, 0, -speed)));
+            cubeBody.getVelocity().add(new Vector3d(0, 0, -speed));
         } else if (keyboard.isCommandReleased(MOVE_FORWARD)) {
-            cubeBody.setVelocity(cubeBody.getVelocity().add(new Vector3d(0, 0, speed)));
+            cubeBody.getVelocity().add(new Vector3d(0, 0, speed));
         }
 
         if (keyboard.isCommandClicked(MOVE_BACKWARD)) {
-            cubeBody.setVelocity(cubeBody.getVelocity().add(new Vector3d(0, 0, speed)));
+            cubeBody.getVelocity().add(new Vector3d(0, 0, speed));
         } else if (keyboard.isCommandReleased(MOVE_BACKWARD)) {
-            cubeBody.setVelocity(cubeBody.getVelocity().add(new Vector3d(0, 0, -speed)));
+            cubeBody.getVelocity().add(new Vector3d(0, 0, -speed));
         }
 
         /*if (keyboard.isCommandClicked(MOVE_FORWARD) || keyboard.isCommandReleased(MOVE_BACKWARD)) {

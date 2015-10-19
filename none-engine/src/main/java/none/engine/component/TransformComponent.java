@@ -68,15 +68,7 @@ public class TransformComponent extends AbsObject {
         return position;
     }
 
-    public void setPosition(Vector3d position) {
-        this.position = Preconditions.checkNotNull(position);
-    }
-
     public Vector3d getDirection() {
         return direction;
-    }
-
-    public void setDirection(Vector3d direction) {
-        this.direction = Preconditions.checkNotNull(direction);
     }
 }

@@ -97,7 +97,7 @@ public class Cursor extends AbsStructObject<EngineObject> {
         } else if (keyboard.isCommandClicked(rightCommand) && currentColumn < (GameField.MAX_COLUMNS - 1)) {
             currentColumn++;
         }
-        ((TransformComponent) find(TransformComponent.NAME).get()).setPosition(calculateCurrentPosition());
+        ((TransformComponent) find(TransformComponent.NAME).get()).getPosition().set(calculateCurrentPosition());
 
         if (keyboard.isCommandClicked(actionCommand)) {
             cursorAnimator.doAnimation();

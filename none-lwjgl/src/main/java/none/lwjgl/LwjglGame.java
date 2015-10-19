@@ -65,8 +65,8 @@ public class LwjglGame extends Game {
     protected void update(int delta) {
         updateInput(delta);
 
-        getManager().update(delta);
-        masterPhysic.update(delta, getManager().getCurrentScene());
+        getManager().update(15);
+        masterPhysic.update(15, getManager().getCurrentScene());
     }
 
     private void updateInput(int delta) {
