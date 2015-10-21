@@ -13,6 +13,7 @@ import none.engine.component.renderer.Sprite;
 import none.engine.component.renderer.Texture;
 import none.goldminer.components.game.GameField;
 import none.goldminer.components.game.bricks.Brick;
+import none.goldminer.scenes.GameScene;
 import org.joml.Vector3d;
 
 import java.util.UUID;
@@ -101,8 +102,7 @@ public class Cursor extends AbsStructObject<EngineObject> {
 
         if (keyboard.isCommandClicked(actionCommand)) {
             cursorAnimator.doAnimation();
-            GameField gameField = (GameField) getParent().find(GameField.NAME).get();
-            gameField.removeBrick(currentRow, currentColumn);
+            ((GameScene) getParent()).removeBrick(currentRow, currentColumn);
         }
 
         super.update(delta);

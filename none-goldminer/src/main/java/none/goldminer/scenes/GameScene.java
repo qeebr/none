@@ -1,10 +1,13 @@
 package none.goldminer.scenes;
 
 import none.engine.Game;
+import none.engine.component.EngineObject;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Text;
 import none.goldminer.components.game.*;
+import none.goldminer.components.game.bricks.Brick;
 import none.goldminer.components.game.bricks.BrickFactory;
+import none.goldminer.components.game.bricks.BrickMoveAnimation;
 import none.goldminer.components.game.cursor.Cursor;
 import none.goldminer.components.input.Confirm;
 import none.goldminer.components.input.Reject;
@@ -33,6 +36,8 @@ public class GameScene extends BaseScene {
     private GameState gameState;
     private HighScore highScore;
     private Score score;
+    private GameField gameField;
+    private Cursor cursor;
 
     public GameScene(UUIDFactory factory, Game game) {
         super(NAME, factory, game);
@@ -56,12 +61,11 @@ public class GameScene extends BaseScene {
         gameState = GameState.RUNNING;
 
         BrickFactory brickFactory = new BrickFactory(uuidFactory.createUUID(), getGame(), this);
-        GameField gameField = new GameField(uuidFactory.createUUID(), getGame(), this);
-        Cursor cursor = new Cursor(uuidFactory.createUUID(), getGame(), this);
+        gameField = new GameField(uuidFactory.createUUID(), getGame(), brickFactory);
+        cursor = new Cursor(uuidFactory.createUUID(), getGame(), this);
         GameTicker ticker = new GameTicker(uuidFactory.createUUID(), getGame(), this, gameField);
         score = new Score(getGame(), this);
-        ColorChanger colorChanger = new ColorChanger(uuidFactory.createUUID(), getGame());
-        colorChanger.init(gameField, cursor);
+        ColorChanger colorChanger = new ColorChanger(uuidFactory.createUUID(), getGame(), this);
         gameOverText = new Text(uuidFactory.createUUID(), "Game Over :(", 32, new Vector3d(400 - (32 * 6), 300, 0));
         newHighscore = new Text(uuidFactory.createUUID(), "NEW HIGHSCORE!!!!!", 32, new Vector3d(400 - (32 * 9), 300 + 48, 0));
 
@@ -107,6 +111,22 @@ public class GameScene extends BaseScene {
             getGame().getManager().changeScene(StartScene.NAME);
         }
 
+        if (getGameState() == GameState.BRICKS_FALLING) {
+            boolean animationDone = true;
+            for (EngineObject child : gameField.children()) {
+                if (child.getName().equals(Brick.NAME)) {
+                    BrickMoveAnimation animation = (BrickMoveAnimation) child.find(BrickMoveAnimation.NAME).get();
+                    if (!animation.isDone()) {
+                        animationDone = false;
+                        break;
+                    }
+                }
+            }
+            if (animationDone) {
+                setGameState(GameState.RUNNING);
+            }
+        }
+
         super.update(delta);
     }
 
@@ -115,5 +135,25 @@ public class GameScene extends BaseScene {
         super.dispose();
 
         removeAllObjects();
+    }
+
+    public void removeBrick(int currentRow, int currentColumn) {
+        if (getGameState() == GameState.RUNNING) {
+            boolean falling = gameField.removeBrick(currentRow, currentColumn);
+
+            if (falling) {
+                setGameState(GameState.BRICKS_FALLING);
+            }
+        }
+    }
+
+    public boolean changeColor() {
+        if (getGameState() == GameState.RUNNING) {
+            gameField.changeColor(cursor.getCurrentRow(), cursor.getCurrentColumn());
+
+            return true;
+        } else {
+            return false;
+        }
     }
 }

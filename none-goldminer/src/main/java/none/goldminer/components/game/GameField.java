@@ -11,9 +11,9 @@ import none.goldminer.components.game.bricks.BrickColor;
 import none.goldminer.components.game.bricks.BrickFactory;
 import none.goldminer.components.game.bricks.BrickMoveAnimation;
 import none.goldminer.components.messages.GemsDestroyed;
-import none.goldminer.scenes.GameScene;
 import org.joml.Vector3d;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
@@ -34,15 +34,16 @@ public class GameField extends AbsStructObject<EngineObject> {
     private static final boolean MARKED = true;
 
     private TextureHandler textureHandler;
+    private BrickFactory brickFactory;
 
     private Brick[][] field;
     private boolean[][] markList;
     private Texture brickTexture;
 
-    private GameScene gameScene;
+    public GameField(UUID id, Game game, BrickFactory brickFactory) {
+        super(NAME, id, game);
 
-    public GameField(UUID id, Game game, EngineObject parent) {
-        super(NAME, id, game, parent);
+        this.brickFactory = Objects.requireNonNull(brickFactory, "brickFactory");
 
         this.field = new Brick[MAX_ROWS][MAX_COLUMNS];
         this.markList = new boolean[MAX_ROWS][MAX_COLUMNS];
@@ -54,30 +55,7 @@ public class GameField extends AbsStructObject<EngineObject> {
 
         brickTexture = textureHandler.loadTexture(BRICK_SPRITE);
 
-        gameScene = (GameScene) getParent();
-
         super.init();
-    }
-
-    @Override
-    public void update(int delta) {
-        super.update(delta);
-
-        if (gameScene.getGameState() == GameState.BRICKS_FALLING) {
-            boolean animationDone = true;
-            for (EngineObject child : children()) {
-                if (child.getName().equals(Brick.NAME)) {
-                    BrickMoveAnimation animation = (BrickMoveAnimation) child.find(BrickMoveAnimation.NAME).get();
-                    if (!animation.isDone()) {
-                        animationDone = false;
-                        break;
-                    }
-                }
-            }
-            if (animationDone) {
-                gameScene.setGameState(GameState.RUNNING);
-            }
-        }
     }
 
     @Override
@@ -87,21 +65,17 @@ public class GameField extends AbsStructObject<EngineObject> {
         super.dispose();
     }
 
-    public void removeBrick(int row, int column) {
-        if (gameScene.getGameState() != GameState.RUNNING) {
-            return;
-        }
-
+    public boolean removeBrick(int row, int column) {
         Brick brick = field[row][column];
         if (brick == null) {
-            return;
+            return false;
         }
 
         //Only remove the bricks when threshold is reached.
         clearMarkField();
         int brickCount = countAllBricks(brick.getBrickColor(), row, column);
         if (brickCount < MINIMUM_BRICK_COUNT) {
-            return;
+            return false;
         }
 
         //Remove all Bricks with same Color.
@@ -131,13 +105,10 @@ public class GameField extends AbsStructObject<EngineObject> {
             }
         }
 
-        //Change GameState.
-        if (movingBricks) {
-            gameScene.setGameState(GameState.BRICKS_FALLING);
-        }
-
         //Notify everyone, that player scored points :).
         getGame().getMessageBus().sendMessage(new GemsDestroyed(brickCount, 1));
+
+        return movingBricks;
     }
 
     private void clearMarkField() {
@@ -149,10 +120,6 @@ public class GameField extends AbsStructObject<EngineObject> {
     }
 
     public boolean tick() {
-        if (gameScene.getGameState() != GameState.RUNNING) {
-            return false;
-        }
-
         //Game is over, when last row has gems.
         boolean gameOver = false;
 
@@ -281,14 +248,10 @@ public class GameField extends AbsStructObject<EngineObject> {
     }
 
     private Brick newBrick() {
-        return ((BrickFactory) gameScene.find(BrickFactory.NAME).get()).generateBrick(brickTexture);
+        return brickFactory.generateBrick(brickTexture);
     }
 
     public void changeColor(int currentRow, int currentColumn) {
-        if (gameScene.getGameState() != GameState.RUNNING) {
-            return;
-        }
-
         Brick brick = field[currentRow][currentColumn];
 
         if (brick == null) {

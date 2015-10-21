@@ -7,7 +7,7 @@ import none.engine.component.input.Command;
 import none.engine.component.input.Key;
 import none.engine.component.input.KeyboardComponent;
 import none.engine.component.renderer.Text;
-import none.goldminer.components.game.cursor.Cursor;
+import none.goldminer.scenes.GameScene;
 import org.joml.Vector3d;
 
 import java.util.UUID;
@@ -26,37 +26,39 @@ public class ColorChanger extends AbsStructObject<EngineObject> {
 
     private Text statusText;
 
-    private GameField gameField;
-    private Cursor cursor;
     private KeyboardComponent keyboardComponent;
+    private GameScene gameScene;
 
-    public ColorChanger(UUID id, Game game) {
-        super(NAME, id, game);
+    public ColorChanger(UUID id, Game game, EngineObject parent) {
+        super(NAME, id, game, parent);
     }
 
-    public void init(GameField gameField, Cursor cursor) {
+    @Override
+    public void init() {
         ready = true;
         timer = 0;
 
         statusText = new Text(UUID.randomUUID(), "Ready", 20, new Vector3d(700, 0, 0));
-
-        this.gameField = gameField;
-        this.cursor = cursor;
+        gameScene = (GameScene) getParent();
 
         keyboardComponent = getGame().getInjector().getInstance(KeyboardComponent.class);
         keyboardComponent.registerCommand(changeColor, Key.I_1);
 
         addObject(statusText);
+
+        super.init();
     }
 
     @Override
     public void update(int delta) {
         if (ready) {
             if (keyboardComponent.isCommandClicked(changeColor)) {
-                gameField.changeColor(cursor.getCurrentRow(), cursor.getCurrentColumn());
+                boolean changeColor = gameScene.changeColor();
 
-                ready = false;
-                statusText.setText("not Ready");
+                if (changeColor) {
+                    ready = false;
+                    statusText.setText("not Ready");
+                }
             }
         } else {
             timer += delta;
