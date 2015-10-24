@@ -58,7 +58,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>none.game.GameApp</mainClass>
+                            <mainClass>none.goldminer.GameApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

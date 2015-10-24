@@ -68,6 +68,8 @@ public class GameScene extends BaseScene {
         ColorChanger colorChanger = new ColorChanger(uuidFactory.createUUID(), getGame(), this);
         gameOverText = new Text(uuidFactory.createUUID(), "Game Over :(", 32, new Vector3d(400 - (32 * 6), 300, 0));
         newHighscore = new Text(uuidFactory.createUUID(), "NEW HIGHSCORE!!!!!", 32, new Vector3d(400 - (32 * 9), 300 + 48, 0));
+        Level level = new Level(uuidFactory.createUUID(), getGame());
+        level.init(ticker, brickFactory, score);
 
 
         addObject(brickFactory);
@@ -76,6 +78,7 @@ public class GameScene extends BaseScene {
         addObject(ticker);
         addObject(score);
         addObject(colorChanger);
+        addObject(level);
 
         getGame().getMessageBus().subscribe(GameStateChanged.class, (msg) -> {
             if (msg.getNewGameState() == GameState.GAME_OVER) {

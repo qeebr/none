@@ -33,7 +33,9 @@ public class BrickFactory extends AbsObject {
     }
 
     public void increaseLevel() {
-        level++;
+        if (level < 5) {
+            level++;
+        }
     }
 
     public Brick generateBrick(Texture brickTexture) {

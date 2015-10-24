@@ -12,13 +12,30 @@ import java.util.UUID;
  */
 public class GameTicker extends AbsObject {
     public static final String NAME = "GameTicker";
+    public static final int INITIAL_TIME_SPAN = 3000;
+
     private final GameField gameField;
 
+    private int timerThreshold;
     private int currentTime;
 
     public GameTicker(UUID id, Game game, EngineObject parent, GameField gameField) {
         super(NAME, id, game, parent);
         this.gameField = gameField;
+    }
+
+    public int getTimerThreshold() {
+        return timerThreshold;
+    }
+
+    public void setTimerThreshold(int timerThreshold) {
+        this.timerThreshold = timerThreshold;
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        timerThreshold = INITIAL_TIME_SPAN;
     }
 
     @Override
@@ -29,7 +46,7 @@ public class GameTicker extends AbsObject {
 
         currentTime += delta;
 
-        if (currentTime >= 3000) {
+        if (currentTime >= timerThreshold) {
             currentTime = 0;
             boolean gameOver = gameField.tick();
             if (gameOver) {
