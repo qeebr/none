@@ -61,7 +61,7 @@ public abstract class AbsObject implements EngineObject {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
 
     }
 

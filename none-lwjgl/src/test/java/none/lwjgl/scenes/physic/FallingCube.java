@@ -93,7 +93,7 @@ public class FallingCube extends AbsStructObject<EngineObject> implements Scene 
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
 
         if (cubeBody.isOnFloor() && keyboard.isCommandClicked(JUMP)) {
             cubeBody.getVelocity().add(new Vector3d(0, 0.001, 0));
@@ -133,7 +133,7 @@ public class FallingCube extends AbsStructObject<EngineObject> implements Scene 
             }
         }*/
 
-        super.update(delta);
+        super.update(deltaInMs);
     }
 
     private class Level extends AbsStructObject<EngineObject> {

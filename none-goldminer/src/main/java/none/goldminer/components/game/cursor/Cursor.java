@@ -86,7 +86,7 @@ public class Cursor extends AbsStructObject<EngineObject> {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
 
         if (keyboard.isCommandClicked(downCommand) && currentRow > 0) {
             currentRow--;
@@ -105,7 +105,7 @@ public class Cursor extends AbsStructObject<EngineObject> {
             ((GameScene) getParent()).removeBrick(currentRow, currentColumn);
         }
 
-        super.update(delta);
+        super.update(deltaInMs);
     }
 
     @Override

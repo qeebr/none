@@ -71,7 +71,7 @@ public class SpriteScene extends BaseScene {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
         if (keyboardComponent.isCommandClicked(nextRow)) {
             simpleSprite.nextRow();
         }
@@ -79,7 +79,7 @@ public class SpriteScene extends BaseScene {
             simpleSprite.nextColumn();
         }
 
-        super.update(delta);
+        super.update(deltaInMs);
     }
 
     @Override

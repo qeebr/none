@@ -62,8 +62,8 @@ public class ViewScene extends BaseScene {
     }
 
     @Override
-    public void update(int delta) {
-        super.update(delta);
+    public void update(int deltaInMs) {
+        super.update(deltaInMs);
     }
 
     @Override

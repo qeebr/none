@@ -46,8 +46,8 @@ public class Level extends AbsStructObject<EngineObject> {
     }
 
     @Override
-    public void update(int delta) {
-        super.update(delta);
+    public void update(int deltaInMs) {
+        super.update(deltaInMs);
 
         if (score.getScoreValue() >= levelThreshold) {
             LOGGER.info("Levelup");

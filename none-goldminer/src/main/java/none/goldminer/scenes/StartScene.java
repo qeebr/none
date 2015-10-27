@@ -28,14 +28,14 @@ public class StartScene extends BaseScene {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
         if (keyboard.isCommandClicked(Confirm.COMMAND)) {
             getGame().getManager().changeScene(GameScene.NAME);
         } else if (keyboard.isCommandClicked(Reject.COMMAND)) {
             getGame().stop();
         }
 
-        super.update(delta);
+        super.update(deltaInMs);
     }
 
     @Override

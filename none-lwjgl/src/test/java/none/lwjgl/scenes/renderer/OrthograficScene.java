@@ -95,8 +95,8 @@ public class OrthograficScene extends BaseScene implements Scene {
     }
 
     @Override
-    public void update(int delta) {
-        super.update(delta);
+    public void update(int deltaInMs) {
+        super.update(deltaInMs);
     }
 
     @Override

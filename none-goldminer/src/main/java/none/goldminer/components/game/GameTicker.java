@@ -39,12 +39,12 @@ public class GameTicker extends AbsObject {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
         if (((GameScene) getParent()).getGameState() != GameState.RUNNING) {
             return;
         }
 
-        currentTime += delta;
+        currentTime += deltaInMs;
 
         if (currentTime >= timerThreshold) {
             currentTime = 0;

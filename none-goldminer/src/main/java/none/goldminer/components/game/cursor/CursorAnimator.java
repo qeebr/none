@@ -28,7 +28,7 @@ public class CursorAnimator extends AbsObject {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
         switch (currentState) {
             //Do nothing.
             case -1:
@@ -41,7 +41,7 @@ public class CursorAnimator extends AbsObject {
                 break;
             //Wait, then set to Down. Clear all values.
             case 1:
-                timeDiff += delta;
+                timeDiff += deltaInMs;
                 if (timeDiff >= TIME_THRESHOLD) {
                     sprite.setColumn(3);
                     currentState = 2;
@@ -50,7 +50,7 @@ public class CursorAnimator extends AbsObject {
                 break;
             //Wait, then set to Up. Clear all values.
             case 2:
-                timeDiff += delta;
+                timeDiff += deltaInMs;
                 if (timeDiff >= TIME_THRESHOLD) {
                     sprite.setColumn(1);
                     currentState = -1;

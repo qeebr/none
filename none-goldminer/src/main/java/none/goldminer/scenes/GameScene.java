@@ -107,7 +107,7 @@ public class GameScene extends BaseScene {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
         if (getGameState() == GameState.GAME_OVER && keyboard.isCommandClicked(Confirm.COMMAND)) {
             getGame().getManager().changeScene(StartScene.NAME);
         } else if (keyboard.isCommandClicked(Reject.COMMAND)) {
@@ -130,7 +130,7 @@ public class GameScene extends BaseScene {
             }
         }
 
-        super.update(delta);
+        super.update(deltaInMs);
     }
 
     @Override

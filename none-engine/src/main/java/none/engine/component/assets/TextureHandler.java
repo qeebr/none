@@ -11,7 +11,7 @@ public interface TextureHandler<T extends Texture> {
      * Loads the given texture.
      *
      * @param texture Path to texture.
-     * @return the id.
+     * @return loaded texture.
      */
     T loadTexture(String texture);
 

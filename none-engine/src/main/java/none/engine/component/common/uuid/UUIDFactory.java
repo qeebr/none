@@ -7,7 +7,18 @@ import java.util.UUID;
  */
 public interface UUIDFactory {
 
+    /**
+     * Creates a UUID.
+     *
+     * @return UUID.
+     */
     UUID createUUID();
 
+    /**
+     * Creates a UUID from given String.
+     *
+     * @param value String representing UUID.
+     * @return UUID.
+     */
     UUID fromString(String value);
 }

@@ -35,8 +35,8 @@ public class BrickBlinkAnimator extends AbsObject {
     }
 
     @Override
-    public void update(int delta) {
-        super.update(delta);
+    public void update(int deltaInMs) {
+        super.update(deltaInMs);
 
         if (!isAnimating) {
             int rndValue = random.nextInt(10000);
@@ -48,7 +48,7 @@ public class BrickBlinkAnimator extends AbsObject {
                 sprite.setRow(2);
             }
         } else {
-            currentTimer += delta;
+            currentTimer += deltaInMs;
             if (currentTimer >= TIMER_THRESHOLD) {
                 isAnimating = false;
                 sprite.setRow(1);

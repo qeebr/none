@@ -56,10 +56,10 @@ public abstract class AbsStructObject<T extends EngineObject> extends AbsObject 
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
         updateGameObject();
         for (T object : gameObjects) {
-            object.update(delta);
+            object.update(deltaInMs);
         }
     }
 

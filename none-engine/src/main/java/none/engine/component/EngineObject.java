@@ -31,12 +31,28 @@ public interface EngineObject {
      */
     EngineObject getParent();
 
+    /**
+     * Returns the Game. In which this EngineObject is executed.
+     *
+     * @return Game.
+     */
     Game getGame();
 
+    /**
+     * Initializes the EngineObject. Loading Resources creating children etc.
+     */
     void init();
 
-    void update(int delta);
+    /**
+     * Executs the logic for this EngineObject.
+     *
+     * @param deltaInMs the delta time from last update in milliseconds.
+     */
+    void update(int deltaInMs);
 
+    /**
+     * Disposes Resources needed from this EngineObject.
+     */
     void dispose();
 
     /**
@@ -55,5 +71,10 @@ public interface EngineObject {
      */
     <K extends EngineObject> Optional<K> find(UUID id);
 
+    /**
+     * Returns an Iterable for this EngineObject.
+     *
+     * @return Iterable.
+     */
     Iterable<EngineObject> children();
 }

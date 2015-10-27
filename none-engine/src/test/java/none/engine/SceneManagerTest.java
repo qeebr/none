@@ -158,8 +158,8 @@ public class SceneManagerTest {
         }
 
         @Override
-        public void update(int delta) {
-            super.update(delta);
+        public void update(int deltaInMs) {
+            super.update(deltaInMs);
 
             this.myManager.changeScene(SceneB.NAME);
         }

@@ -53,7 +53,7 @@ public class SceneManager extends AbsObject {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
         if (nextScene != null) {
             LOGGER.info("Scene change. Dispose old scene {}", currentScene.getName());
             currentScene.dispose();
@@ -64,7 +64,7 @@ public class SceneManager extends AbsObject {
             LOGGER.info("Scene change -> Done.");
         }
 
-        currentScene.update(delta);
+        currentScene.update(deltaInMs);
     }
 
     @Override

@@ -32,12 +32,12 @@ public class BrickMoveAnimation extends AbsObject {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
         if (state == RUNNING) {
-            timer += delta;
+            timer += deltaInMs;
 
             tmp.set(vector);
-            transform.getPosition().add(tmp.mul(delta));
+            transform.getPosition().add(tmp.mul(deltaInMs));
             if (timer >= ANIMATION_TIME) {
                 state = STOPPED;
                 timer = 0;

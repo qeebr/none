@@ -50,7 +50,7 @@ public class ColorChanger extends AbsStructObject<EngineObject> {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
         if (ready) {
             if (keyboardComponent.isCommandClicked(changeColor)) {
                 boolean changeColor = gameScene.changeColor();
@@ -61,7 +61,7 @@ public class ColorChanger extends AbsStructObject<EngineObject> {
                 }
             }
         } else {
-            timer += delta;
+            timer += deltaInMs;
             if (timer >= TIMER_THRESHOLD) {
                 timer = 0;
 

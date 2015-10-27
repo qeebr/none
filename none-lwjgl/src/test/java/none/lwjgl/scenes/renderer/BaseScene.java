@@ -43,7 +43,7 @@ public abstract class BaseScene extends AbsStructObject<EngineObject> implements
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int deltaInMs) {
         if (keyboardComponent.isCommandReleased(nextScene)) {
             currentSceneIndex++;
             if (currentSceneIndex == availableScenes.size()) {
@@ -60,7 +60,7 @@ public abstract class BaseScene extends AbsStructObject<EngineObject> implements
             changeScene();
         }
 
-        super.update(delta);
+        super.update(deltaInMs);
     }
 
     private void changeScene() {
