@@ -26,8 +26,9 @@ Developed and tested on Linux/Fedora 22 (with Nouveau driver)
 
 Have a look at.
 
-* none/none-lwjgl/src/test/none/lwjgl/components/physic/PhysicSandbox
-* none/none-lwjgl/src/test/none/lwjgl/components/renderer/RendererApp
+* none/none-lwjgl/src/test/none/lwjgl/apps/physic/PhysicSandbox
+* none/none-lwjgl/src/test/none/lwjgl/apps/sound/PlayerApp
+* none/none-lwjgl/src/test/none/lwjgl/apps/renderer/RendererApp
 
 Basically you describe your game in an composite-Pattern of EngineObject's, what you have to do:
 
