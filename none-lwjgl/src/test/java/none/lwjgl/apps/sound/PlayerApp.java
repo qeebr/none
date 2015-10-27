@@ -1,4 +1,4 @@
-package none.lwjgl.components.sound;
+package none.lwjgl.apps.sound;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

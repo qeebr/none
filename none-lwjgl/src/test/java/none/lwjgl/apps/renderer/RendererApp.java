@@ -1,4 +1,4 @@
-package none.lwjgl.components.renderer;
+package none.lwjgl.apps.renderer;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

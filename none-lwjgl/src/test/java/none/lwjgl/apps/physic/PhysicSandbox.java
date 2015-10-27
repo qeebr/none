@@ -1,4 +1,4 @@
-package none.lwjgl.components.physic;
+package none.lwjgl.apps.physic;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
