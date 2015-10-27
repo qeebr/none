@@ -13,6 +13,7 @@ import none.goldminer.scenes.GameScene;
 import none.goldminer.scenes.StartScene;
 import none.lwjgl.LwjglGame;
 import none.lwjgl.LwjglModule;
+import none.lwjgl.components.gameLoop.SimpleGameLoop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +38,9 @@ public class GameApp {
             return;
         }
         GameOptions options = createOptions(properties);
+        SimpleGameLoop gameLoop = new SimpleGameLoop();
 
-        Game game = new LwjglGame(options);
+        Game game = new LwjglGame(options, gameLoop);
 
         Injector injector = Guice.createInjector(new GameModule(game), new LwjglModule(new GameAssets()));
         UUIDFactory factory = injector.getInstance(UUIDFactory.class);

@@ -17,6 +17,7 @@ public abstract class Game {
     private final MessageBus messageBus;
     private Injector injector;
     private SceneManager manager;
+    private boolean quitGame;
 
     public Game(GameOptions options) {
         this.options = Preconditions.checkNotNull(options);
@@ -50,9 +51,23 @@ public abstract class Game {
         return injector;
     }
 
-
+    /**
+     * Returns the Message Bus.
+     *
+     * @return Message Bus.
+     */
     public MessageBus getMessageBus() {
         return messageBus;
+    }
+
+    /**
+     * A In-Game required desire to quit the game.
+     * This Method does not cover "Windows-Management" flags.
+     *
+     * @return Bool which indicate, user wants to quit game.
+     */
+    public boolean isQuitGame() {
+        return quitGame;
     }
 
     /**
@@ -66,18 +81,13 @@ public abstract class Game {
     public void run(SceneManager manager, Injector injector) {
         this.manager = Preconditions.checkNotNull(manager);
         this.injector = Preconditions.checkNotNull(injector);
+        this.quitGame = false;
+
         LOGGER.info("Start Initialisation");
         init();
         LOGGER.info("Initialisation done -> Start Game-Loop");
 
-        while (gameRunning()) {
-            int delta = getDelta();
-
-            update(delta);
-            draw(delta);
-
-            waitTimer();
-        }
+        gameLoop();
 
         LOGGER.info("Game done -> Disposing");
         dispose();
@@ -87,19 +97,23 @@ public abstract class Game {
     /**
      * Leaves the GameLoop and stops the Game execution.
      */
-    public abstract void stop();
+    public void stop() {
+        quitGame = true;
+    }
 
+    /**
+     * Initialises the Game. Should be used to create Window and to call init on first scene.
+     */
     protected abstract void init();
 
-    protected abstract void update(int delta);
+    /**
+     * Implementation for GameLoop. Different-Games need different loops.
+     */
+    protected abstract void gameLoop();
 
-    protected abstract void draw(int delta);
-
+    /**
+     * After GameLoop have been quit, resources should be disposed.
+     */
     protected abstract void dispose();
 
-    protected abstract void waitTimer();
-
-    protected abstract boolean gameRunning();
-
-    protected abstract int getDelta();
 }

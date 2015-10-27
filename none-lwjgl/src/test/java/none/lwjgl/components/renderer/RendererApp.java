@@ -10,6 +10,7 @@ import none.engine.scenes.Scene;
 import none.lwjgl.LwjglGame;
 import none.lwjgl.LwjglModule;
 import none.lwjgl.components.assets.LwjglAssets;
+import none.lwjgl.components.gameLoop.SimpleGameLoop;
 import none.lwjgl.scenes.renderer.OrthograficScene;
 import none.lwjgl.scenes.renderer.SpriteScene;
 import none.lwjgl.scenes.renderer.TextScene;
@@ -21,15 +22,11 @@ import java.util.List;
 /**
  * A Test Application for Renderer-part.
  */
-public class RendererApp extends LwjglGame {
-
-    public RendererApp(GameOptions options) {
-        super(options);
-    }
+public class RendererApp {
 
     public static void main(String[] args) {
         GameOptions options = createGameOptions();
-        LwjglGame game = new LwjglGame(options);
+        LwjglGame game = new LwjglGame(options, new SimpleGameLoop());
 
         Injector injector = Guice.createInjector(new GameModule(game), new LwjglModule(new LwjglAssets()));
         UUIDFactory factory = injector.getInstance(UUIDFactory.class);
