@@ -49,6 +49,10 @@ public class GameField extends AbsStructObject<EngineObject> {
         this.markList = new boolean[MAX_ROWS][MAX_COLUMNS];
     }
 
+    public Brick[][] getField() {
+        return field;
+    }
+
     @Override
     public void init() {
         textureHandler = getGame().getInjector().getInstance(TextureHandler.class);
