@@ -18,7 +18,9 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,16 +82,17 @@ public class ObjModelHandler extends BaseHandler<Model> implements ModelHandler 
                                         List<Integer> primFaces) {
         int faceIndex = 0;
         Vertex[] faceVertices = new Vertex[Face.VERTEX_COUNT];
+        Set<Vertex> verticesSet = new HashSet<>();
 
         //Every Triple is a single Vertex.
         for (int primFaceIndex = 0; primFaceIndex < primFaces.size(); primFaceIndex += 3) {
 
-            Vector3d position = primVertices.get(primFaces.get(primFaceIndex + VERTEX_OFFSET));
-            Vector2d texture = primTextures.get(primFaces.get(primFaceIndex + TEXTURE_OFFSET));
-            Vector3d normal = primNormals.get(primFaces.get(primFaceIndex + NORMAL_OFFSET));
+            Vector3d position = primVertices.get(primFaces.get(primFaceIndex + VERTEX_OFFSET) - 1);
+            Vector2d texture = primTextures.get(primFaces.get(primFaceIndex + TEXTURE_OFFSET) - 1);
+            Vector3d normal = primNormals.get(primFaces.get(primFaceIndex + NORMAL_OFFSET) - 1);
 
             Vertex vertex = new Vertex(position, normal, texture);
-            vertices.add(vertex); //Add Vertex to collection.
+            verticesSet.add(vertex); //Add Vertex to set. Maybe enhance Vertex to add all Faces using this Vertex.
 
             //Check if 3 Vertex are found -> Which builds a Face.
             faceVertices[faceIndex++] = vertex;
@@ -100,6 +103,8 @@ public class ObjModelHandler extends BaseHandler<Model> implements ModelHandler 
                 faceVertices = new Vertex[Face.VERTEX_COUNT];
             }
         }
+
+        vertices.addAll(verticesSet);
     }
 
     private void extractPrimitiveFaces(String path, List<String> fileContent,
@@ -107,8 +112,10 @@ public class ObjModelHandler extends BaseHandler<Model> implements ModelHandler 
         for (String line : fileContent) {
             if (line.startsWith("f ")) {
                 Matcher matcher = FACES_PATTERN.matcher(line);
-                if (!matcher.find()) {
-                    throw new IllegalStateException(buildIllegalFormatString(path, line, FACES_PATTERN.toString()));
+                if (!(matcher.find() && matcher.matches())) {
+                    String errorMessage = buildIllegalFormatString(path, line, FACES_PATTERN.toString());
+                    LOGGER.error(errorMessage);
+                    throw new IllegalStateException(errorMessage);
                 }
 
                 int value = Integer.parseInt(matcher.group(1));
@@ -151,8 +158,10 @@ public class ObjModelHandler extends BaseHandler<Model> implements ModelHandler 
     private void extractTexture(String path, String line, List<Vector2d> textures) {
         Matcher matcher = TEXTURE_PATTERN.matcher(line);
 
-        if (!matcher.find()) {
-            throw new IllegalStateException(buildIllegalFormatString(path, line, TEXTURE_PATTERN.toString()));
+        if (!(matcher.find() && matcher.matches())) {
+            String errorMessage = buildIllegalFormatString(path, line, TEXTURE_PATTERN.toString());
+            LOGGER.error(errorMessage);
+            throw new IllegalStateException(errorMessage);
         }
 
         double x = Double.valueOf(matcher.group(1));
@@ -164,8 +173,10 @@ public class ObjModelHandler extends BaseHandler<Model> implements ModelHandler 
     private void extractVertexOrNormal(String path, String line, List<Vector3d> primitive) {
         Matcher matcher = VERTEX_NORMAL_PATTERN.matcher(line);
 
-        if (!matcher.find()) {
-            throw new IllegalStateException(buildIllegalFormatString(path, line, VERTEX_NORMAL_PATTERN.toString()));
+        if (!(matcher.find() && matcher.matches())) {
+            String errorMessage = buildIllegalFormatString(path, line, VERTEX_NORMAL_PATTERN.toString());
+            LOGGER.error(errorMessage);
+            throw new IllegalStateException(errorMessage);
         }
 
         double x = Double.valueOf(matcher.group(2));
@@ -178,13 +189,15 @@ public class ObjModelHandler extends BaseHandler<Model> implements ModelHandler 
     protected List<String> loadFileContent(String path) {
         try {
             return Files.readAllLines(Paths.get(getAssets().getClass().getResource(path).toURI()));
-        } catch (URISyntaxException | IOException e) {
-            throw new IllegalStateException("File should be loadable.", e);
+        } catch (NullPointerException | URISyntaxException | IOException e) {
+            String errorMessage = "File " + path + " should be loadable.";
+            LOGGER.error(errorMessage, e);
+            throw new IllegalStateException(errorMessage, e);
         }
     }
 
     private String buildIllegalFormatString(String path, String line, String pattern) {
-        return "File: " + path + " Line: " + " did not match: " + pattern;
+        return "File: " + path + " Line: " + line + " did not match: " + pattern;
     }
 
     @Override
