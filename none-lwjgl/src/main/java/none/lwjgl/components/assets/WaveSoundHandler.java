@@ -75,8 +75,8 @@ public class WaveSoundHandler extends BaseHandler<AlSound, String> implements So
     }
 
     private void disposeSound(AlSound effect) {
-        if (dispose(effect, effect.getPath())) {
-            LOGGER.info("Dispose Sound: {}", effect.getPath());
+        if (dispose(effect, effect.getSourcePath())) {
+            LOGGER.info("Dispose Sound: {}", effect.getSourcePath());
 
             AL10.alDeleteSources(effect.getSource());
             AL10.alDeleteBuffers(effect.getBuffer());

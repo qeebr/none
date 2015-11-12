@@ -90,8 +90,8 @@ public class SimpleTextureHandler extends BaseHandler<GlTexture, String> impleme
     }
 
     private void disposeTexture(GlTexture texture) {
-        if (dispose(texture, texture.getTexturePath())) {
-            LOGGER.info("Dispose Texture: {}", texture.getTexturePath());
+        if (dispose(texture, texture.getSourcePath())) {
+            LOGGER.info("Dispose Texture: {}", texture.getSourcePath());
 
             GL11.glDeleteTextures(texture.getTextureId());
         }

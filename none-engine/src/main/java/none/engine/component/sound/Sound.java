@@ -2,6 +2,7 @@ package none.engine.component.sound;
 
 import com.google.common.base.Preconditions;
 import none.engine.component.AbsObject;
+import none.engine.component.assets.Loadable;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.UUID;
@@ -9,7 +10,7 @@ import java.util.UUID;
 /**
  * A single Sound effect.
  */
-public class Sound extends AbsObject {
+public class Sound extends AbsObject implements Loadable {
     private final String path;
     private PlayState state;
 
@@ -20,7 +21,8 @@ public class Sound extends AbsObject {
         this.state = PlayState.NONE;
     }
 
-    public String getPath() {
+    @Override
+    public String getSourcePath() {
         return path;
     }
 

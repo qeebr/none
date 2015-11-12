@@ -2,6 +2,7 @@ package none.engine.component.renderer;
 
 import com.google.common.base.Preconditions;
 import none.engine.component.AbsObject;
+import none.engine.component.assets.Loadable;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.UUID;
@@ -9,7 +10,7 @@ import java.util.UUID;
 /**
  * Representation from a Texture.
  */
-public abstract class Texture extends AbsObject {
+public abstract class Texture extends AbsObject implements Loadable {
 
     private final String texturePath;
     private final int width;
@@ -26,7 +27,8 @@ public abstract class Texture extends AbsObject {
         this.height = height;
     }
 
-    public String getTexturePath() {
+    @Override
+    public String getSourcePath() {
         return texturePath;
     }
 
