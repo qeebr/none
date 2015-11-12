@@ -74,4 +74,9 @@ public class MeshScene extends BaseScene implements Scene {
 
         super.dispose();
     }
+
+    @Override
+    protected String getInfoMessage() {
+        return "Displays a cube in lower left area in screen";
+    }
 }

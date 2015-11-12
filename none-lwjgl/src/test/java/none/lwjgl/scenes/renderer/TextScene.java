@@ -43,4 +43,9 @@ public class TextScene extends BaseScene {
 
         super.init();
     }
+
+    @Override
+    protected String getInfoMessage() {
+        return "Displays a Text in the middle of the screen.";
+    }
 }

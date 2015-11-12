@@ -77,6 +77,12 @@ public class ViewScene extends BaseScene {
         super.dispose();
     }
 
+    @Override
+    protected String getInfoMessage() {
+        return "Tests the lookAt-Implementation. At the bottom left corner" +
+                "and the top right corner a sprite should be visible.";
+    }
+
     public class SimpleSprite extends AbsStructObject<EngineObject> {
         private Sprite sprite;
         private TransformComponent transformComponent;

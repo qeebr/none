@@ -96,6 +96,13 @@ public class SpriteScene extends BaseScene {
         super.dispose();
     }
 
+    @Override
+    protected String getInfoMessage() {
+        return "Displays in the middle of the screen a single Sprite, at the right top corner" +
+                "is the whole texture displayed. With the Key 'w' you can change the row, " +
+                "press 's' to change the coloumn.";
+    }
+
     public class SimpleSprite extends AbsStructObject<EngineObject> {
         private Sprite sprite;
 

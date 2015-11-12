@@ -123,6 +123,13 @@ public class OrthograficScene extends BaseScene implements Scene {
         super.dispose();
     }
 
+    @Override
+    protected String getInfoMessage() {
+        return "Displays a Sprite exact in the bottom left/right, top left/right corner " +
+                "and in the middle from the screen. There are also 2 Cubes, at different z-values" +
+                "due to the Orthografic Projection this should not be visible.";
+    }
+
     public class SimpleMesh extends AbsStructObject<EngineObject> {
         private TransformComponent transformComponent;
 

@@ -8,6 +8,8 @@ import none.engine.component.input.Command;
 import none.engine.component.input.Key;
 import none.engine.component.input.KeyboardComponent;
 import none.engine.scenes.Scene;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +19,7 @@ import java.util.UUID;
  * Base Scene, for all RendererScenes. Used to iterate through all known Scenes.
  */
 public abstract class BaseScene extends AbsStructObject<EngineObject> implements Scene {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseScene.class);
 
     private static int currentSceneIndex;
     private final NextScene nextScene = new NextScene();
@@ -27,12 +30,12 @@ public abstract class BaseScene extends AbsStructObject<EngineObject> implements
 
     protected BaseScene(String name, UUID id, Game game, List<String> availableScenes) {
         super(name, id, game);
-
         this.availableScenes = Objects.requireNonNull(availableScenes, "availableScenes");
     }
 
     @Override
     public void init() {
+        LOGGER.info(this.getClass().getSimpleName() + ": " + getInfoMessage());
         keyboardComponent = getGame().getInjector().getInstance(KeyboardComponent.class);
         keyboardComponent.registerCommand(nextScene, Key.RIGHT);
         keyboardComponent.registerCommand(previousScene, Key.LEFT);
@@ -74,6 +77,8 @@ public abstract class BaseScene extends AbsStructObject<EngineObject> implements
 
         super.dispose();
     }
+
+    protected abstract String getInfoMessage();
 
     private class NextScene implements Command {
 
