@@ -3,6 +3,7 @@ package none.lwjgl.components.renderer;
 import none.engine.Game;
 import none.engine.component.AbsObject;
 import none.engine.component.common.uuid.UUIDFactory;
+import none.engine.component.model.Face;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
@@ -29,7 +30,7 @@ public class Mesh32Renderer extends AbsObject {
     private void drawOpenGl(GlMesh mesh) {
         GL30.glBindVertexArray(mesh.getVertexArrayId());
 
-        GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getIndicesCount(), GL11.GL_UNSIGNED_BYTE, 0);
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, mesh.getModel().getFaces().size() * Face.VERTEX_COUNT);
 
         GL30.glBindVertexArray(0);
     }

@@ -20,7 +20,7 @@ import java.util.Objects;
  * A simple Wave SoundHandler.
  */
 @Singleton
-public class WaveSoundHandler extends BaseHandler<AlSound> implements SoundHandler<AlSound> {
+public class WaveSoundHandler extends BaseHandler<AlSound, String> implements SoundHandler<AlSound> {
     private static final Logger LOGGER = LoggerFactory.getLogger(WaveSoundHandler.class);
 
     private final UUIDFactory uuidFactory;

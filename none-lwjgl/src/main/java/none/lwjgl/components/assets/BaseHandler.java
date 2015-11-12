@@ -9,8 +9,8 @@ import java.util.Objects;
 /**
  * A simple handler.
  */
-class BaseHandler<T> {
-    private final Map<String, T> loadedResources;
+class BaseHandler<T, K> {
+    private final Map<K, T> loadedResources;
     private final Map<T, Integer> invokeCounter;
     private final Assets assets;
 
@@ -30,7 +30,7 @@ class BaseHandler<T> {
      * @param path Path to resource.
      * @return The resource in case it was already loaded.
      */
-    protected T checkLoaded(String path) {
+    protected T checkLoaded(K path) {
         T resource = loadedResources.getOrDefault(path, null);
         if (resource == null) {
             return null;
@@ -46,7 +46,7 @@ class BaseHandler<T> {
      * @param path     Path to resource.
      * @param resource The loaded resource.
      */
-    protected void addResource(String path, T resource) {
+    protected void addResource(K path, T resource) {
         Objects.requireNonNull(resource, "resource");
         Objects.requireNonNull(path, "path");
 
@@ -61,7 +61,7 @@ class BaseHandler<T> {
      * @param path     Path to resource.
      * @return true, when disposal is necessary.
      */
-    protected boolean dispose(T resource, String path) {
+    protected boolean dispose(T resource, K path) {
         if (loadedResources.getOrDefault(path, null) == null) {
             throw new IllegalStateException("Desired resource for disposal is not loaded.");
         }

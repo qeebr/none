@@ -11,10 +11,7 @@ import none.lwjgl.LwjglGame;
 import none.lwjgl.LwjglModule;
 import none.lwjgl.components.assets.LwjglAssets;
 import none.lwjgl.components.gameLoop.SimpleGameLoop;
-import none.lwjgl.scenes.renderer.OrthograficScene;
-import none.lwjgl.scenes.renderer.SpriteScene;
-import none.lwjgl.scenes.renderer.TextScene;
-import none.lwjgl.scenes.renderer.ViewScene;
+import none.lwjgl.scenes.renderer.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,19 +33,28 @@ public class RendererApp {
         sceneStringList.add(SpriteScene.NAME);
         sceneStringList.add(ViewScene.NAME);
         sceneStringList.add(TextScene.NAME);
+        sceneStringList.add(MeshScene.NAME);
+
+        //Check Main-Arguments, for Start-Scene.
+        String startScene = TextScene.NAME;
+        if (args.length == 1 && sceneStringList.contains(args[0])) {
+            startScene = args[0];
+        }
 
         OrthograficScene orthograficScene = new OrthograficScene(factory, game, sceneStringList);
         SpriteScene spriteScene = new SpriteScene(factory, game, sceneStringList);
         ViewScene viewScene = new ViewScene(factory, game, sceneStringList);
         TextScene textScene = new TextScene(factory, game, sceneStringList);
+        MeshScene meshScene = new MeshScene(factory, game, sceneStringList);
 
         List<Scene> sceneList = new ArrayList<>();
         sceneList.add(orthograficScene);
         sceneList.add(spriteScene);
         sceneList.add(viewScene);
         sceneList.add(textScene);
+        sceneList.add(meshScene);
 
-        SceneManager manager = new SceneManager(game, sceneList, TextScene.NAME);
+        SceneManager manager = new SceneManager(game, sceneList, startScene);
 
         game.run(manager, injector);
     }

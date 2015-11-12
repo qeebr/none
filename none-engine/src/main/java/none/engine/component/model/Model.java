@@ -36,4 +36,11 @@ public class Model extends AbsObject implements Loadable {
     public List<Vertex> getVertices() {
         return vertices;
     }
+
+    @Override
+    public String toString() {
+        return "Model{" +
+                "sourcePath='" + sourcePath + '\'' +
+                '}';
+    }
 }

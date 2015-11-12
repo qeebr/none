@@ -1,6 +1,7 @@
 package none.lwjgl.components.assets;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import none.engine.component.assets.Assets;
 import none.engine.component.assets.ModelHandler;
 import none.engine.component.common.uuid.UUIDFactory;
@@ -27,7 +28,8 @@ import java.util.regex.Pattern;
 /**
  * Loads a Model from an object file.
  */
-public class ObjModelHandler extends BaseHandler<Model> implements ModelHandler {
+@Singleton
+public class ObjModelHandler extends BaseHandler<Model, String> implements ModelHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(ObjModelHandler.class);
     private static final Pattern VERTEX_NORMAL_PATTERN = Pattern.compile("(v|vn) (-?\\d+.\\d+) (-?\\d+.\\d+) (-?\\d+.\\d+)");
     private static final Pattern TEXTURE_PATTERN = Pattern.compile("vt (-?\\d+.\\d+) (-?\\d+.\\d+)");
@@ -50,7 +52,7 @@ public class ObjModelHandler extends BaseHandler<Model> implements ModelHandler 
         Model model = checkLoaded(path);
 
         if (model == null) {
-            LOGGER.info("Load Mesh: {}", path);
+            LOGGER.info("Load Model: {}", path);
 
             model = loadModelImpl(path);
             addResource(path, model);
@@ -203,7 +205,7 @@ public class ObjModelHandler extends BaseHandler<Model> implements ModelHandler 
     @Override
     public void disposeModel(Model model) {
         if (dispose(model, model.getSourcePath())) {
-            LOGGER.info("Dispose Mesh: {}", model.getSourcePath());
+            LOGGER.info("Dispose Model: {}", model.getSourcePath());
         }
     }
 }

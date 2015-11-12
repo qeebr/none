@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
  * Loads RigidBodies from Object-Files.
  */
 @Singleton
-public class ObjRigidBodyHandler extends BaseHandler<RigidBody> implements PhysicHandler {
+public class ObjRigidBodyHandler extends BaseHandler<RigidBody, String> implements PhysicHandler {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ObjRigidBodyHandler.class);
     private final UUIDFactory uuidFactory;

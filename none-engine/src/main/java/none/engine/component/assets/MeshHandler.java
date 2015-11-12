@@ -1,5 +1,6 @@
 package none.engine.component.assets;
 
+import none.engine.component.model.Model;
 import none.engine.component.renderer.Mesh;
 
 /**
@@ -8,12 +9,12 @@ import none.engine.component.renderer.Mesh;
 public interface MeshHandler<T extends Mesh> {
 
     /**
-     * Handles the loading from a model.
+     * Handles loading from a model.
      *
-     * @param path Path of model.
+     * @param model Model.
      * @return id for loaded model.
      */
-    T loadMesh(String path);
+    T loadMesh(Model model);
 
     /**
      * Handles disposing from a model.

@@ -5,6 +5,7 @@ import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
 import none.engine.component.TransformComponent;
 import none.engine.component.assets.MeshHandler;
+import none.engine.component.assets.ModelHandler;
 import none.engine.component.assets.PhysicHandler;
 import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.UUIDFactory;
@@ -64,13 +65,15 @@ public class FallingCube extends AbsStructObject<EngineObject> implements Scene 
         camera.lookAt(new Vector3d(0, 2, 5), new Vector3d(0, 2, 0), new Vector3d(0, 1, 0));
 
         MeshHandler meshHandler = getGame().getInjector().getInstance(MeshHandler.class);
-        cube = meshHandler.loadMesh("models/simpleCube.obj");
-        plane = meshHandler.loadMesh("models/plane.obj");
+        PhysicHandler physicHandler = getGame().getInjector().getInstance(PhysicHandler.class);
+        ModelHandler modelHandler = getGame().getInjector().getInstance(ModelHandler.class);
+
+        cube = meshHandler.loadMesh(modelHandler.loadModel("models/simpleCube.obj"));
+        plane = meshHandler.loadMesh(modelHandler.loadModel("models/plane.obj"));
 
         TextureHandler textureHandler = getGame().getInjector().getInstance(TextureHandler.class);
         texture = textureHandler.loadTexture("textures/texture.png");
 
-        PhysicHandler physicHandler = getGame().getInjector().getInstance(PhysicHandler.class);
 
         levelBody = physicHandler.loadFloorRigidBody("models/plane.obj");
 

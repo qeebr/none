@@ -7,6 +7,7 @@ import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.CameraComponent;
 import none.engine.component.renderer.OrthographicCamera;
 import none.engine.component.renderer.PerspectiveCamera;
+import org.apache.commons.lang3.Validate;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
@@ -59,6 +60,7 @@ public class Camera32Renderer extends AbsObject {
     }
 
     public void draw(CameraComponent camera) {
+        Validate.notNull(camera, "A Scene has to have a camera.");
         if (!(camera instanceof OrthographicCamera || camera instanceof PerspectiveCamera)) {
             LOGGER.warn("Unknown Camera: {}.", camera);
         }

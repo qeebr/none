@@ -5,8 +5,10 @@ import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
 import none.engine.component.TransformComponent;
 import none.engine.component.assets.MeshHandler;
+import none.engine.component.assets.ModelHandler;
 import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.UUIDFactory;
+import none.engine.component.model.Model;
 import none.engine.component.renderer.*;
 import none.engine.scenes.Scene;
 import org.joml.Vector3d;
@@ -49,6 +51,7 @@ public class OrthograficScene extends BaseScene implements Scene {
     public void init() {
         TextureHandler textureHandler = getGame().getInjector().getInstance(TextureHandler.class);
         MeshHandler meshHandler = getGame().getInjector().getInstance(MeshHandler.class);
+        ModelHandler modelHandler = getGame().getInjector().getInstance(ModelHandler.class);
 
         double range = 10;
         int size = 2;
@@ -57,7 +60,8 @@ public class OrthograficScene extends BaseScene implements Scene {
         camera.setFrustum(-range, range, -range, range, -range, range);
 
         texture = textureHandler.loadTexture("textures/texture.png");
-        mesh = meshHandler.loadMesh("models/simpleCube.obj");
+        Model cubeModel = modelHandler.loadModel("models/simpleCube.obj");
+        mesh = meshHandler.loadMesh(cubeModel);
         Vector3d noDirection = new Vector3d();
 
         centerSprite = new SimpleSprite(getGame());

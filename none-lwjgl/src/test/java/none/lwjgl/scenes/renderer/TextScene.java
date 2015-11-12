@@ -36,7 +36,9 @@ public class TextScene extends BaseScene {
         camera = new OrthographicCamera(uuidFactory.createUUID(), getGame());
         camera.setFrustum(-range, range, -range, range, -range, range);
 
-        Text text = new Text(uuidFactory.createUUID(), "THIS IS A TEXT, PLEASE SEE ME!", 32, new Vector3d());
+        String message = "THIS IS A TEXT, PLEASE SEE ME!";
+        int textSize = range * 2 / message.length();
+        Text text = new Text(uuidFactory.createUUID(), message, textSize, new Vector3d(-message.length() * textSize / 2, 0, 0));
         addObject(text);
 
         super.init();

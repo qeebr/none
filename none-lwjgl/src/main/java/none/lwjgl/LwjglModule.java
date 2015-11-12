@@ -32,10 +32,11 @@ public class LwjglModule implements Module {
         binder.bind(Assets.class).toInstance(assets);
 
         binder.bind(ShaderHandler.class).to(SimpleShaderHandler.class);
-        binder.bind(MeshHandler.class).to(ObjMeshHandler.class);
+        binder.bind(MeshHandler.class).to(MeshHandlerImpl.class);
         binder.bind(TextureHandler.class).to(SimpleTextureHandler.class);
         binder.bind(SoundHandler.class).to(WaveSoundHandler.class);
         binder.bind(PhysicHandler.class).to(ObjRigidBodyHandler.class);
+        binder.bind(ModelHandler.class).to(ObjModelHandler.class);
 
         binder.bind(MasterRenderer.class).to(Master32Renderer.class);
         binder.bind(MasterPlayer.class).to(MasterAlPlayer.class);

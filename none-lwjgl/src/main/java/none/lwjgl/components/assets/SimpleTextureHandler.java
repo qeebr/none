@@ -22,7 +22,7 @@ import java.nio.ByteBuffer;
  * Simple PNG TextureHandler.
  */
 @Singleton
-public class SimpleTextureHandler extends BaseHandler<GlTexture> implements TextureHandler<GlTexture> {
+public class SimpleTextureHandler extends BaseHandler<GlTexture, String> implements TextureHandler<GlTexture> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTextureHandler.class);
     private static final int RGBA_BYTE_COUNT = 4;
 
