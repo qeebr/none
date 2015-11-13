@@ -1,13 +1,13 @@
 package none.lwjgl.components.input;
 
-import none.engine.component.input.MouseComponent;
+import none.engine.component.input.Mouse;
 import none.engine.component.input.MouseKey;
 import org.joml.Vector2d;
 
 /**
- * Implementation from the MouseComponent.
+ * Implementation from the Mouse.
  */
-public class MouseComponentImpl extends MouseComponent {
+public class MouseImpl extends Mouse {
 
     @Override
     public boolean isLocked() {

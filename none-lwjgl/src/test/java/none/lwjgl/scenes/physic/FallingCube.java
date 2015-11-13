@@ -3,7 +3,7 @@ package none.lwjgl.scenes.physic;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.assets.MeshHandler;
 import none.engine.component.assets.ModelHandler;
 import none.engine.component.assets.PhysicHandler;
@@ -11,11 +11,11 @@ import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.input.Command;
 import none.engine.component.input.Key;
-import none.engine.component.input.KeyboardComponent;
+import none.engine.component.input.Keyboard;
 import none.engine.component.physic.RigidBody;
 import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.Texture;
-import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.Camera;
 import none.engine.component.renderer.camera.PerspectiveCamera;
 import none.engine.component.renderer.primitives.Mesh;
 import none.engine.scenes.Scene;
@@ -45,7 +45,7 @@ public class FallingCube extends AbsStructObject<EngineObject> implements Scene 
 
     private Level level;
     private SimpleObject fallingCube;
-    private KeyboardComponent keyboard;
+    private Keyboard keyboard;
     private Mesh plane;
 
     public FallingCube(UUIDFactory factory, Game game) {
@@ -55,7 +55,7 @@ public class FallingCube extends AbsStructObject<EngineObject> implements Scene 
     }
 
     @Override
-    public CameraComponent getActiveCamera() {
+    public Camera getActiveCamera() {
         return camera;
     }
 
@@ -88,7 +88,7 @@ public class FallingCube extends AbsStructObject<EngineObject> implements Scene 
         fallingCube.init(new Vector3d(0, 5, 0), cubeBody, cube);
         addObject(fallingCube);
 
-        keyboard = getGame().getInjector().getInstance(KeyboardComponent.class);
+        keyboard = getGame().getInjector().getInstance(Keyboard.class);
         keyboard.registerCommand(JUMP, Key.SPACE);
         keyboard.registerCommand(MOVE_FORWARD, Key.W);
         keyboard.registerCommand(MOVE_BACKWARD, Key.S);
@@ -162,20 +162,20 @@ public class FallingCube extends AbsStructObject<EngineObject> implements Scene 
     }
 
     private class SimpleObject extends AbsStructObject<EngineObject> {
-        private TransformComponent transformComponent;
+        private Transform transform;
 
         public SimpleObject(String name, Game game) {
             super(name, uuidFactory.createUUID(), game);
         }
 
         public void init(Vector3d position, RigidBody body, Mesh mesh) {
-            transformComponent = new TransformComponent(uuidFactory.createUUID(), getGame(), this, position, new Vector3d());
+            transform = new Transform(uuidFactory.createUUID(), getGame(), this, position, new Vector3d());
 
             addObject(mesh);
             addObject(texture);
             addObject(body);
-            addObject(transformComponent);
-            addObject(new Renderable("Object", uuidFactory.createUUID(), mesh, texture, transformComponent));
+            addObject(transform);
+            addObject(new Renderable("Object", uuidFactory.createUUID(), mesh, texture, transform));
 
             super.init();
         }

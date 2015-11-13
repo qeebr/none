@@ -3,7 +3,7 @@ package none.goldminer.components.game;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.assets.TextureHandler;
 import none.engine.component.renderer.Texture;
 import none.goldminer.components.game.bricks.Brick;
@@ -239,7 +239,7 @@ public class GameField extends AbsStructObject<EngineObject> {
     }
 
     private void updateBrickTransform(Brick brick, int row, int column) {
-        TransformComponent transform = (TransformComponent) brick.find(TransformComponent.NAME).get();
+        Transform transform = (Transform) brick.find(Transform.NAME).get();
         transform.getPosition().set(new Vector3d(calcBrickX(column), calcBrickY(row), 0));
     }
 

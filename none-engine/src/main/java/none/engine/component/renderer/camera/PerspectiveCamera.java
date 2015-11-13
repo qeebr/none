@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * A camera using perspective projection.
  */
-public class PerspectiveCamera extends CameraComponent {
+public class PerspectiveCamera extends Camera {
 
     private float fieldOfView;
     private float aspectRatio;

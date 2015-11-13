@@ -3,10 +3,10 @@ package none.goldminer.components.game;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.input.Command;
 import none.engine.component.input.Key;
-import none.engine.component.input.KeyboardComponent;
+import none.engine.component.input.Keyboard;
 import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.primitives.Text;
 import none.goldminer.scenes.GameScene;
@@ -28,7 +28,7 @@ public class ColorChanger extends AbsStructObject<EngineObject> {
 
     private Renderable statusText;
 
-    private KeyboardComponent keyboardComponent;
+    private Keyboard keyboard;
     private GameScene gameScene;
 
     public ColorChanger(UUID id, Game game, EngineObject parent) {
@@ -41,13 +41,13 @@ public class ColorChanger extends AbsStructObject<EngineObject> {
         timer = 0;
 
         Text text = new Text(UUID.randomUUID(), "Ready", 20);
-        TransformComponent transform = new TransformComponent(UUID.randomUUID(), new Vector3d(700, 0, 0));
+        Transform transform = new Transform(UUID.randomUUID(), new Vector3d(700, 0, 0));
 
         statusText = new Renderable("ColorChanger-Readytext", UUID.randomUUID(), text, transform);
         gameScene = (GameScene) getParent();
 
-        keyboardComponent = getGame().getInjector().getInstance(KeyboardComponent.class);
-        keyboardComponent.registerCommand(changeColor, Key.I_1);
+        keyboard = getGame().getInjector().getInstance(Keyboard.class);
+        keyboard.registerCommand(changeColor, Key.I_1);
 
         addObject(statusText);
 
@@ -57,7 +57,7 @@ public class ColorChanger extends AbsStructObject<EngineObject> {
     @Override
     public void update(int deltaInMs) {
         if (ready) {
-            if (keyboardComponent.isCommandClicked(changeColor)) {
+            if (keyboard.isCommandClicked(changeColor)) {
                 boolean changeColor = gameScene.changeColor();
 
                 if (changeColor) {

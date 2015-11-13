@@ -1,7 +1,7 @@
 package none.engine;
 
 import none.engine.component.AbsStructObject;
-import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.Camera;
 import none.engine.scenes.Scene;
 import org.junit.Before;
 import org.junit.Test;
@@ -127,7 +127,7 @@ public class SceneManagerTest {
         }
 
         @Override
-        public CameraComponent getActiveCamera() {
+        public Camera getActiveCamera() {
             return null;
         }
     }
@@ -140,7 +140,7 @@ public class SceneManagerTest {
         }
 
         @Override
-        public CameraComponent getActiveCamera() {
+        public Camera getActiveCamera() {
             return null;
         }
     }
@@ -165,7 +165,7 @@ public class SceneManagerTest {
         }
 
         @Override
-        public CameraComponent getActiveCamera() {
+        public Camera getActiveCamera() {
             return null;
         }
     }

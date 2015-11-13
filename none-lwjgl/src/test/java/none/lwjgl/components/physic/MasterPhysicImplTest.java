@@ -2,7 +2,7 @@ package none.lwjgl.components.physic;
 
 import none.engine.Game;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.physic.Face;
 import none.engine.component.physic.RigidBody;
 import org.joml.Vector3d;
@@ -33,10 +33,10 @@ public class MasterPhysicImplTest {
         return new RigidBodyImpl(UUID.randomUUID(), "foobar", RigidBody.Type.Moveable, faces);
     }
 
-    private TransformComponent createTransform(Vector3d position) {
+    private Transform createTransform(Vector3d position) {
         Vector3d nullVector = new Vector3d();
 
-        return new TransformComponent(UUID.randomUUID(),
+        return new Transform(UUID.randomUUID(),
                 mock(Game.class), mock(EngineObject.class), position, nullVector);
     }
 

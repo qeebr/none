@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import none.engine.Game;
 import none.engine.GameOptions;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.MasterRenderer;
 import none.engine.scenes.Scene;
@@ -43,11 +43,11 @@ public class MasterRendererImpl extends MasterRenderer {
     }
 
     private void iterateThroughScene(Iterable<EngineObject> children) {
-        TransformComponent transform = null;
+        Transform transform = null;
 
         for (EngineObject child : children) {
-            if (TransformComponent.NAME.equals(child.getName())) {
-                transform = (TransformComponent) child;
+            if (Transform.NAME.equals(child.getName())) {
+                transform = (Transform) child;
             } else {
                 iterateThroughScene(child.children());
             }

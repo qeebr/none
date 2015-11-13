@@ -3,12 +3,12 @@ package none.goldminer.components.game.cursor;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.input.Command;
 import none.engine.component.input.Key;
-import none.engine.component.input.KeyboardComponent;
+import none.engine.component.input.Keyboard;
 import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.Texture;
 import none.engine.component.renderer.primitives.Sprite;
@@ -37,13 +37,13 @@ public class Cursor extends AbsStructObject<EngineObject> {
 
     private Texture texture;
     private Sprite sprite;
-    private TransformComponent transform;
+    private Transform transform;
     private CursorAnimator cursorAnimator;
 
     private int currentRow;
     private int currentColumn;
 
-    private KeyboardComponent keyboard;
+    private Keyboard keyboard;
 
     public Cursor(UUID id, Game game, EngineObject parent) {
         super(NAME, id, game, parent);
@@ -67,7 +67,7 @@ public class Cursor extends AbsStructObject<EngineObject> {
 
         texture = textureHandler.loadTexture("textures/cursor.png");
         sprite = new Sprite(uuidFactory.createUUID(), 1, 3, CURSOR_SIZE, CURSOR_SIZE, SPRITE_LAYER);
-        transform = new TransformComponent(uuidFactory.createUUID(), getGame(), this, calculateCurrentPosition(), new Vector3d());
+        transform = new Transform(uuidFactory.createUUID(), getGame(), this, calculateCurrentPosition(), new Vector3d());
         cursorAnimator = new CursorAnimator(uuidFactory.createUUID(), sprite);
         Renderable renderable = new Renderable("Cursor-Renderable", uuidFactory.createUUID(), sprite, texture, transform);
 
@@ -77,7 +77,7 @@ public class Cursor extends AbsStructObject<EngineObject> {
         addObject(cursorAnimator);
         addObject(renderable);
 
-        keyboard = getGame().getInjector().getInstance(KeyboardComponent.class);
+        keyboard = getGame().getInjector().getInstance(Keyboard.class);
         keyboard.registerCommand(downCommand, Key.DOWN);
         keyboard.registerCommand(upCommand, Key.UP);
         keyboard.registerCommand(leftCommand, Key.LEFT);
@@ -101,7 +101,7 @@ public class Cursor extends AbsStructObject<EngineObject> {
         } else if (keyboard.isCommandClicked(rightCommand) && currentColumn < (GameField.MAX_COLUMNS - 1)) {
             currentColumn++;
         }
-        ((TransformComponent) find(TransformComponent.NAME).get()).getPosition().set(calculateCurrentPosition());
+        ((Transform) find(Transform.NAME).get()).getPosition().set(calculateCurrentPosition());
 
         if (keyboard.isCommandClicked(actionCommand)) {
             cursorAnimator.doAnimation();

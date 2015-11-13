@@ -3,7 +3,7 @@ package none.goldminer.components.game;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.primitives.Text;
@@ -35,7 +35,7 @@ public class Score extends AbsStructObject<EngineObject> {
         });
 
         Text text = new Text(uuidFactory.createUUID(), scoreValue.toString(), 32);
-        TransformComponent position = new TransformComponent(uuidFactory.createUUID(), new Vector3d(800 - (32 * 4), 600 - (32 * 2), 0));
+        Transform position = new Transform(uuidFactory.createUUID(), new Vector3d(800 - (32 * 4), 600 - (32 * 2), 0));
 
         textField = new Renderable("Score-Textfield", uuidFactory.createUUID(), text, position);
         addObject(textField);

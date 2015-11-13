@@ -3,7 +3,7 @@ package none.lwjgl.scenes.renderer;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.assets.MeshHandler;
 import none.engine.component.assets.ModelHandler;
 import none.engine.component.assets.TextureHandler;
@@ -11,7 +11,7 @@ import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.model.Model;
 import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.Texture;
-import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.Camera;
 import none.engine.component.renderer.camera.OrthographicCamera;
 import none.engine.component.renderer.primitives.Mesh;
 import none.engine.component.renderer.primitives.Sprite;
@@ -48,7 +48,7 @@ public class OrthograficScene extends BaseScene implements Scene {
     }
 
     @Override
-    public CameraComponent getActiveCamera() {
+    public Camera getActiveCamera() {
         return camera;
     }
 
@@ -136,16 +136,16 @@ public class OrthograficScene extends BaseScene implements Scene {
     }
 
     public class SimpleMesh extends AbsStructObject<EngineObject> {
-        private TransformComponent transformComponent;
+        private Transform transform;
 
         public SimpleMesh(Game game) {
             super(SimpleMesh.class.getSimpleName(), uuidFactory.createUUID(), game);
         }
 
         public void init(Vector3d position, Vector3d direction) {
-            this.transformComponent = new TransformComponent(uuidFactory.createUUID(), getGame(), this, position, direction);
+            this.transform = new Transform(uuidFactory.createUUID(), getGame(), this, position, direction);
 
-            addObject(new Renderable(SimpleMesh.class.getSimpleName(), uuidFactory.createUUID(), mesh, texture, transformComponent));
+            addObject(new Renderable(SimpleMesh.class.getSimpleName(), uuidFactory.createUUID(), mesh, texture, transform));
 
             super.init();
         }
@@ -154,7 +154,7 @@ public class OrthograficScene extends BaseScene implements Scene {
 
     public class SimpleSprite extends AbsStructObject<EngineObject> {
         private Sprite sprite;
-        private TransformComponent transformComponent;
+        private Transform transform;
 
         public SimpleSprite(Game game) {
             super(SimpleSprite.class.getSimpleName(), uuidFactory.createUUID(), game);
@@ -162,9 +162,9 @@ public class OrthograficScene extends BaseScene implements Scene {
 
         public void init(int size, Vector3d position, Vector3d direction) {
             this.sprite = new Sprite(uuidFactory.createUUID(), 2, 4, size, size);
-            this.transformComponent = new TransformComponent(uuidFactory.createUUID(), getGame(), this, position, direction);
+            this.transform = new Transform(uuidFactory.createUUID(), getGame(), this, position, direction);
 
-            addObject(new Renderable("Sprite", uuidFactory.createUUID(), sprite, texture, transformComponent));
+            addObject(new Renderable("Sprite", uuidFactory.createUUID(), sprite, texture, transform));
 
             super.init();
         }

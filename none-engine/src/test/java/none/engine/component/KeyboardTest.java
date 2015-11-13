@@ -2,7 +2,7 @@ package none.engine.component;
 
 import none.engine.component.input.Command;
 import none.engine.component.input.Key;
-import none.engine.component.input.KeyboardComponent;
+import none.engine.component.input.Keyboard;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -11,11 +11,11 @@ import java.util.Map;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class KeyboardComponentTest {
+public class KeyboardTest {
 
     @Test
     public void testIsCommandDown() throws Exception {
-        TestKeyboardComponent keyboard = new TestKeyboardComponent();
+        TestKeyboard keyboard = new TestKeyboard();
         Command command = new CommandA();
 
         keyboard.registerCommand(command, Key.I_5);
@@ -41,7 +41,7 @@ public class KeyboardComponentTest {
 
     @Test
     public void testIsCommandClicked() throws Exception {
-        TestKeyboardComponent keyboard = new TestKeyboardComponent();
+        TestKeyboard keyboard = new TestKeyboard();
         Command command = new CommandA();
         Key keyId = Key.I;
 
@@ -64,7 +64,7 @@ public class KeyboardComponentTest {
 
     @Test
     public void testIsCommandReleased() throws Exception {
-        TestKeyboardComponent keyboard = new TestKeyboardComponent();
+        TestKeyboard keyboard = new TestKeyboard();
         Command command = new CommandA();
         Key keyId = Key.X;
 
@@ -89,7 +89,7 @@ public class KeyboardComponentTest {
 
     }
 
-    class TestKeyboardComponent extends KeyboardComponent {
+    class TestKeyboard extends Keyboard {
         private Map<Key, Boolean> keys = new HashMap<>();
 
         public void setKey(Key key, boolean state) {

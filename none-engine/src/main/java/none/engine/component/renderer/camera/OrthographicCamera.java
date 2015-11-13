@@ -7,7 +7,7 @@ import java.util.UUID;
 /**
  * A camera using orthographic projection.
  */
-public class OrthographicCamera extends CameraComponent {
+public class OrthographicCamera extends Camera {
 
     private double leftClippingPlane;
     private double rightClippingPlane;

@@ -1,7 +1,7 @@
 package none.lwjgl.scenes.renderer;
 
 import none.engine.Game;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.assets.MeshHandler;
 import none.engine.component.assets.ModelHandler;
 import none.engine.component.assets.TextureHandler;
@@ -9,7 +9,7 @@ import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.model.Model;
 import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.Texture;
-import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.Camera;
 import none.engine.component.renderer.camera.PerspectiveCamera;
 import none.engine.component.renderer.primitives.Mesh;
 import none.engine.scenes.Scene;
@@ -28,7 +28,7 @@ public class MeshScene extends BaseScene implements Scene {
     private Mesh mesh;
     private Texture texture;
 
-    private CameraComponent camera;
+    private Camera camera;
     private Renderable renderable;
 
     public MeshScene(UUIDFactory uuidFactory, Game game, List<String> availableScenes) {
@@ -37,7 +37,7 @@ public class MeshScene extends BaseScene implements Scene {
     }
 
     @Override
-    public CameraComponent getActiveCamera() {
+    public Camera getActiveCamera() {
         return camera;
     }
 
@@ -55,7 +55,7 @@ public class MeshScene extends BaseScene implements Scene {
         model = modelHandler.loadModel("models/handMade.obj");
         mesh = meshHandler.loadMesh(model);
         texture = textureHandler.loadTexture("textures/texture.png");
-        TransformComponent transform = new TransformComponent(uuidFactory.createUUID());
+        Transform transform = new Transform(uuidFactory.createUUID());
 
         renderable = new Renderable("cube", uuidFactory.createUUID(), mesh, texture, transform);
         addObject(renderable);

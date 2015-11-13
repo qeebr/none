@@ -8,10 +8,10 @@ import java.util.UUID;
 /**
  * The abstraction for a Mouse.
  */
-public abstract class MouseComponent extends AbsObject {
+public abstract class Mouse extends AbsObject {
 
-    protected MouseComponent() {
-        super(MouseComponent.class.getSimpleName(), UUID.randomUUID());
+    protected Mouse() {
+        super(Mouse.class.getSimpleName(), UUID.randomUUID());
     }
 
     /**

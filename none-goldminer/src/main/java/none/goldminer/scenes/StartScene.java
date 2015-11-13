@@ -1,7 +1,7 @@
 package none.goldminer.scenes;
 
 import none.engine.Game;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.primitives.Text;
@@ -24,7 +24,7 @@ public class StartScene extends BaseScene {
     @Override
     public void init() {
         Text text = new Text(uuidFactory.createUUID(), "Start Game", 64);
-        TransformComponent transform = new TransformComponent(uuidFactory.createUUID(), new Vector3d(0, 0, 0));
+        Transform transform = new Transform(uuidFactory.createUUID(), new Vector3d(0, 0, 0));
         startGameText = new Renderable("StartScene-Greeter", uuidFactory.createUUID(), text, transform);
         addObject(startGameText);
 

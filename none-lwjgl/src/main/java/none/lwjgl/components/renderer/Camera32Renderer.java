@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import none.engine.Game;
 import none.engine.component.AbsObject;
 import none.engine.component.common.uuid.UUIDFactory;
-import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.Camera;
 import none.engine.component.renderer.camera.OrthographicCamera;
 import none.engine.component.renderer.camera.PerspectiveCamera;
 import org.apache.commons.lang3.Validate;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.FloatBuffer;
 
 /**
- * CameraComponent.
+ * Camera.
  */
 public class Camera32Renderer extends AbsObject {
     private static final Logger LOGGER = LoggerFactory.getLogger(Camera32Renderer.class);
@@ -51,7 +51,7 @@ public class Camera32Renderer extends AbsObject {
         this.viewId = viewId;
     }
 
-    public void draw(CameraComponent camera) {
+    public void draw(Camera camera) {
         Validate.notNull(camera, "A Scene has to have a camera.");
         if (!(camera instanceof OrthographicCamera || camera instanceof PerspectiveCamera)) {
             LOGGER.warn("Unknown Camera: {}.", camera);
@@ -64,7 +64,7 @@ public class Camera32Renderer extends AbsObject {
         GL20.glUniformMatrix4(viewId, false, viewBuffer);
     }
 
-    private void updateProjectionMatrix(CameraComponent camera) {
+    private void updateProjectionMatrix(Camera camera) {
         projectionMatrix.setZero();
 
         if (camera instanceof PerspectiveCamera) {
@@ -111,7 +111,7 @@ public class Camera32Renderer extends AbsObject {
         projectionMatrix.m33 = 0;
     }
 
-    private void updateViewMatrix(CameraComponent camera) {
+    private void updateViewMatrix(Camera camera) {
         org.joml.Matrix4f matrix = new org.joml.Matrix4f();
         matrix.identity();
 

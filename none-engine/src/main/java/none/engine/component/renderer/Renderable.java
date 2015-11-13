@@ -1,7 +1,7 @@
 package none.engine.component.renderer;
 
 import none.engine.component.AbsObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.renderer.primitives.Mesh;
 import none.engine.component.renderer.primitives.Sprite;
 import none.engine.component.renderer.primitives.Text;
@@ -23,21 +23,21 @@ public class Renderable extends AbsObject {
 
     private final Texture texture;
 
-    private final TransformComponent transform;
+    private final Transform transform;
 
-    public Renderable(String name, UUID id, Text text, TransformComponent transform) {
+    public Renderable(String name, UUID id, Text text, Transform transform) {
         this(name, id, null, null, text, null, transform, Type.TEXT_BASED);
     }
 
-    public Renderable(String name, UUID id, Sprite sprite, Texture texture, TransformComponent transform) {
+    public Renderable(String name, UUID id, Sprite sprite, Texture texture, Transform transform) {
         this(name, id, null, sprite, null, texture, transform, Type.SPRITE_BASED);
     }
 
-    public Renderable(String name, UUID id, Mesh mesh, Texture texture, TransformComponent transform) {
+    public Renderable(String name, UUID id, Mesh mesh, Texture texture, Transform transform) {
         this(name, id, mesh, null, null, texture, transform, Type.MESH_BASED);
     }
 
-    private Renderable(String name, UUID id, Mesh mesh, Sprite sprite, Text text, Texture texture, TransformComponent transform, Type type) {
+    private Renderable(String name, UUID id, Mesh mesh, Sprite sprite, Text text, Texture texture, Transform transform, Type type) {
         super(name, id);
 
         Validate.notNull(transform);
@@ -86,7 +86,7 @@ public class Renderable extends AbsObject {
         return texture;
     }
 
-    public TransformComponent getTransform() {
+    public Transform getTransform() {
         return transform;
     }
 

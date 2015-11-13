@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import none.engine.Game;
 import none.engine.GameOptions;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.assets.ShaderHandler;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.MasterRenderer;
@@ -171,7 +171,7 @@ public class Master32Renderer extends MasterRenderer {
     private void renderText() {
         for (Renderable renderable : renderables) {
             Renderable.Type type = renderable.getType();
-            TransformComponent transform = renderable.getTransform();
+            Transform transform = renderable.getTransform();
             Text text = renderable.getText();
 
             if (type == Renderable.Type.TEXT_BASED) {
@@ -185,7 +185,7 @@ public class Master32Renderer extends MasterRenderer {
             Renderable.Type type = renderable.getType();
             GlMesh mesh = (GlMesh) renderable.getMesh();
             GlTexture texture = (GlTexture) renderable.getTexture();
-            TransformComponent transform = renderable.getTransform();
+            Transform transform = renderable.getTransform();
             Sprite sprite = renderable.getSprite();
 
             if (type == Renderable.Type.MESH_BASED) {
@@ -214,7 +214,7 @@ public class Master32Renderer extends MasterRenderer {
         }
     }
 
-    private void updateModelMatrix(TransformComponent transform, boolean withRotation) {
+    private void updateModelMatrix(Transform transform, boolean withRotation) {
         Vector3d position = transform.getPosition();
 
         Matrix4f.setIdentity(modelMatrix);

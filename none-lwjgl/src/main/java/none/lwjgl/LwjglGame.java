@@ -2,7 +2,7 @@ package none.lwjgl;
 
 import none.engine.Game;
 import none.engine.GameOptions;
-import none.engine.component.input.KeyboardComponent;
+import none.engine.component.input.Keyboard;
 import none.engine.component.physic.MasterPhysic;
 import none.engine.component.renderer.MasterRenderer;
 import none.engine.component.sound.MasterPlayer;
@@ -32,7 +32,7 @@ public class LwjglGame extends Game {
     private MasterPlayer masterPlayer;
     private MasterPhysic masterPhysic;
 
-    private KeyboardComponent keyboardComponent;
+    private Keyboard keyboard;
 
     /**
      * CTor for LwjglGame.
@@ -59,8 +59,8 @@ public class LwjglGame extends Game {
         return masterPhysic;
     }
 
-    public KeyboardComponent getKeyboardComponent() {
-        return keyboardComponent;
+    public Keyboard getKeyboard() {
+        return keyboard;
     }
 
     @Override
@@ -70,10 +70,10 @@ public class LwjglGame extends Game {
         masterRenderer = getInjector().getInstance(MasterRenderer.class);
         masterPlayer = getInjector().getInstance(MasterPlayer.class);
         masterPhysic = getInjector().getInstance(MasterPhysic.class);
-        keyboardComponent = getInjector().getInstance(KeyboardComponent.class);
+        keyboard = getInjector().getInstance(Keyboard.class);
 
         masterRenderer.init();
-        keyboardComponent.init();
+        keyboard.init();
         masterPlayer.init();
 
         getManager().init();

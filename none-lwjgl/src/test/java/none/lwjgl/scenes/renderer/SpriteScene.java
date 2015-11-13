@@ -3,15 +3,15 @@ package none.lwjgl.scenes.renderer;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.input.Command;
 import none.engine.component.input.Key;
-import none.engine.component.input.KeyboardComponent;
+import none.engine.component.input.Keyboard;
 import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.Texture;
-import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.Camera;
 import none.engine.component.renderer.camera.OrthographicCamera;
 import none.engine.component.renderer.primitives.Sprite;
 import org.joml.Vector3d;
@@ -35,7 +35,7 @@ public class SpriteScene extends BaseScene {
     private SimpleSprite simpleSprite;
     private SimpleSprite controlSprite;
 
-    private KeyboardComponent keyboardComponent;
+    private Keyboard keyboard;
 
     public SpriteScene(UUIDFactory uuidFactory, Game game, List<String> availableScenes) {
         super(NAME, uuidFactory.createUUID(), game, availableScenes);
@@ -43,7 +43,7 @@ public class SpriteScene extends BaseScene {
     }
 
     @Override
-    public CameraComponent getActiveCamera() {
+    public Camera getActiveCamera() {
         return camera;
     }
 
@@ -56,9 +56,9 @@ public class SpriteScene extends BaseScene {
         TextureHandler textureHandler = getGame().getInjector().getInstance(TextureHandler.class);
         texture = textureHandler.loadTexture("textures/texture.png");
 
-        keyboardComponent = getGame().getInjector().getInstance(KeyboardComponent.class);
-        keyboardComponent.registerCommand(nextRow, Key.W);
-        keyboardComponent.registerCommand(nextColumn, Key.S);
+        keyboard = getGame().getInjector().getInstance(Keyboard.class);
+        keyboard.registerCommand(nextRow, Key.W);
+        keyboard.registerCommand(nextColumn, Key.S);
 
         simpleSprite = new SimpleSprite(getGame());
         simpleSprite.init(range, 2, 4, new Vector3d());
@@ -73,10 +73,10 @@ public class SpriteScene extends BaseScene {
 
     @Override
     public void update(int deltaInMs) {
-        if (keyboardComponent.isCommandClicked(nextRow)) {
+        if (keyboard.isCommandClicked(nextRow)) {
             simpleSprite.nextRow();
         }
-        if (keyboardComponent.isCommandClicked(nextColumn)) {
+        if (keyboard.isCommandClicked(nextColumn)) {
             simpleSprite.nextColumn();
         }
 
@@ -85,8 +85,8 @@ public class SpriteScene extends BaseScene {
 
     @Override
     public void dispose() {
-        keyboardComponent.deregisterCommand(nextRow);
-        keyboardComponent.deregisterCommand(nextColumn);
+        keyboard.deregisterCommand(nextRow);
+        keyboard.deregisterCommand(nextColumn);
 
         TextureHandler textureHandler = getGame().getInjector().getInstance(TextureHandler.class);
         textureHandler.disposeTexture(texture);
@@ -114,9 +114,9 @@ public class SpriteScene extends BaseScene {
         public void init(int size, int rowCount, int columnCount, Vector3d position) {
             Vector3d nullVector = new Vector3d();
             sprite = new Sprite(uuidFactory.createUUID(), rowCount, columnCount, size, size);
-            TransformComponent transformComponent = new TransformComponent(uuidFactory.createUUID(), getGame(), this, position, nullVector);
+            Transform transform = new Transform(uuidFactory.createUUID(), getGame(), this, position, nullVector);
 
-            addObject(new Renderable("Sprite", uuidFactory.createUUID(), sprite, texture, transformComponent));
+            addObject(new Renderable("Sprite", uuidFactory.createUUID(), sprite, texture, transform));
         }
 
         public void nextColumn() {

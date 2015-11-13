@@ -7,16 +7,16 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * The KeyboardComponent.
+ * The Keyboard.
  */
-public abstract class KeyboardComponent extends AbsObject {
-    public static final String NAME = "KeyboardComponent";
+public abstract class Keyboard extends AbsObject {
+    public static final String NAME = "Keyboard";
 
     private Map<Command, Key> commandsToId;
     private Map<Command, Boolean> commandState;
     private Map<Command, Boolean> oldCommandState;
 
-    protected KeyboardComponent() {
+    protected Keyboard() {
         super(NAME, UUID.randomUUID());
 
         commandsToId = new HashMap<>();

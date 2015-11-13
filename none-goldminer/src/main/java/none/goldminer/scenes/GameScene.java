@@ -2,7 +2,7 @@ package none.goldminer.scenes;
 
 import none.engine.Game;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.primitives.Text;
@@ -70,11 +70,11 @@ public class GameScene extends BaseScene {
         ColorChanger colorChanger = new ColorChanger(uuidFactory.createUUID(), getGame(), this);
 
         Text textGameover = new Text(uuidFactory.createUUID(), "Game Over :(", 32);
-        TransformComponent gameoverTransform = new TransformComponent(uuidFactory.createUUID(), new Vector3d(400 - (32 * 6), 300, 0));
+        Transform gameoverTransform = new Transform(uuidFactory.createUUID(), new Vector3d(400 - (32 * 6), 300, 0));
         gameOverText = new Renderable("GameScene-GameOver-Text", uuidFactory.createUUID(), textGameover, gameoverTransform);
 
         Text textnewHighscore = new Text(uuidFactory.createUUID(), "NEW HIGHSCORE!!!!!", 32);
-        TransformComponent newHighscoreTransform = new TransformComponent(uuidFactory.createUUID(), new Vector3d(400 - (32 * 9), 300 + 48, 0));
+        Transform newHighscoreTransform = new Transform(uuidFactory.createUUID(), new Vector3d(400 - (32 * 9), 300 + 48, 0));
         newHighscore = new Renderable("GameScene-NewHighscore-Text", uuidFactory.createUUID(), textnewHighscore, newHighscoreTransform);
 
         Level level = new Level(uuidFactory.createUUID(), getGame());

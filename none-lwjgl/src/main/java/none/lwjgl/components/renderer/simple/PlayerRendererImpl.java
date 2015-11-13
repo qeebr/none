@@ -2,7 +2,7 @@ package none.lwjgl.components.renderer.simple;
 
 import none.engine.Game;
 import none.engine.component.AbsObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.common.uuid.UUIDFactory;
 import org.joml.Vector3d;
 
@@ -21,7 +21,7 @@ public class PlayerRendererImpl extends AbsObject {
         super("PlayerRendererImpl", factory.createUUID(), game);
     }
 
-    public void draw(TransformComponent transform) {
+    public void draw(Transform transform) {
         Vector3d position = transform.getPosition();
 
         glColor3f(PLAYER_COLOR_RED, PLAYER_COLOR_GREEN, PLAYER_COLOR_BLUE);

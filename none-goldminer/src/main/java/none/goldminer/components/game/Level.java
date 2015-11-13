@@ -3,7 +3,7 @@ package none.goldminer.components.game;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.primitives.Text;
 import none.goldminer.components.game.bricks.BrickFactory;
@@ -40,7 +40,7 @@ public class Level extends AbsStructObject<EngineObject> {
         this.score = score;
 
         Text text = new Text(UUID.randomUUID(), "1", 32);
-        TransformComponent transform = new TransformComponent(UUID.randomUUID(), new Vector3d((32 * 4), 600 - (32 * 2), 0));
+        Transform transform = new Transform(UUID.randomUUID(), new Vector3d((32 * 4), 600 - (32 * 2), 0));
         this.levelText = new Renderable("Level-Text", UUID.randomUUID(), text, transform);
 
         this.levelThreshold = INITIAL_POINT_THRESHOLD;

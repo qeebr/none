@@ -6,7 +6,7 @@ import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
 import none.engine.component.input.Command;
 import none.engine.component.input.Key;
-import none.engine.component.input.KeyboardComponent;
+import none.engine.component.input.Keyboard;
 import none.engine.scenes.Scene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public abstract class BaseScene extends AbsStructObject<EngineObject> implements
     private final NextScene nextScene = new NextScene();
     private final PreviousScene previousScene = new PreviousScene();
     private final List<String> availableScenes;
-    private KeyboardComponent keyboardComponent;
+    private Keyboard keyboard;
     private SceneManager sceneManager;
 
     protected BaseScene(String name, UUID id, Game game, List<String> availableScenes) {
@@ -36,9 +36,9 @@ public abstract class BaseScene extends AbsStructObject<EngineObject> implements
     @Override
     public void init() {
         LOGGER.info(this.getClass().getSimpleName() + ": " + getInfoMessage());
-        keyboardComponent = getGame().getInjector().getInstance(KeyboardComponent.class);
-        keyboardComponent.registerCommand(nextScene, Key.RIGHT);
-        keyboardComponent.registerCommand(previousScene, Key.LEFT);
+        keyboard = getGame().getInjector().getInstance(Keyboard.class);
+        keyboard.registerCommand(nextScene, Key.RIGHT);
+        keyboard.registerCommand(previousScene, Key.LEFT);
 
         sceneManager = getGame().getManager();
 
@@ -47,14 +47,14 @@ public abstract class BaseScene extends AbsStructObject<EngineObject> implements
 
     @Override
     public void update(int deltaInMs) {
-        if (keyboardComponent.isCommandReleased(nextScene)) {
+        if (keyboard.isCommandReleased(nextScene)) {
             currentSceneIndex++;
             if (currentSceneIndex == availableScenes.size()) {
                 currentSceneIndex = 0;
             }
 
             changeScene();
-        } else if (keyboardComponent.isCommandReleased(previousScene)) {
+        } else if (keyboard.isCommandReleased(previousScene)) {
             currentSceneIndex--;
             if (currentSceneIndex < 0) {
                 currentSceneIndex = availableScenes.size() - 1;
@@ -72,8 +72,8 @@ public abstract class BaseScene extends AbsStructObject<EngineObject> implements
 
     @Override
     public void dispose() {
-        keyboardComponent.deregisterCommand(nextScene);
-        keyboardComponent.deregisterCommand(previousScene);
+        keyboard.deregisterCommand(nextScene);
+        keyboard.deregisterCommand(previousScene);
 
         super.dispose();
     }

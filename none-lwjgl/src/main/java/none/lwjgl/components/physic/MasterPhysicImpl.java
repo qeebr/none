@@ -3,7 +3,7 @@ package none.lwjgl.components.physic;
 import com.google.inject.Inject;
 import none.engine.Game;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.physic.MasterPhysic;
 import none.engine.component.physic.RigidBody;
 import none.engine.scenes.Scene;
@@ -36,26 +36,26 @@ public class MasterPhysicImpl extends MasterPhysic {
 
     private void iterateThroughScene(int deltaInMs, Iterable<EngineObject> children, EngineObject parent) {
         RigidBodyImpl rigidBody = null;
-        TransformComponent transformComponent = null;
+        Transform transform = null;
 
         //Find all Physic-Objects in scene.
         for (EngineObject child : children) {
             if (child.getName().equals(RigidBodyImpl.NAME)) {
                 rigidBody = (RigidBodyImpl) child;
-            } else if (child.getName().equals(TransformComponent.NAME)) {
-                transformComponent = (TransformComponent) child;
+            } else if (child.getName().equals(Transform.NAME)) {
+                transform = (Transform) child;
             } else {
                 iterateThroughScene(deltaInMs, child.children(), child);
             }
         }
-        if (rigidBody != null && transformComponent != null) {
+        if (rigidBody != null && transform != null) {
             objects.add(parent);
         }
 
         //Update Position, and check for collisions - handle correct.
         //This Algorithm should be replaced, Big-O(n^2).
         for (EngineObject object : objects) {
-            TransformComponent objectTransform = (TransformComponent) object.find(TransformComponent.NAME).get();
+            Transform objectTransform = (Transform) object.find(Transform.NAME).get();
             RigidBodyImpl objectBody = (RigidBodyImpl) object.find(RigidBodyImpl.NAME).get();
 
             //Only moveable objects can collide.
@@ -70,7 +70,7 @@ public class MasterPhysicImpl extends MasterPhysic {
                 continue;
             }
             for (EngineObject other : objects) {
-                TransformComponent otherTransform = (TransformComponent) other.find(TransformComponent.NAME).get();
+                Transform otherTransform = (Transform) other.find(Transform.NAME).get();
                 RigidBodyImpl otherBody = (RigidBodyImpl) other.find(RigidBodyImpl.NAME).get();
 
                 if (!other.getId().equals(object.getId()) && collisionDetected(newPosition, objectBody, otherTransform, otherBody)) {
@@ -91,14 +91,14 @@ public class MasterPhysicImpl extends MasterPhysic {
         }
     }
 
-    private boolean collisionDetected(Vector3d transform, RigidBody body, TransformComponent otherTransform, RigidBody other) {
+    private boolean collisionDetected(Vector3d transform, RigidBody body, Transform otherTransform, RigidBody other) {
         Cube rec = new Cube(transform, body);
         Cube otherRec = new Cube(otherTransform.getPosition(), other);
 
         return rec.intersects(otherRec);
     }
 
-    private Vector3d update(int deltaInMs, RigidBodyImpl rigidBody, TransformComponent transformComponent) {
+    private Vector3d update(int deltaInMs, RigidBodyImpl rigidBody, Transform transform) {
         //Eulers-Method.
         Vector3d forceSum = new Vector3d(0, 0, 0);
         for (Vector3d force : rigidBody.getForces()) {
@@ -106,7 +106,7 @@ public class MasterPhysicImpl extends MasterPhysic {
         }
 
         Vector3d oldPosition = new Vector3d();
-        oldPosition.set(transformComponent.getPosition());
+        oldPosition.set(transform.getPosition());
 
         Vector3d acceleration = forceSum.div(rigidBody.getMass());
         rigidBody.getVelocity().add(acceleration.mul(deltaInMs));

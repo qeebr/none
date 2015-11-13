@@ -5,8 +5,8 @@ import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.input.Key;
-import none.engine.component.input.KeyboardComponent;
-import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.input.Keyboard;
+import none.engine.component.renderer.camera.Camera;
 import none.engine.component.renderer.camera.OrthographicCamera;
 import none.engine.scenes.Scene;
 import none.goldminer.components.input.Confirm;
@@ -20,7 +20,7 @@ public class BaseScene extends AbsStructObject<EngineObject> implements Scene {
     private static boolean INIT_ONCE = false;
 
     protected final UUIDFactory uuidFactory;
-    protected KeyboardComponent keyboard;
+    protected Keyboard keyboard;
 
     private OrthographicCamera camera;
 
@@ -31,7 +31,7 @@ public class BaseScene extends AbsStructObject<EngineObject> implements Scene {
     }
 
     @Override
-    public CameraComponent getActiveCamera() {
+    public Camera getActiveCamera() {
         return camera;
     }
 
@@ -44,7 +44,7 @@ public class BaseScene extends AbsStructObject<EngineObject> implements Scene {
         camera.setFrustum(-width / 2, width / 2, -height / 2, height / 2, -10, 10);
         camera.lookAt(new Vector3d(width / 2, height / 2, 0), new Vector3d(width / 2, height / 2, -1), new Vector3d(0, 1, 0));
 
-        keyboard = getGame().getInjector().getInstance(KeyboardComponent.class);
+        keyboard = getGame().getInjector().getInstance(Keyboard.class);
         if (!INIT_ONCE) {
             INIT_ONCE = true;
             keyboard.registerCommand(Confirm.COMMAND, Key.ENTER);

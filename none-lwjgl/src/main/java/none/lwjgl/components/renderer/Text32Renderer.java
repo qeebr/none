@@ -2,7 +2,7 @@ package none.lwjgl.components.renderer;
 
 import none.engine.Game;
 import none.engine.component.AbsObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.primitives.Text;
@@ -43,7 +43,7 @@ public class Text32Renderer extends AbsObject {
         uvBufferId = GL15.glGenBuffers();
     }
 
-    public void draw(Text text, TransformComponent transform) {
+    public void draw(Text text, Transform transform) {
         Validate.notNull(text);
         Validate.notNull(transform);
 

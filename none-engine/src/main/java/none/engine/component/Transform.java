@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * Transform Component. Locates parent-EngineObject in room.
  */
-public class TransformComponent extends AbsObject {
+public class Transform extends AbsObject {
     public static final String NAME = "Transform";
 
     private Vector3d position;
@@ -20,7 +20,7 @@ public class TransformComponent extends AbsObject {
     private float rotY;
     private float rotZ;
 
-    public TransformComponent(UUID objectId, Game game, EngineObject parent, Vector3d position, Vector3d direction) {
+    public Transform(UUID objectId, Game game, EngineObject parent, Vector3d position, Vector3d direction) {
         super(NAME, objectId, game, parent);
         this.position = Preconditions.checkNotNull(position, "position");
         this.direction = Preconditions.checkNotNull(direction, "direction");
@@ -30,7 +30,7 @@ public class TransformComponent extends AbsObject {
         this.rotZ = 0f;
     }
 
-    public TransformComponent(UUID objectId, Vector3d position, Vector3d direction) {
+    public Transform(UUID objectId, Vector3d position, Vector3d direction) {
         super(NAME, objectId);
         this.position = Objects.requireNonNull(position);
         this.direction = Objects.requireNonNull(direction);
@@ -40,11 +40,11 @@ public class TransformComponent extends AbsObject {
         this.rotZ = 0f;
     }
 
-    public TransformComponent(UUID objectId) {
+    public Transform(UUID objectId) {
         this(objectId, new Vector3d(), new Vector3d(0, 0, 1));
     }
 
-    public TransformComponent(UUID uuid, Vector3d vector3d) {
+    public Transform(UUID uuid, Vector3d vector3d) {
         this(uuid, vector3d, new Vector3d(0, 0, 1));
     }
 

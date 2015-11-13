@@ -3,7 +3,7 @@ package none.goldminer.components.game.bricks;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
-import none.engine.component.TransformComponent;
+import none.engine.component.Transform;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.Texture;
@@ -23,7 +23,7 @@ public class Brick extends AbsStructObject<EngineObject> {
     private Texture texture;
     private Sprite sprite;
     private BrickBlinkAnimator blinkAnimator;
-    private TransformComponent transform;
+    private Transform transform;
     private Renderable renderable;
 
     private BrickColor brickColor;
@@ -42,7 +42,7 @@ public class Brick extends AbsStructObject<EngineObject> {
         sprite.setColumn(brickColor.getColumn());
         blinkAnimator = new BrickBlinkAnimator(factory.createUUID(), getGame(), this);
         blinkAnimator.init(sprite);
-        transform = new TransformComponent(factory.createUUID(), getGame(), this, new Vector3d(), new Vector3d());
+        transform = new Transform(factory.createUUID(), getGame(), this, new Vector3d(), new Vector3d());
         BrickMoveAnimation brickMoveAnimation = new BrickMoveAnimation(factory.createUUID(), getGame(), this, transform);
         renderable = new Renderable("Brick-" + brickColor.toString(), factory.createUUID(), sprite, texture, transform);
 

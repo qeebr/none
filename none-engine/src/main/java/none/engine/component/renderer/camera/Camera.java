@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * A Renderer for Camera related actions.
  */
-public abstract class CameraComponent extends AbsObject {
+public abstract class Camera extends AbsObject {
     private Vector3d cameraPosition;
     private Vector3d publicCameraPosition;
     private Vector3d objectPosition;
@@ -18,7 +18,7 @@ public abstract class CameraComponent extends AbsObject {
     private Vector3d upDirection;
     private Vector3d publicUpDirection;
 
-    public CameraComponent(String name, UUID id, Game game) {
+    public Camera(String name, UUID id, Game game) {
         super(name, id, game);
 
         cameraPosition = new Vector3d();
