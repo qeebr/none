@@ -4,14 +4,13 @@ import com.google.inject.Inject;
 import none.engine.Game;
 import none.engine.component.AbsObject;
 import none.engine.component.common.uuid.UUIDFactory;
-import none.engine.component.renderer.CameraComponent;
-import none.engine.component.renderer.OrthographicCamera;
-import none.engine.component.renderer.PerspectiveCamera;
+import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.OrthographicCamera;
+import none.engine.component.renderer.camera.PerspectiveCamera;
 import org.apache.commons.lang3.Validate;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +22,6 @@ import java.nio.FloatBuffer;
 public class Camera32Renderer extends AbsObject {
     private static final Logger LOGGER = LoggerFactory.getLogger(Camera32Renderer.class);
     private static final int MATRIX_BUFFER_SIZE = 16;
-    private static final float ZERO = 0f;
     private static final float HALF = 2f;
     private static final int TWO = 2;
     private static final double HALF_CIRCLE_IN_DEG = 180d;
@@ -35,9 +33,6 @@ public class Camera32Renderer extends AbsObject {
     private Matrix4f projectionMatrix;
     private Matrix4f viewMatrix;
 
-    private Vector3f followTmp;
-    private Vector3f distanceTmp;
-
     @Inject
     protected Camera32Renderer(UUIDFactory factory, Game game) {
         super("CameraRenderer", factory.createUUID(), game);
@@ -46,9 +41,6 @@ public class Camera32Renderer extends AbsObject {
         viewBuffer = BufferUtils.createFloatBuffer(MATRIX_BUFFER_SIZE);
         projectionMatrix = new Matrix4f();
         viewMatrix = new Matrix4f();
-
-        followTmp = new Vector3f(ZERO, ZERO, ZERO);
-        distanceTmp = new Vector3f(ZERO, ZERO, ZERO);
     }
 
     public void setProjectionId(int projectionId) {

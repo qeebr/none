@@ -2,8 +2,9 @@ package none.goldminer.components.game;
 
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
+import none.engine.component.TransformComponent;
 import none.engine.component.common.uuid.UUIDFactory;
-import none.engine.component.renderer.Text;
+import none.engine.component.renderer.primitives.Text;
 import org.joml.Vector3d;
 
 import java.util.Arrays;
@@ -32,7 +33,8 @@ public class HighScoreText extends AbsStructObject<EngineObject> {
             }
             text.append(String.valueOf(highscore[index]));
 
-            addObject(new Text(uuid, text.toString(), 20, position));
+            addObject(new Text(uuid, text.toString(), 20));
+            addObject(new TransformComponent(uuidFactory.createUUID(), position));
         }
 
         super.init();

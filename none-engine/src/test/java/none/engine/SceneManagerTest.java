@@ -1,7 +1,7 @@
 package none.engine;
 
 import none.engine.component.AbsStructObject;
-import none.engine.component.renderer.CameraComponent;
+import none.engine.component.renderer.camera.CameraComponent;
 import none.engine.scenes.Scene;
 import org.junit.Before;
 import org.junit.Test;

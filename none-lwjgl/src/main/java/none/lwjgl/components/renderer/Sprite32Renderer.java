@@ -3,7 +3,7 @@ package none.lwjgl.components.renderer;
 import none.engine.Game;
 import none.engine.component.AbsObject;
 import none.engine.component.common.uuid.UUIDFactory;
-import none.engine.component.renderer.Sprite;
+import none.engine.component.renderer.primitives.Sprite;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 

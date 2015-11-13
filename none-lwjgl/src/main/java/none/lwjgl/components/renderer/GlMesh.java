@@ -2,7 +2,7 @@ package none.lwjgl.components.renderer;
 
 import com.google.common.base.Preconditions;
 import none.engine.component.model.Model;
-import none.engine.component.renderer.Mesh;
+import none.engine.component.renderer.primitives.Mesh;
 
 import java.util.Arrays;
 import java.util.List;

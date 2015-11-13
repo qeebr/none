@@ -44,6 +44,10 @@ public class TransformComponent extends AbsObject {
         this(objectId, new Vector3d(), new Vector3d(0, 0, 1));
     }
 
+    public TransformComponent(UUID uuid, Vector3d vector3d) {
+        this(uuid, vector3d, new Vector3d(0, 0, 1));
+    }
+
     public float getRotX() {
         return rotX;
     }

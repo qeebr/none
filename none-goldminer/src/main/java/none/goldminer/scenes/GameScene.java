@@ -2,8 +2,10 @@ package none.goldminer.scenes;
 
 import none.engine.Game;
 import none.engine.component.EngineObject;
+import none.engine.component.TransformComponent;
 import none.engine.component.common.uuid.UUIDFactory;
-import none.engine.component.renderer.Text;
+import none.engine.component.renderer.Renderable;
+import none.engine.component.renderer.primitives.Text;
 import none.goldminer.components.game.*;
 import none.goldminer.components.game.bricks.Brick;
 import none.goldminer.components.game.bricks.BrickFactory;
@@ -30,8 +32,8 @@ public class GameScene extends BaseScene {
     public static final String HIGH_SCORE_FILE = "highscore.properties";
     public static final Logger LOGGER = LoggerFactory.getLogger(GameScene.class);
 
-    private Text gameOverText;
-    private Text newHighscore;
+    private Renderable gameOverText;
+    private Renderable newHighscore;
 
     private GameState gameState;
     private HighScore highScore;
@@ -66,8 +68,15 @@ public class GameScene extends BaseScene {
         GameTicker ticker = new GameTicker(uuidFactory.createUUID(), getGame(), this, gameField);
         score = new Score(getGame(), this);
         ColorChanger colorChanger = new ColorChanger(uuidFactory.createUUID(), getGame(), this);
-        gameOverText = new Text(uuidFactory.createUUID(), "Game Over :(", 32, new Vector3d(400 - (32 * 6), 300, 0));
-        newHighscore = new Text(uuidFactory.createUUID(), "NEW HIGHSCORE!!!!!", 32, new Vector3d(400 - (32 * 9), 300 + 48, 0));
+
+        Text textGameover = new Text(uuidFactory.createUUID(), "Game Over :(", 32);
+        TransformComponent gameoverTransform = new TransformComponent(uuidFactory.createUUID(), new Vector3d(400 - (32 * 6), 300, 0));
+        gameOverText = new Renderable("GameScene-GameOver-Text", uuidFactory.createUUID(), textGameover, gameoverTransform);
+
+        Text textnewHighscore = new Text(uuidFactory.createUUID(), "NEW HIGHSCORE!!!!!", 32);
+        TransformComponent newHighscoreTransform = new TransformComponent(uuidFactory.createUUID(), new Vector3d(400 - (32 * 9), 300 + 48, 0));
+        newHighscore = new Renderable("GameScene-NewHighscore-Text", uuidFactory.createUUID(), textnewHighscore, newHighscoreTransform);
+
         Level level = new Level(uuidFactory.createUUID(), getGame());
         level.init(ticker, brickFactory, score);
 

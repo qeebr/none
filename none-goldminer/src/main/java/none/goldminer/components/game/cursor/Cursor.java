@@ -9,8 +9,9 @@ import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.input.Command;
 import none.engine.component.input.Key;
 import none.engine.component.input.KeyboardComponent;
-import none.engine.component.renderer.Sprite;
+import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.Texture;
+import none.engine.component.renderer.primitives.Sprite;
 import none.goldminer.components.game.GameField;
 import none.goldminer.components.game.bricks.Brick;
 import none.goldminer.scenes.GameScene;
@@ -68,11 +69,13 @@ public class Cursor extends AbsStructObject<EngineObject> {
         sprite = new Sprite(uuidFactory.createUUID(), 1, 3, CURSOR_SIZE, CURSOR_SIZE, SPRITE_LAYER);
         transform = new TransformComponent(uuidFactory.createUUID(), getGame(), this, calculateCurrentPosition(), new Vector3d());
         cursorAnimator = new CursorAnimator(uuidFactory.createUUID(), sprite);
+        Renderable renderable = new Renderable("Cursor-Renderable", uuidFactory.createUUID(), sprite, texture, transform);
 
         addObject(texture);
         addObject(sprite);
         addObject(transform);
         addObject(cursorAnimator);
+        addObject(renderable);
 
         keyboard = getGame().getInjector().getInstance(KeyboardComponent.class);
         keyboard.registerCommand(downCommand, Key.DOWN);

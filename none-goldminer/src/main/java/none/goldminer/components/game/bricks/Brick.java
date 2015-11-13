@@ -5,8 +5,9 @@ import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
 import none.engine.component.TransformComponent;
 import none.engine.component.common.uuid.UUIDFactory;
-import none.engine.component.renderer.Sprite;
+import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.Texture;
+import none.engine.component.renderer.primitives.Sprite;
 import org.joml.Vector3d;
 
 import java.util.UUID;
@@ -23,6 +24,7 @@ public class Brick extends AbsStructObject<EngineObject> {
     private Sprite sprite;
     private BrickBlinkAnimator blinkAnimator;
     private TransformComponent transform;
+    private Renderable renderable;
 
     private BrickColor brickColor;
 
@@ -42,12 +44,14 @@ public class Brick extends AbsStructObject<EngineObject> {
         blinkAnimator.init(sprite);
         transform = new TransformComponent(factory.createUUID(), getGame(), this, new Vector3d(), new Vector3d());
         BrickMoveAnimation brickMoveAnimation = new BrickMoveAnimation(factory.createUUID(), getGame(), this, transform);
+        renderable = new Renderable("Brick-" + brickColor.toString(), factory.createUUID(), sprite, texture, transform);
 
         addObject(texture);
         addObject(sprite);
         addObject(blinkAnimator);
         addObject(transform);
         addObject(brickMoveAnimation);
+        addObject(renderable);
 
         super.init();
     }

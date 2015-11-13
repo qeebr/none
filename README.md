@@ -33,5 +33,5 @@ Have a look at.
 Basically you describe your game in an composite-Pattern of EngineObject's, what you have to do:
 
 * Write at least one class implementing the Scene-Interface. (Containing the Tree)
-* In case you want something rendered, you need one parent EngineObject with three children. A (Mesh OR Sprite), Texture and an TransformComponent.
-* In case you want keyboard input, create a class that implements the Command-Interface. Register this class to the KeyboardComponent.
+* In case you want something rendered, you need one EngineObject with a Renderable as a child
+* In case you want keyboard input, create a class that implements the Command-Interface. Register this class to the KeyboardComponent

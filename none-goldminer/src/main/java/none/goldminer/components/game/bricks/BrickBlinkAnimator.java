@@ -2,7 +2,7 @@ package none.goldminer.components.game.bricks;
 
 import none.engine.Game;
 import none.engine.component.AbsObject;
-import none.engine.component.renderer.Sprite;
+import none.engine.component.renderer.primitives.Sprite;
 
 import java.util.Random;
 import java.util.UUID;

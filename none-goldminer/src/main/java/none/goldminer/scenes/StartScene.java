@@ -1,8 +1,10 @@
 package none.goldminer.scenes;
 
 import none.engine.Game;
+import none.engine.component.TransformComponent;
 import none.engine.component.common.uuid.UUIDFactory;
-import none.engine.component.renderer.Text;
+import none.engine.component.renderer.Renderable;
+import none.engine.component.renderer.primitives.Text;
 import none.goldminer.components.input.Confirm;
 import none.goldminer.components.input.Reject;
 import org.joml.Vector3d;
@@ -13,7 +15,7 @@ import org.joml.Vector3d;
 public class StartScene extends BaseScene {
     public static final String NAME = StartScene.class.getSimpleName();
 
-    private Text startGameText;
+    private Renderable startGameText;
 
     public StartScene(UUIDFactory factory, Game game) {
         super(NAME, factory, game);
@@ -21,7 +23,9 @@ public class StartScene extends BaseScene {
 
     @Override
     public void init() {
-        startGameText = new Text(uuidFactory.createUUID(), "Start Game", 64, new Vector3d(0, 0, 0));
+        Text text = new Text(uuidFactory.createUUID(), "Start Game", 64);
+        TransformComponent transform = new TransformComponent(uuidFactory.createUUID(), new Vector3d(0, 0, 0));
+        startGameText = new Renderable("StartScene-Greeter", uuidFactory.createUUID(), text, transform);
         addObject(startGameText);
 
         super.init();

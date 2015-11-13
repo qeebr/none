@@ -3,7 +3,9 @@ package none.goldminer.components.game;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
-import none.engine.component.renderer.Text;
+import none.engine.component.TransformComponent;
+import none.engine.component.renderer.Renderable;
+import none.engine.component.renderer.primitives.Text;
 import none.goldminer.components.game.bricks.BrickFactory;
 import org.joml.Vector3d;
 import org.slf4j.Logger;
@@ -23,7 +25,7 @@ public class Level extends AbsStructObject<EngineObject> {
     private BrickFactory brickFactory;
     private Score score;
 
-    private Text levelText;
+    private Renderable levelText;
 
     private int levelThreshold;
     private int level;
@@ -36,7 +38,10 @@ public class Level extends AbsStructObject<EngineObject> {
         this.gameTicker = ticker;
         this.brickFactory = factory;
         this.score = score;
-        this.levelText = new Text(UUID.randomUUID(), "1", 32, new Vector3d((32 * 4), 600 - (32 * 2), 0));
+
+        Text text = new Text(UUID.randomUUID(), "1", 32);
+        TransformComponent transform = new TransformComponent(UUID.randomUUID(), new Vector3d((32 * 4), 600 - (32 * 2), 0));
+        this.levelText = new Renderable("Level-Text", UUID.randomUUID(), text, transform);
 
         this.levelThreshold = INITIAL_POINT_THRESHOLD;
 
@@ -52,7 +57,7 @@ public class Level extends AbsStructObject<EngineObject> {
         if (score.getScoreValue() >= levelThreshold) {
             LOGGER.info("Levelup");
             level++;
-            levelText.setText(String.valueOf(level));
+            levelText.getText().setText(String.valueOf(level));
 
             updateLevelThreshold();
             updateGameTicker();

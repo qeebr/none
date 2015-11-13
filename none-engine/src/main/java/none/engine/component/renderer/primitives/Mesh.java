@@ -1,4 +1,4 @@
-package none.engine.component.renderer;
+package none.engine.component.renderer.primitives;
 
 import none.engine.component.AbsObject;
 import none.engine.component.model.Model;

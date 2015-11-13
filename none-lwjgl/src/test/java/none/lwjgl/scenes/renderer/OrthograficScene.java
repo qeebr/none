@@ -9,7 +9,12 @@ import none.engine.component.assets.ModelHandler;
 import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.model.Model;
-import none.engine.component.renderer.*;
+import none.engine.component.renderer.Renderable;
+import none.engine.component.renderer.Texture;
+import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.OrthographicCamera;
+import none.engine.component.renderer.primitives.Mesh;
+import none.engine.component.renderer.primitives.Sprite;
 import none.engine.scenes.Scene;
 import org.joml.Vector3d;
 
@@ -140,9 +145,7 @@ public class OrthograficScene extends BaseScene implements Scene {
         public void init(Vector3d position, Vector3d direction) {
             this.transformComponent = new TransformComponent(uuidFactory.createUUID(), getGame(), this, position, direction);
 
-            addObject(texture);
-            addObject(mesh);
-            addObject(transformComponent);
+            addObject(new Renderable(SimpleMesh.class.getSimpleName(), uuidFactory.createUUID(), mesh, texture, transformComponent));
 
             super.init();
         }
@@ -161,9 +164,7 @@ public class OrthograficScene extends BaseScene implements Scene {
             this.sprite = new Sprite(uuidFactory.createUUID(), 2, 4, size, size);
             this.transformComponent = new TransformComponent(uuidFactory.createUUID(), getGame(), this, position, direction);
 
-            addObject(texture);
-            addObject(sprite);
-            addObject(transformComponent);
+            addObject(new Renderable("Sprite", uuidFactory.createUUID(), sprite, texture, transformComponent));
 
             super.init();
         }

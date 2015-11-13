@@ -1,4 +1,4 @@
-package none.engine.component.renderer;
+package none.engine.component.renderer.camera;
 
 import none.engine.Game;
 import none.engine.component.AbsObject;

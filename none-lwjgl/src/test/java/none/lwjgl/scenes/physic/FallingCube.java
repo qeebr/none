@@ -13,10 +13,11 @@ import none.engine.component.input.Command;
 import none.engine.component.input.Key;
 import none.engine.component.input.KeyboardComponent;
 import none.engine.component.physic.RigidBody;
-import none.engine.component.renderer.CameraComponent;
-import none.engine.component.renderer.Mesh;
-import none.engine.component.renderer.PerspectiveCamera;
+import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.Texture;
+import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.PerspectiveCamera;
+import none.engine.component.renderer.primitives.Mesh;
 import none.engine.scenes.Scene;
 import org.joml.Vector3d;
 
@@ -174,6 +175,7 @@ public class FallingCube extends AbsStructObject<EngineObject> implements Scene 
             addObject(texture);
             addObject(body);
             addObject(transformComponent);
+            addObject(new Renderable("Object", uuidFactory.createUUID(), mesh, texture, transformComponent));
 
             super.init();
         }

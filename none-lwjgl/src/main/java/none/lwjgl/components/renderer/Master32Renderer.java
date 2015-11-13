@@ -8,9 +8,11 @@ import none.engine.component.TransformComponent;
 import none.engine.component.assets.ShaderHandler;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.MasterRenderer;
-import none.engine.component.renderer.Sprite;
-import none.engine.component.renderer.Text;
+import none.engine.component.renderer.Renderable;
+import none.engine.component.renderer.primitives.Sprite;
+import none.engine.component.renderer.primitives.Text;
 import none.engine.scenes.Scene;
+import org.apache.commons.lang3.Validate;
 import org.joml.Vector3d;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -20,6 +22,8 @@ import org.lwjgl.util.vector.Vector3f;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Master-Renderer for OpenGL 3.2.
@@ -52,9 +56,13 @@ public class Master32Renderer extends MasterRenderer {
     private Vector3f vectorY;
     private Vector3f vectorX;
 
+    private List<Renderable> renderables;
+
     @Inject
     public Master32Renderer(UUIDFactory factory, Game game) {
         super(NAME, factory.createUUID(), game);
+
+        this.renderables = new ArrayList<>();
 
         this.cameraRenderer = new Camera32Renderer(factory, game);
         this.meshRenderer = new Mesh32Renderer(factory, game);
@@ -131,11 +139,13 @@ public class Master32Renderer extends MasterRenderer {
 
     @Override
     public void draw(Scene scene) {
+        Validate.notNull(scene);
+
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
         //Culling
-//        GL11.glFrontFace(GL11.GL_CCW);
-//        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glFrontFace(GL11.GL_CCW);
+        GL11.glDisable(GL11.GL_CULL_FACE);
 
         //Depth-Test
         GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -148,48 +158,59 @@ public class Master32Renderer extends MasterRenderer {
         GL20.glUseProgram(programId);
 
         cameraRenderer.draw(scene.getActiveCamera());
-        iterateThroughSceneMesh(scene.children());
+
+        renderables.clear();
+        iterateThroughScene(scene.children());
+
+        renderSpriteAndMeshes();
 
         setIdentityModel();
-        iterateThroughSceneText(scene.children());
+        renderText();
     }
 
-    private void iterateThroughSceneText(Iterable<EngineObject> children) {
-        for (EngineObject child : children) {
-            if (Text.NAME.equals(child.getName())) {
-                textRenderer.draw((Text) child);
-            } else {
-                iterateThroughSceneText(child.children());
+    private void renderText() {
+        for (Renderable renderable : renderables) {
+            Renderable.Type type = renderable.getType();
+            TransformComponent transform = renderable.getTransform();
+            Text text = renderable.getText();
+
+            if (type == Renderable.Type.TEXT_BASED) {
+                textRenderer.draw(text, transform);
             }
         }
     }
 
-    private void iterateThroughSceneMesh(Iterable<EngineObject> children) {
-        GlMesh mesh = null;
-        GlTexture texture = null;
-        Sprite sprite = null;
-        TransformComponent transform = null;
+    private void renderSpriteAndMeshes() {
+        for (Renderable renderable : renderables) {
+            Renderable.Type type = renderable.getType();
+            GlMesh mesh = (GlMesh) renderable.getMesh();
+            GlTexture texture = (GlTexture) renderable.getTexture();
+            TransformComponent transform = renderable.getTransform();
+            Sprite sprite = renderable.getSprite();
 
-        for (EngineObject child : children) {
-            if (GlMesh.NAME.equals(child.getName())) {
-                mesh = (GlMesh) child;
-            } else if (GlTexture.NAME.equals(child.getName())) {
-                texture = (GlTexture) child;
-            } else if (Sprite.NAME.equals(child.getName())) {
-                sprite = (Sprite) child;
-            } else if (TransformComponent.NAME.equals(child.getName())) {
-                transform = (TransformComponent) child;
-            } else {
-                iterateThroughSceneMesh(child.children());
+            if (type == Renderable.Type.MESH_BASED) {
+                updateModelMatrix(transform, true);
+                meshRenderer.draw(mesh, texture);
+            } else if (type == Renderable.Type.SPRITE_BASED) {
+                updateModelMatrix(transform, false);
+                spriteRenderer.draw(sprite, texture);
             }
         }
+    }
 
-        if (mesh != null && texture != null && transform != null) {
-            updateModelMatrix(transform, true);
-            meshRenderer.draw(mesh, texture);
-        } else if (sprite != null && texture != null && transform != null) {
-            updateModelMatrix(transform, false);
-            spriteRenderer.draw(sprite, texture);
+    private void iterateThroughScene(Iterable<EngineObject> children) {
+        //Collects all renderables in EngineObject.
+        for (EngineObject child : children) {
+            if (child instanceof Renderable) {
+                //In case this is a visible Renderable, add to the renderables-list.
+                Renderable renderable = (Renderable) child;
+                if (renderable.isVisible()) {
+                    renderables.add((Renderable) child);
+                }
+            } else {
+                //Make sure to find all Renderables in a scene.
+                iterateThroughScene(child.children());
+            }
         }
     }
 

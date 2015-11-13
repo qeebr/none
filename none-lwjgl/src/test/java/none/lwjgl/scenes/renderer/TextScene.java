@@ -1,10 +1,12 @@
 package none.lwjgl.scenes.renderer;
 
 import none.engine.Game;
+import none.engine.component.TransformComponent;
 import none.engine.component.common.uuid.UUIDFactory;
-import none.engine.component.renderer.CameraComponent;
-import none.engine.component.renderer.OrthographicCamera;
-import none.engine.component.renderer.Text;
+import none.engine.component.renderer.Renderable;
+import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.OrthographicCamera;
+import none.engine.component.renderer.primitives.Text;
 import org.joml.Vector3d;
 
 import java.util.List;
@@ -38,8 +40,10 @@ public class TextScene extends BaseScene {
 
         String message = "THIS IS A TEXT, PLEASE SEE ME!";
         int textSize = range * 2 / message.length();
-        Text text = new Text(uuidFactory.createUUID(), message, textSize, new Vector3d(-message.length() * textSize / 2, 0, 0));
-        addObject(text);
+        Text text = new Text(uuidFactory.createUUID(), message, textSize);
+        TransformComponent transform = new TransformComponent(uuidFactory.createUUID(), new Vector3d(-message.length() * textSize / 2, 0, 0));
+
+        addObject(new Renderable("The Text", uuidFactory.createUUID(), text, transform));
 
         super.init();
     }

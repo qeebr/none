@@ -3,10 +3,12 @@ package none.goldminer.components.game;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
+import none.engine.component.TransformComponent;
 import none.engine.component.input.Command;
 import none.engine.component.input.Key;
 import none.engine.component.input.KeyboardComponent;
-import none.engine.component.renderer.Text;
+import none.engine.component.renderer.Renderable;
+import none.engine.component.renderer.primitives.Text;
 import none.goldminer.scenes.GameScene;
 import org.joml.Vector3d;
 
@@ -24,7 +26,7 @@ public class ColorChanger extends AbsStructObject<EngineObject> {
     private boolean ready = true;
     private int timer = 0;
 
-    private Text statusText;
+    private Renderable statusText;
 
     private KeyboardComponent keyboardComponent;
     private GameScene gameScene;
@@ -38,7 +40,10 @@ public class ColorChanger extends AbsStructObject<EngineObject> {
         ready = true;
         timer = 0;
 
-        statusText = new Text(UUID.randomUUID(), "Ready", 20, new Vector3d(700, 0, 0));
+        Text text = new Text(UUID.randomUUID(), "Ready", 20);
+        TransformComponent transform = new TransformComponent(UUID.randomUUID(), new Vector3d(700, 0, 0));
+
+        statusText = new Renderable("ColorChanger-Readytext", UUID.randomUUID(), text, transform);
         gameScene = (GameScene) getParent();
 
         keyboardComponent = getGame().getInjector().getInstance(KeyboardComponent.class);
@@ -57,7 +62,7 @@ public class ColorChanger extends AbsStructObject<EngineObject> {
 
                 if (changeColor) {
                     ready = false;
-                    statusText.setText("not Ready");
+                    statusText.getText().setText("not Ready");
                 }
             }
         } else {
@@ -66,7 +71,7 @@ public class ColorChanger extends AbsStructObject<EngineObject> {
                 timer = 0;
 
                 ready = true;
-                statusText.setText("Ready");
+                statusText.getText().setText("Ready");
             }
         }
     }

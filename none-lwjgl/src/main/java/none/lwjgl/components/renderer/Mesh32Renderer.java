@@ -4,6 +4,7 @@ import none.engine.Game;
 import none.engine.component.AbsObject;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.model.Face;
+import org.apache.commons.lang3.Validate;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
@@ -18,6 +19,9 @@ public class Mesh32Renderer extends AbsObject {
     }
 
     public void draw(GlMesh mesh, GlTexture texture) {
+        Validate.notNull(mesh);
+        Validate.notNull(texture);
+
         activeTexture(texture);
         drawOpenGl(mesh);
     }

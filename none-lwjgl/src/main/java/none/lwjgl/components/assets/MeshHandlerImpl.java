@@ -9,7 +9,7 @@ import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.model.Face;
 import none.engine.component.model.Model;
 import none.engine.component.model.Vertex;
-import none.engine.component.renderer.Mesh;
+import none.engine.component.renderer.primitives.Mesh;
 import none.lwjgl.components.renderer.GlMesh;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;

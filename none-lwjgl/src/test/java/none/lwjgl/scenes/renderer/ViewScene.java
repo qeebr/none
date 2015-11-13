@@ -6,10 +6,11 @@ import none.engine.component.EngineObject;
 import none.engine.component.TransformComponent;
 import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.UUIDFactory;
-import none.engine.component.renderer.CameraComponent;
-import none.engine.component.renderer.OrthographicCamera;
-import none.engine.component.renderer.Sprite;
+import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.Texture;
+import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.OrthographicCamera;
+import none.engine.component.renderer.primitives.Sprite;
 import org.joml.Vector3d;
 
 import java.util.List;
@@ -95,9 +96,7 @@ public class ViewScene extends BaseScene {
             this.sprite = new Sprite(uuidFactory.createUUID(), 2, 4, size, size);
             this.transformComponent = new TransformComponent(uuidFactory.createUUID(), getGame(), this, position, direction);
 
-            addObject(texture);
-            addObject(sprite);
-            addObject(transformComponent);
+            addObject(new Renderable("Sprite", uuidFactory.createUUID(), sprite, texture, transformComponent));
 
             super.init();
         }

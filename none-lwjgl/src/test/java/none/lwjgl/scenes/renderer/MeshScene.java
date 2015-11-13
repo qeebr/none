@@ -7,10 +7,11 @@ import none.engine.component.assets.ModelHandler;
 import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.model.Model;
-import none.engine.component.renderer.CameraComponent;
-import none.engine.component.renderer.Mesh;
-import none.engine.component.renderer.PerspectiveCamera;
+import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.Texture;
+import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.PerspectiveCamera;
+import none.engine.component.renderer.primitives.Mesh;
 import none.engine.scenes.Scene;
 import org.joml.Vector3d;
 
@@ -28,6 +29,7 @@ public class MeshScene extends BaseScene implements Scene {
     private Texture texture;
 
     private CameraComponent camera;
+    private Renderable renderable;
 
     public MeshScene(UUIDFactory uuidFactory, Game game, List<String> availableScenes) {
         super(NAME, uuidFactory.createUUID(), game, availableScenes);
@@ -55,9 +57,8 @@ public class MeshScene extends BaseScene implements Scene {
         texture = textureHandler.loadTexture("textures/texture.png");
         TransformComponent transform = new TransformComponent(uuidFactory.createUUID());
 
-        addObject(mesh);
-        addObject(texture);
-        addObject(transform);
+        renderable = new Renderable("cube", uuidFactory.createUUID(), mesh, texture, transform);
+        addObject(renderable);
 
         super.init();
     }
@@ -71,6 +72,8 @@ public class MeshScene extends BaseScene implements Scene {
         meshHandler.disposeMesh(mesh);
         modelHandler.disposeModel(model);
         textureHandler.disposeTexture(texture);
+
+        removeObject(renderable);
 
         super.dispose();
     }

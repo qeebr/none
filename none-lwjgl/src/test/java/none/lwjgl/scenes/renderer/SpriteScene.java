@@ -9,10 +9,11 @@ import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.input.Command;
 import none.engine.component.input.Key;
 import none.engine.component.input.KeyboardComponent;
-import none.engine.component.renderer.CameraComponent;
-import none.engine.component.renderer.OrthographicCamera;
-import none.engine.component.renderer.Sprite;
+import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.Texture;
+import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.OrthographicCamera;
+import none.engine.component.renderer.primitives.Sprite;
 import org.joml.Vector3d;
 
 import java.util.List;
@@ -115,9 +116,7 @@ public class SpriteScene extends BaseScene {
             sprite = new Sprite(uuidFactory.createUUID(), rowCount, columnCount, size, size);
             TransformComponent transformComponent = new TransformComponent(uuidFactory.createUUID(), getGame(), this, position, nullVector);
 
-            addObject(texture);
-            addObject(sprite);
-            addObject(transformComponent);
+            addObject(new Renderable("Sprite", uuidFactory.createUUID(), sprite, texture, transformComponent));
         }
 
         public void nextColumn() {

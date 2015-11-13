@@ -1,7 +1,7 @@
 package none.engine.scenes;
 
 import none.engine.component.EngineObject;
-import none.engine.component.renderer.CameraComponent;
+import none.engine.component.renderer.camera.CameraComponent;
 
 /**
  * A Scene.

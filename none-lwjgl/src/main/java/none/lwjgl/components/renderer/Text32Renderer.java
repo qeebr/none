@@ -2,9 +2,11 @@ package none.lwjgl.components.renderer;
 
 import none.engine.Game;
 import none.engine.component.AbsObject;
+import none.engine.component.TransformComponent;
 import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.UUIDFactory;
-import none.engine.component.renderer.Text;
+import none.engine.component.renderer.primitives.Text;
+import org.apache.commons.lang3.Validate;
 import org.joml.Vector2f;
 import org.joml.Vector3d;
 import org.lwjgl.BufferUtils;
@@ -41,12 +43,11 @@ public class Text32Renderer extends AbsObject {
         uvBufferId = GL15.glGenBuffers();
     }
 
-    public void draw(Text text) {
-        if (text.isPositionBased()) {
-            draw(text.getText(), text.getTextSize(), text.getPosition());
-        } else {
-            draw(text.getText(), text.getTextSize(), text.getTransform().getPosition());
-        }
+    public void draw(Text text, TransformComponent transform) {
+        Validate.notNull(text);
+        Validate.notNull(transform);
+
+        draw(text.getText(), text.getTextSize(), transform.getPosition());
     }
 
     private void draw(String text, int size, Vector3d position) {

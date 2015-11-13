@@ -3,14 +3,16 @@ package none.lwjgl.scenes.sound;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
+import none.engine.component.TransformComponent;
 import none.engine.component.assets.SoundHandler;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.input.Command;
 import none.engine.component.input.Key;
 import none.engine.component.input.KeyboardComponent;
-import none.engine.component.renderer.CameraComponent;
-import none.engine.component.renderer.OrthographicCamera;
-import none.engine.component.renderer.Text;
+import none.engine.component.renderer.Renderable;
+import none.engine.component.renderer.camera.CameraComponent;
+import none.engine.component.renderer.camera.OrthographicCamera;
+import none.engine.component.renderer.primitives.Text;
 import none.engine.component.sound.Sound;
 import none.engine.scenes.Scene;
 import org.joml.Vector3d;
@@ -56,8 +58,9 @@ public class BeepSound extends AbsStructObject<EngineObject> implements Scene {
 
         String text = "Press Space to hear a beep.";
         int textSize = 8;
-        Text explaination = new Text(uuidFactory.createUUID(), text, textSize, new Vector3d(-(text.length() / 2) * textSize, 0, 0));
-        addObject(explaination);
+        Text explaination = new Text(uuidFactory.createUUID(), text, textSize);
+        TransformComponent transform = new TransformComponent(uuidFactory.createUUID(), new Vector3d(-(text.length() / 2) * textSize, 0, 0));
+        addObject(new Renderable("Explaining Text", uuidFactory.createUUID(), explaination, transform));
 
         keyboardComponent = getGame().getInjector().getInstance(KeyboardComponent.class);
         keyboardComponent.registerCommand(playSound, Key.SPACE);

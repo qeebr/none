@@ -3,8 +3,10 @@ package none.goldminer.components.game;
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
+import none.engine.component.TransformComponent;
 import none.engine.component.common.uuid.UUIDFactory;
-import none.engine.component.renderer.Text;
+import none.engine.component.renderer.Renderable;
+import none.engine.component.renderer.primitives.Text;
 import none.goldminer.components.messages.GemsDestroyed;
 import org.joml.Vector3d;
 
@@ -13,7 +15,7 @@ import org.joml.Vector3d;
  */
 public class Score extends AbsStructObject<EngineObject> {
     private Integer scoreValue;
-    private Text textField;
+    private Renderable textField;
 
     public Score(Game game, EngineObject parent) {
         super(Score.class.getSimpleName(), game.getInjector().getInstance(UUIDFactory.class).createUUID(), game, parent);
@@ -29,10 +31,13 @@ public class Score extends AbsStructObject<EngineObject> {
         UUIDFactory uuidFactory = getGame().getInjector().getInstance(UUIDFactory.class);
         getGame().getMessageBus().subscribe(GemsDestroyed.class, (msg) -> {
             scoreValue += msg.getGemCount();
-            textField.setText(scoreValue.toString());
+            textField.getText().setText(scoreValue.toString());
         });
 
-        textField = new Text(uuidFactory.createUUID(), scoreValue.toString(), 32, new Vector3d(800 - (32 * 4), 600 - (32 * 2), 0));
+        Text text = new Text(uuidFactory.createUUID(), scoreValue.toString(), 32);
+        TransformComponent position = new TransformComponent(uuidFactory.createUUID(), new Vector3d(800 - (32 * 4), 600 - (32 * 2), 0));
+
+        textField = new Renderable("Score-Textfield", uuidFactory.createUUID(), text, position);
         addObject(textField);
 
         super.init();

@@ -1,7 +1,7 @@
 package none.engine.component.assets;
 
 import none.engine.component.model.Model;
-import none.engine.component.renderer.Mesh;
+import none.engine.component.renderer.primitives.Mesh;
 
 /**
  * Handles Loading in Graphic-Framework.

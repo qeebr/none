@@ -1,4 +1,4 @@
-package none.engine.component.renderer;
+package none.engine.component.renderer.primitives;
 
 import com.google.common.base.Preconditions;
 import none.engine.component.AbsObject;
