@@ -23,7 +23,11 @@ public abstract class Mouse extends AbsObject {
 
     public abstract void lock();
 
+    public abstract boolean isInWindow();
+
     public abstract Vector2d getMousePosition();
 
-    protected abstract boolean isMouseDown(MouseKey key);
+    public abstract void setMousePosition(int x, int y);
+
+    public abstract boolean isMouseDown(MouseKey key);
 }
