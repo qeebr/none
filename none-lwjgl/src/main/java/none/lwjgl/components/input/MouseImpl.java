@@ -1,5 +1,6 @@
 package none.lwjgl.components.input;
 
+import com.google.inject.Singleton;
 import none.engine.component.input.Mouse;
 import none.engine.component.input.MouseKey;
 import org.joml.Vector2d;
@@ -7,6 +8,7 @@ import org.joml.Vector2d;
 /**
  * Implementation from the Mouse.
  */
+@Singleton
 public class MouseImpl extends Mouse {
     private Vector2d mousePosition;
 
@@ -44,7 +46,7 @@ public class MouseImpl extends Mouse {
     }
 
     @Override
-    public boolean isMouseDown(MouseKey key) {
+    protected boolean isIdDown(MouseKey key) {
         if (key == MouseKey.LEFT) {
             return org.lwjgl.input.Mouse.isButtonDown(0);
         } else if (key == MouseKey.RIGHT) {

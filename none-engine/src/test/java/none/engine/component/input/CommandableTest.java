@@ -1,21 +1,21 @@
-package none.engine.component;
+package none.engine.component.input;
 
-import none.engine.component.input.Command;
-import none.engine.component.input.Key;
-import none.engine.component.input.Keyboard;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class KeyboardTest {
-
+/**
+ * Test for Commandable.
+ */
+public class CommandableTest {
     @Test
     public void testIsCommandDown() throws Exception {
-        TestKeyboard keyboard = new TestKeyboard();
+        TestCommandable keyboard = new TestCommandable();
         Command command = new CommandA();
 
         keyboard.registerCommand(command, Key.I_5);
@@ -41,7 +41,7 @@ public class KeyboardTest {
 
     @Test
     public void testIsCommandClicked() throws Exception {
-        TestKeyboard keyboard = new TestKeyboard();
+        TestCommandable keyboard = new TestCommandable();
         Command command = new CommandA();
         Key keyId = Key.I;
 
@@ -64,7 +64,7 @@ public class KeyboardTest {
 
     @Test
     public void testIsCommandReleased() throws Exception {
-        TestKeyboard keyboard = new TestKeyboard();
+        TestCommandable keyboard = new TestCommandable();
         Command command = new CommandA();
         Key keyId = Key.X;
 
@@ -89,8 +89,12 @@ public class KeyboardTest {
 
     }
 
-    class TestKeyboard extends Keyboard {
+    class TestCommandable extends Commandable<Key> {
         private Map<Key, Boolean> keys = new HashMap<>();
+
+        protected TestCommandable() {
+            super("TestCommandable", UUID.randomUUID());
+        }
 
         public void setKey(Key key, boolean state) {
             keys.put(key, state);
@@ -101,4 +105,5 @@ public class KeyboardTest {
             return keys.getOrDefault(keyId, false);
         }
     }
+
 }

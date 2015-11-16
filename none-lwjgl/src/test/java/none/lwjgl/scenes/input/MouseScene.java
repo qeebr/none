@@ -28,6 +28,8 @@ public class MouseScene extends AbsStructObject<EngineObject> implements Scene {
     private final UUIDFactory uuidFactory;
     private final ToggleCommand toggleCommand;
     private final ResetPosition resetPosition;
+    private final LeftMouse leftMouse;
+    private final RightMouse rightMouse;
 
     private OrthographicCamera orthographicCamera;
 
@@ -45,6 +47,8 @@ public class MouseScene extends AbsStructObject<EngineObject> implements Scene {
         uuidFactory = Objects.requireNonNull(factory, "factory");
         toggleCommand = new ToggleCommand();
         resetPosition = new ResetPosition();
+        leftMouse = new LeftMouse();
+        rightMouse = new RightMouse();
     }
 
     @Override
@@ -61,6 +65,8 @@ public class MouseScene extends AbsStructObject<EngineObject> implements Scene {
         orthographicCamera.setFrustum(-range, range, -range, range, -range, range);
 
         mouse = getGame().getInjector().getInstance(Mouse.class);
+        mouse.registerCommand(leftMouse, MouseKey.LEFT);
+        mouse.registerCommand(rightMouse, MouseKey.RIGHT);
         keyboard = getGame().getInjector().getInstance(Keyboard.class);
         keyboard.registerCommand(toggleCommand, Key.ENTER);
         keyboard.registerCommand(resetPosition, Key.SPACE);
@@ -132,7 +138,7 @@ public class MouseScene extends AbsStructObject<EngineObject> implements Scene {
     }
 
     private String buildMouseClicksText() {
-        return "Left-Down: " + mouse.isMouseDown(MouseKey.LEFT) + " Right-Down: " + mouse.isMouseDown(MouseKey.RIGHT);
+        return "Left-Down: " + mouse.isCommandDown(leftMouse) + " Right-Down: " + mouse.isCommandDown(rightMouse);
     }
 
     private String buildInsideWindowText() {
@@ -144,6 +150,14 @@ public class MouseScene extends AbsStructObject<EngineObject> implements Scene {
     }
 
     class ResetPosition implements Command {
+
+    }
+
+    class LeftMouse implements Command {
+
+    }
+
+    class RightMouse implements Command {
 
     }
 }

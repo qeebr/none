@@ -57,7 +57,9 @@ public class PhysicSandbox {
             while (game.gameRunning()) {
                 int delta = game.getDelta();
 
+                //Update Inputs
                 game.getKeyboard().update(delta);
+                game.getMouse().update(delta);
                 Scene currentScene = game.getManager().getCurrentScene();
 
                 //Updates Tree
