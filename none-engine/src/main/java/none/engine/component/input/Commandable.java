@@ -10,9 +10,10 @@ import java.util.UUID;
  * A abstract base class for classes who wants to use command classes.
  */
 public abstract class Commandable<K> extends AbsObject {
-    private Map<Command, K> commandsToId;
-    private Map<Command, Boolean> commandState;
-    private Map<Command, Boolean> oldCommandState;
+    private final Map<Command, K> commandsToId;
+    private final Map<Command, Boolean> commandState;
+    private final Map<Command, Boolean> oldCommandState;
+
 
     protected Commandable(String name, UUID uuid) {
         super(name, uuid);
