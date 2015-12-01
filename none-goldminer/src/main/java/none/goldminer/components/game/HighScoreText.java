@@ -4,6 +4,7 @@ import none.engine.component.AbsStructObject;
 import none.engine.component.EngineObject;
 import none.engine.component.Transform;
 import none.engine.component.common.uuid.UUIDFactory;
+import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.primitives.Text;
 import org.joml.Vector3d;
 
@@ -23,7 +24,6 @@ public class HighScoreText extends AbsStructObject<EngineObject> {
         Arrays.sort(highscore);
 
         for (int index = highscore.length - 1, place = 1; index >= 0; index--, place++) {
-            UUID uuid = uuidFactory.createUUID();
             Vector3d position = new Vector3d(0, 600 - 20 * place - 1, 0);
 
             StringBuilder text = new StringBuilder(String.valueOf(place));
@@ -33,8 +33,10 @@ public class HighScoreText extends AbsStructObject<EngineObject> {
             }
             text.append(String.valueOf(highscore[index]));
 
-            addObject(new Text(uuid, text.toString(), 20));
-            addObject(new Transform(uuidFactory.createUUID(), position));
+            Text renderText = new Text(uuidFactory.createUUID(), text.toString(), 20);
+            Transform transform = new Transform(uuidFactory.createUUID(), position);
+
+            addObject(new Renderable("HighScoreTextPlace" + place, uuidFactory.createUUID(), renderText, transform));
         }
 
         super.init();
