@@ -1,14 +1,11 @@
 package none.goldminer.scenes;
 
 import none.engine.Game;
-import none.engine.component.AbsStructObject;
-import none.engine.component.EngineObject;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.input.Key;
 import none.engine.component.input.Keyboard;
 import none.engine.component.renderer.camera.Camera;
 import none.engine.component.renderer.camera.OrthographicCamera;
-import none.engine.scenes.Scene;
 import none.goldminer.components.input.Confirm;
 import none.goldminer.components.input.Reject;
 import org.joml.Vector3d;
@@ -16,7 +13,7 @@ import org.joml.Vector3d;
 /**
  * A base Scene. Keeps track of static camera and also of commands used in every scene.
  */
-public class BaseScene extends AbsStructObject<EngineObject> implements Scene {
+public class BaseScene extends none.engine.scenes.BaseScene {
     private static boolean INIT_ONCE = false;
 
     protected final UUIDFactory uuidFactory;
