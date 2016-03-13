@@ -11,6 +11,7 @@ import none.engine.component.renderer.MasterRenderer;
 import none.engine.component.renderer.Renderable;
 import none.engine.component.renderer.primitives.Sprite;
 import none.engine.component.renderer.primitives.Text;
+import none.engine.component.ui.Window;
 import none.engine.scenes.Scene;
 import org.apache.commons.lang3.Validate;
 import org.joml.Vector3d;
@@ -44,6 +45,7 @@ public class Master32Renderer extends MasterRenderer {
     private Mesh32Renderer meshRenderer;
     private Sprite32Renderer spriteRenderer;
     private Text32Renderer textRenderer;
+    private UiRenderer uiRenderer;
 
     private int modelId;
     private int mvpId;
@@ -57,17 +59,20 @@ public class Master32Renderer extends MasterRenderer {
     private Vector3f vectorX;
 
     private List<Renderable> renderables;
+    private Window window;
 
     @Inject
     public Master32Renderer(UUIDFactory factory, Game game) {
         super(NAME, factory.createUUID(), game);
 
         this.renderables = new ArrayList<>();
+        window = null;
 
         this.cameraRenderer = new Camera32Renderer(factory, game);
         this.meshRenderer = new Mesh32Renderer(factory, game);
         this.spriteRenderer = new Sprite32Renderer(factory, game);
         this.textRenderer = new Text32Renderer(factory, game);
+        this.uiRenderer = new UiRenderer(factory, game);
 
         IntBuffer normal = BufferUtils.createIntBuffer(1);
         normal.put(1);
@@ -91,6 +96,7 @@ public class Master32Renderer extends MasterRenderer {
         extractUniforms();
 
         textRenderer.init();
+        uiRenderer.init();
     }
 
     private void createBuffers() {
@@ -135,6 +141,7 @@ public class Master32Renderer extends MasterRenderer {
         meshRenderer.dispose();
         spriteRenderer.dispose();
         textRenderer.dispose();
+        uiRenderer.dispose();
     }
 
     @Override
@@ -160,12 +167,18 @@ public class Master32Renderer extends MasterRenderer {
         cameraRenderer.draw(scene.getActiveCamera());
 
         renderables.clear();
+        window = null;
         iterateThroughScene(scene.children());
 
         renderSpriteAndMeshes();
 
         setIdentityModel();
         renderText();
+        renderUi();
+    }
+
+    private void renderUi() {
+        uiRenderer.drawUi(window);
     }
 
     private void renderText() {
@@ -207,6 +220,8 @@ public class Master32Renderer extends MasterRenderer {
                 if (renderable.isVisible()) {
                     renderables.add((Renderable) child);
                 }
+            } else if (child instanceof Window) {
+                this.window = (Window) child;
             } else {
                 //Make sure to find all Renderables in a scene.
                 iterateThroughScene(child.children());
