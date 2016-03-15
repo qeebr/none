@@ -8,12 +8,14 @@ import none.engine.component.input.Mouse;
 import none.engine.component.physic.MasterPhysic;
 import none.engine.component.renderer.MasterRenderer;
 import none.engine.component.sound.MasterPlayer;
+import none.engine.component.ui.UiFactory;
 import none.lwjgl.components.assets.*;
 import none.lwjgl.components.input.KeyboardImpl;
 import none.lwjgl.components.input.MouseImpl;
 import none.lwjgl.components.physic.MasterPhysicImpl;
 import none.lwjgl.components.renderer.Master32Renderer;
 import none.lwjgl.components.sound.MasterAlPlayer;
+import none.lwjgl.components.ui.UiGlFactory;
 
 import java.util.Objects;
 
@@ -44,5 +46,7 @@ public class LwjglModule implements Module {
 
         binder.bind(Keyboard.class).to(KeyboardImpl.class);
         binder.bind(Mouse.class).to(MouseImpl.class);
+
+        binder.bind(UiFactory.class).to(UiGlFactory.class);
     }
 }

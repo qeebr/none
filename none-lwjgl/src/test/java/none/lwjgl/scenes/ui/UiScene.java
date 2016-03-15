@@ -7,8 +7,8 @@ import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Texture;
 import none.engine.component.renderer.camera.Camera;
 import none.engine.component.renderer.camera.OrthographicCamera;
-import none.engine.component.ui.TexturePart;
-import none.engine.component.ui.UiTexture;
+import none.engine.component.ui.Textbox;
+import none.engine.component.ui.UiFactory;
 import none.engine.component.ui.Window;
 import none.engine.scenes.BaseScene;
 
@@ -21,6 +21,7 @@ public class UiScene extends BaseScene {
     private UUIDFactory uuidFactory;
     private Camera camera;
     private Texture windowTexture;
+    private Texture textboxTexture;
 
     public UiScene(UUIDFactory factory, Game game) {
         super(NAME, factory.createUUID(), game);
@@ -39,44 +40,17 @@ public class UiScene extends BaseScene {
         camera.setFrustum(0, options.getDisplayWidth(), 0, options.getDisplayHeight(), -100, 100);
         this.camera = camera;
 
+        UiFactory uiFactory = getGame().getInjector().getInstance(UiFactory.class);
         TextureHandler textureHandler = getGame().getInjector().getInstance(TextureHandler.class);
         this.windowTexture = textureHandler.loadTexture("textures/window.png");
-        UiTexture uiTexture = initUiTexture(windowTexture);
-        Window window = initWindow(uiTexture);
+        Window window = uiFactory.build(Window.class, windowTexture).with(300, 400, 200, 200);
         addObject(window);
 
+        this.textboxTexture = textureHandler.loadTexture("textures/textbox.png");
+        Textbox textbox = uiFactory.build(Textbox.class, textboxTexture).with(325, 375, 150, 50);
+        window.addObject(textbox);
+
         super.init();
-    }
-
-    private UiTexture initUiTexture(Texture texture) {
-        double third = texture.getWidth() / 3;
-
-        UiTexture uiTexture = new UiTexture(texture);
-        uiTexture.setVertices(UiTexture.UPPER_LEFT_CORNER, new TexturePart(0.0, third, third, third));
-        uiTexture.setVertices(UiTexture.UPPER_MIDDLE, new TexturePart(third, third, third, third));
-        uiTexture.setVertices(UiTexture.UPPER_RIGHT_CORNER, new TexturePart(texture.getWidth() - third, third, third, third));
-
-        uiTexture.setVertices(UiTexture.RIGHT_MIDDLE, new TexturePart(texture.getWidth() - third, texture.getHeight() - third, third, third));
-
-        uiTexture.setVertices(UiTexture.LOWER_RIGHT_CORNER, new TexturePart(texture.getWidth() - third, texture.getHeight(), third, third));
-        uiTexture.setVertices(UiTexture.LOWER_MIDDLE, new TexturePart(third, texture.getHeight(), third, third));
-        uiTexture.setVertices(UiTexture.LOWER_LEFT_CORNER, new TexturePart(0.0, texture.getHeight(), third, third));
-
-        uiTexture.setVertices(UiTexture.LEFT_MIDDLE, new TexturePart(0.0, texture.getHeight() - third, third, third));
-
-        uiTexture.setVertices(UiTexture.MIDDLE, new TexturePart(third, texture.getHeight() - third, third, third));
-
-        return uiTexture;
-    }
-
-    private Window initWindow(UiTexture uiTexture) {
-        Window window = new Window(uuidFactory.createUUID(), getGame(), uiTexture);
-        window.setX(300);
-        window.setY(400);
-        window.setHeight(200);
-        window.setWidth(200);
-
-        return window;
     }
 
     @Override
@@ -88,6 +62,7 @@ public class UiScene extends BaseScene {
     public void dispose() {
         TextureHandler textureHandler = getGame().getInjector().getInstance(TextureHandler.class);
         textureHandler.disposeTexture(windowTexture);
+        textureHandler.disposeTexture(textboxTexture);
         windowTexture = null;
 
         super.dispose();

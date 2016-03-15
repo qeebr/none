@@ -1,6 +1,5 @@
 package none.engine.component.renderer.primitives;
 
-import com.google.common.base.Preconditions;
 import none.engine.component.AbsObject;
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,7 +29,6 @@ public class Text extends AbsObject {
     }
 
     public void setText(String text) {
-        Preconditions.checkArgument(StringUtils.isNotBlank(text));
         this.text = text;
     }
 

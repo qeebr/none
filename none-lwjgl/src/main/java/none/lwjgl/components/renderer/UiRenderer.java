@@ -4,7 +4,11 @@ import none.engine.Game;
 import none.engine.component.AbsObject;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Texture;
-import none.engine.component.ui.*;
+import none.engine.component.ui.TexturePart;
+import none.engine.component.ui.UiTexture;
+import none.engine.component.ui.Uiable;
+import none.engine.component.ui.Window;
+import none.lwjgl.components.ui.GlTextbox;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
@@ -21,13 +25,17 @@ public class UiRenderer extends AbsObject {
     public static final String NAME = UiRenderer.class.getSimpleName();
     public static final int WINDOWS_SIZE = 54;
 
+    private Text32Renderer textRenderer;
+
     private int windowVaoId;
     private int windowVerticesId;
     private int windowUVId;
+
     private List<Vector3f> windowVertices;
     private List<Vector2f> windowUVs;
     private FloatBuffer windowVerticesBuffer;
     private FloatBuffer windowUVsBuffer;
+
     private Vector3f tmpUpLeft = new Vector3f();
     private Vector3f tmpUpRight = new Vector3f();
     private Vector3f tmpDownRight = new Vector3f();
@@ -41,8 +49,8 @@ public class UiRenderer extends AbsObject {
         super(NAME, factory.createUUID(), game);
     }
 
-    @Override
-    public void init() {
+    public void init(Text32Renderer textRenderer) {
+        this.textRenderer = textRenderer;
         initWindow();
     }
 
@@ -78,175 +86,185 @@ public class UiRenderer extends AbsObject {
     public void drawUi(Window window) {
         drawWindow(window);
 
-        drawChildren(window, 0);
+        drawChildren(window, 1);
     }
 
     private void drawChildren(Uiable parent, int layer) {
         Iterable<Uiable> iterator = parent.getObjectIterator();
 
         for (Uiable uiable : iterator) {
-            if (uiable instanceof Button) {
-                drawButton((Button) uiable, layer);
+            if (uiable instanceof GlTextbox) {
+                drawTextbox((GlTextbox) uiable, layer);
             }
         }
     }
 
-    private void drawButton(Button uiable, int layer) {
-        //do nothing
+    private void drawTextbox(GlTextbox uiable, int layer) {
+        GlTexture texture = (GlTexture) uiable.getUiTexture().getTexture();
+
+        setupUiable(uiable, uiable.getVertices(), uiable.getuVs(), layer);
+        fillUiableBuffers(uiable.getVertices(), uiable.getVerticesBuffer(), uiable.getuVs(), uiable.getuVsBuffer());
+        drawUiable(uiable.getVaoId(), uiable.getVerticesId(), uiable.getVerticesBuffer(), uiable.getuVId(), uiable.getuVsBuffer(), texture);
+
+        uiable.getTextPosition().getPosition().z = layer + 0.5;
+
+        textRenderer.draw(uiable.getTextContent(), uiable.getTextPosition());
     }
 
     private void drawWindow(Window window) {
         GlTexture texture = (GlTexture) window.getUiTexture().getTexture();
-        setupWindowList(window);
-        fillWindowBuffers();
+        setupUiable(window, windowVertices, windowUVs, 0);
+        fillUiableBuffers(windowVertices, windowVerticesBuffer, windowUVs, windowUVsBuffer);
+        drawUiable(windowVaoId, windowVerticesId, windowVerticesBuffer, windowUVId, windowUVsBuffer, texture);
+    }
 
-        GL30.glBindVertexArray(windowVaoId);
+    private void drawUiable(int vaoId, int verticesId, FloatBuffer verticesBuffer, int uVId, FloatBuffer uVsBuffer, GlTexture texture) {
+        GL30.glBindVertexArray(vaoId);
 
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, windowVerticesId);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, windowVerticesBuffer, GL15.GL_DYNAMIC_DRAW);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, verticesId);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_DYNAMIC_DRAW);
 
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, windowUVId);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, windowUVsBuffer, GL15.GL_DYNAMIC_DRAW);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, uVId);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, uVsBuffer, GL15.GL_DYNAMIC_DRAW);
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureId());
 
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, WINDOWS_SIZE);
-
     }
 
-    private void fillWindowBuffers() {
-        windowVerticesBuffer.clear();
-        for (Vector3f vector : windowVertices) {
-            windowVerticesBuffer.put(vector.x);
-            windowVerticesBuffer.put(vector.y);
-            windowVerticesBuffer.put(vector.z);
+    private void fillUiableBuffers(List<Vector3f> vertices, FloatBuffer verticesBuffer, List<Vector2f> uVs, FloatBuffer uVsBuffer) {
+        verticesBuffer.clear();
+        for (Vector3f vector : vertices) {
+            verticesBuffer.put(vector.x);
+            verticesBuffer.put(vector.y);
+            verticesBuffer.put(vector.z);
         }
-        windowVerticesBuffer.flip();
+        verticesBuffer.flip();
 
-        windowUVsBuffer.clear();
-        for (Vector2f vector : windowUVs) {
-            windowUVsBuffer.put(vector.x);
-            windowUVsBuffer.put(vector.y);
+        uVsBuffer.clear();
+        for (Vector2f vector : uVs) {
+            uVsBuffer.put(vector.x);
+            uVsBuffer.put(vector.y);
         }
-        windowUVsBuffer.flip();
+        uVsBuffer.flip();
     }
 
-    private void setupWindowList(Window window) {
-        UiTexture uiTexture = window.getUiTexture();
-        Texture texture = window.getUiTexture().getTexture();
+    private void setupUiable(Uiable uiable, List<Vector3f> vertices, List<Vector2f> uVs, int layer) {
+        UiTexture uiTexture = uiable.getUiTexture();
+        Texture texture = uiable.getUiTexture().getTexture();
         float x, y, xWithWidth, yWithHeight;
 
         int currentIndex = 0;
         TexturePart rectangle = uiTexture.getVertices(UiTexture.UPPER_LEFT_CORNER);
 
-        x = (float) window.getX();
-        y = (float) window.getY();
-        xWithWidth = (float) (window.getX() + rectangle.getWidth());
-        yWithHeight = (float) (window.getY() - rectangle.getHeight());
+        x = (float) uiable.getX();
+        y = (float) uiable.getY();
+        xWithWidth = (float) (uiable.getX() + rectangle.getWidth());
+        yWithHeight = (float) (uiable.getY() - rectangle.getHeight());
 
-        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, windowVertices, windowUVs, currentIndex);
+        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, vertices, uVs, currentIndex, layer);
 
         //#######################################################################################################################
 
         currentIndex += 6;
         rectangle = uiTexture.getVertices(UiTexture.UPPER_MIDDLE);
 
-        x = (float) (window.getX() + rectangle.getWidth());
-        y = (float) (window.getY());
-        xWithWidth = (float) ((window.getX() + window.getWidth()) - rectangle.getWidth());
-        yWithHeight = (float) (window.getY() - rectangle.getHeight());
+        x = (float) (uiable.getX() + rectangle.getWidth());
+        y = (float) (uiable.getY());
+        xWithWidth = (float) ((uiable.getX() + uiable.getWidth()) - rectangle.getWidth());
+        yWithHeight = (float) (uiable.getY() - rectangle.getHeight());
 
-        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, windowVertices, windowUVs, currentIndex);
+        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, vertices, uVs, currentIndex, layer);
 
         //#######################################################################################################################
 
         currentIndex += 6;
         rectangle = uiTexture.getVertices(UiTexture.UPPER_RIGHT_CORNER);
 
-        x = (float) ((window.getX() + window.getWidth()) - rectangle.getWidth());
-        y = (float) (window.getY());
-        xWithWidth = (float) (window.getX() + window.getWidth());
-        yWithHeight = (float) (window.getY() - rectangle.getHeight());
+        x = (float) ((uiable.getX() + uiable.getWidth()) - rectangle.getWidth());
+        y = (float) (uiable.getY());
+        xWithWidth = (float) (uiable.getX() + uiable.getWidth());
+        yWithHeight = (float) (uiable.getY() - rectangle.getHeight());
 
-        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, windowVertices, windowUVs, currentIndex);
+        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, vertices, uVs, currentIndex, layer);
 
         //#######################################################################################################################
 
         currentIndex += 6;
         rectangle = uiTexture.getVertices(UiTexture.RIGHT_MIDDLE);
 
-        x = (float) ((window.getX() + window.getWidth()) - rectangle.getWidth());
-        y = (float) (window.getY() - rectangle.getHeight());
-        xWithWidth = (float) (window.getX() + window.getWidth());
-        yWithHeight = (float) ((window.getY() - window.getHeight()) + rectangle.getHeight());
+        x = (float) ((uiable.getX() + uiable.getWidth()) - rectangle.getWidth());
+        y = (float) (uiable.getY() - rectangle.getHeight());
+        xWithWidth = (float) (uiable.getX() + uiable.getWidth());
+        yWithHeight = (float) ((uiable.getY() - uiable.getHeight()) + rectangle.getHeight());
 
-        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, windowVertices, windowUVs, currentIndex);
+        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, vertices, uVs, currentIndex, layer);
 
         //#######################################################################################################################
 
         currentIndex += 6;
         rectangle = uiTexture.getVertices(UiTexture.LOWER_RIGHT_CORNER);
 
-        x = (float) ((window.getX() + window.getWidth()) - rectangle.getWidth());
-        y = (float) ((window.getY() - window.getHeight()) + rectangle.getHeight());
-        xWithWidth = (float) (window.getX() + window.getWidth());
-        yWithHeight = (float) (window.getY() - window.getHeight());
+        x = (float) ((uiable.getX() + uiable.getWidth()) - rectangle.getWidth());
+        y = (float) ((uiable.getY() - uiable.getHeight()) + rectangle.getHeight());
+        xWithWidth = (float) (uiable.getX() + uiable.getWidth());
+        yWithHeight = (float) (uiable.getY() - uiable.getHeight());
 
-        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, windowVertices, windowUVs, currentIndex);
+        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, vertices, uVs, currentIndex, layer);
 
         //#######################################################################################################################
 
         currentIndex += 6;
         rectangle = uiTexture.getVertices(UiTexture.LOWER_MIDDLE);
 
-        x = (float) (window.getX() + rectangle.getWidth());
-        y = (float) ((window.getY() - window.getHeight()) + rectangle.getHeight());
-        xWithWidth = (float) ((window.getX() + window.getWidth()) - rectangle.getWidth());
-        yWithHeight = (float) (window.getY() - window.getHeight());
+        x = (float) (uiable.getX() + rectangle.getWidth());
+        y = (float) ((uiable.getY() - uiable.getHeight()) + rectangle.getHeight());
+        xWithWidth = (float) ((uiable.getX() + uiable.getWidth()) - rectangle.getWidth());
+        yWithHeight = (float) (uiable.getY() - uiable.getHeight());
 
-        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, windowVertices, windowUVs, currentIndex);
+        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, vertices, uVs, currentIndex, layer);
 
         //#######################################################################################################################
 
         currentIndex += 6;
         rectangle = uiTexture.getVertices(UiTexture.LOWER_LEFT_CORNER);
 
-        x = (float) (window.getX());
-        y = (float) ((window.getY() - window.getHeight()) + rectangle.getHeight());
-        xWithWidth = (float) (window.getX() + rectangle.getWidth());
-        yWithHeight = (float) (window.getY() - window.getHeight());
+        x = (float) (uiable.getX());
+        y = (float) ((uiable.getY() - uiable.getHeight()) + rectangle.getHeight());
+        xWithWidth = (float) (uiable.getX() + rectangle.getWidth());
+        yWithHeight = (float) (uiable.getY() - uiable.getHeight());
 
-        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, windowVertices, windowUVs, currentIndex);
+        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, vertices, uVs, currentIndex, layer);
 
         //#######################################################################################################################
 
         currentIndex += 6;
         rectangle = uiTexture.getVertices(UiTexture.LEFT_MIDDLE);
 
-        x = (float) (window.getX());
-        y = (float) (window.getY() - rectangle.getHeight());
-        xWithWidth = (float) (window.getX() + rectangle.getWidth());
-        yWithHeight = (float) ((window.getY() - window.getHeight()) + rectangle.getHeight());
+        x = (float) (uiable.getX());
+        y = (float) (uiable.getY() - rectangle.getHeight());
+        xWithWidth = (float) (uiable.getX() + rectangle.getWidth());
+        yWithHeight = (float) ((uiable.getY() - uiable.getHeight()) + rectangle.getHeight());
 
-        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, windowVertices, windowUVs, currentIndex);
+        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, vertices, uVs, currentIndex, layer);
 
         //#######################################################################################################################
 
         currentIndex += 6;
         rectangle = uiTexture.getVertices(UiTexture.MIDDLE);
 
-        x = (float) (window.getX() + rectangle.getWidth());
-        y = (float) (window.getY() - rectangle.getHeight());
-        xWithWidth = (float) ((window.getX() + window.getWidth()) - rectangle.getWidth());
-        yWithHeight = (float) ((window.getY() - window.getHeight()) + rectangle.getHeight());
+        x = (float) (uiable.getX() + rectangle.getWidth());
+        y = (float) (uiable.getY() - rectangle.getHeight());
+        xWithWidth = (float) ((uiable.getX() + uiable.getWidth()) - rectangle.getWidth());
+        yWithHeight = (float) ((uiable.getY() - uiable.getHeight()) + rectangle.getHeight());
 
-        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, windowVertices, windowUVs, currentIndex);
+        addVertex(x, y, xWithWidth, yWithHeight, rectangle, texture, vertices, uVs, currentIndex, layer);
     }
 
     private void addVertex(float x, float y, float xWithWidth, float yWithHeight,
                            TexturePart rectangle, Texture texture,
-                           List<Vector3f> vertices, List<Vector2f> uvs, int currentIndex) {
+                           List<Vector3f> vertices, List<Vector2f> uvs, int currentIndex, int layer) {
 
         float uvX = (float) (rectangle.getX() / texture.getWidth());
         float uvY = (float) (rectangle.getY() / texture.getHeight());
@@ -255,19 +273,19 @@ public class UiRenderer extends AbsObject {
 
         tmpUpLeft.x = x;
         tmpUpLeft.y = y;
-        tmpUpLeft.z = 0;
+        tmpUpLeft.z = layer;
 
         tmpUpRight.x = xWithWidth;
         tmpUpRight.y = y;
-        tmpUpRight.z = 0;
+        tmpUpRight.z = layer;
 
         tmpDownRight.x = xWithWidth;
         tmpDownRight.y = yWithHeight;
-        tmpDownRight.z = 0;
+        tmpDownRight.z = layer;
 
         tmpDownLeft.x = x;
         tmpDownLeft.y = yWithHeight;
-        tmpDownLeft.z = 0;
+        tmpDownLeft.z = layer;
 
         copyValues(tmpUpLeft, vertices.get(currentIndex++));
         copyValues(tmpDownLeft, vertices.get(currentIndex++));

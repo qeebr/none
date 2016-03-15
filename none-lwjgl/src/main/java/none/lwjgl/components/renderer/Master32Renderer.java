@@ -96,7 +96,7 @@ public class Master32Renderer extends MasterRenderer {
         extractUniforms();
 
         textRenderer.init();
-        uiRenderer.init();
+        uiRenderer.init(textRenderer);
     }
 
     private void createBuffers() {
@@ -178,7 +178,9 @@ public class Master32Renderer extends MasterRenderer {
     }
 
     private void renderUi() {
-        uiRenderer.drawUi(window);
+        if (window != null) {
+            uiRenderer.drawUi(window);
+        }
     }
 
     private void renderText() {

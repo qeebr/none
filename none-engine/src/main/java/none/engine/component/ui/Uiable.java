@@ -2,6 +2,7 @@ package none.engine.component.ui;
 
 import none.engine.Game;
 import none.engine.component.AbsStructObject;
+import org.joml.Vector2d;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -72,6 +73,10 @@ public class Uiable<T extends UiTexture> extends AbsStructObject<Uiable> {
 
     }
 
+    public void onMouseUp() {
+
+    }
+
     public void onElementEntered() {
 
     }
@@ -82,5 +87,10 @@ public class Uiable<T extends UiTexture> extends AbsStructObject<Uiable> {
 
     public void onRelease() {
 
+    }
+
+    protected boolean isPositionInside(Vector2d position) {
+        return ((getX() <= position.x && getX() + getWidth() > position.x) &&
+                (getY() >= position.y && getY() - getHeight() < position.y));
     }
 }

@@ -53,15 +53,16 @@ public class Text32Renderer extends AbsObject {
     private void draw(String text, int size, Vector3d position) {
         float x = (float) position.x;
         float y = (float) position.y;
+        float z = (float) position.z;
 
         List<Vector3f> vertices = new ArrayList<>();
         List<Vector2f> uvs = new ArrayList<>();
 
         for (int i = 0; i < text.length(); i++) {
-            Vector3f vertexUpLeft = new Vector3f(x + i * size, y + size, 0);
-            Vector3f vertexUpRight = new Vector3f(x + i * size + size, y + size, 0);
-            Vector3f vertexDownRight = new Vector3f(x + i * size + size, y, 0);
-            Vector3f vertexDownLeft = new Vector3f(x + i * size, y, 0);
+            Vector3f vertexUpLeft = new Vector3f(x + i * size, y + size, z);
+            Vector3f vertexUpRight = new Vector3f(x + i * size + size, y + size, z);
+            Vector3f vertexDownRight = new Vector3f(x + i * size + size, y, z);
+            Vector3f vertexDownLeft = new Vector3f(x + i * size, y, z);
 
             vertices.add(vertexUpLeft);
             vertices.add(vertexDownLeft);
