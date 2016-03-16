@@ -7,6 +7,8 @@ import none.engine.component.renderer.Texture;
  */
 public interface UiFactory {
 
+    DimensionFactory<Button> buildButton(String text, Texture upTexture, Texture downTexture);
+
     <T extends Uiable> DimensionFactory<T> build(Class<T> clazz, Texture texture);
 
 }

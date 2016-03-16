@@ -1,19 +1,19 @@
 package none.lwjgl.components.ui;
 
 import none.engine.Game;
-import none.engine.component.ui.Textbox;
+import none.engine.component.ui.Button;
 import none.engine.component.ui.UiTexture;
 
 import java.util.UUID;
 
 /**
- * Contains the Vertex Array Object and the Buffer Ids.
+ * Button which contains the Gl related informations.
  */
-public class GlTextbox extends Textbox {
+public class GlButton extends Button {
     private GlComponent glComponent;
 
-    public GlTextbox(String name, UUID id, Game game, UiTexture uiTexture) {
-        super(name, id, game, uiTexture);
+    public GlButton(String name, UUID id, Game game, UiTexture up, UiTexture down) {
+        super(name, id, game, up, down);
 
         glComponent = new GlComponent();
     }

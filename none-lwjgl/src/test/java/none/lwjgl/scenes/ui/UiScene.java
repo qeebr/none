@@ -7,6 +7,7 @@ import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Texture;
 import none.engine.component.renderer.camera.Camera;
 import none.engine.component.renderer.camera.OrthographicCamera;
+import none.engine.component.ui.Button;
 import none.engine.component.ui.Textbox;
 import none.engine.component.ui.UiFactory;
 import none.engine.component.ui.Window;
@@ -22,6 +23,8 @@ public class UiScene extends BaseScene {
     private Camera camera;
     private Texture windowTexture;
     private Texture textboxTexture;
+    private Texture downButton;
+    private Texture upButton;
 
     public UiScene(UUIDFactory factory, Game game) {
         super(NAME, factory.createUUID(), game);
@@ -50,6 +53,11 @@ public class UiScene extends BaseScene {
         Textbox textbox = uiFactory.build(Textbox.class, textboxTexture).with(325, 375, 150, 50);
         window.addObject(textbox);
 
+        this.downButton = textureHandler.loadTexture("textures/downButton.png");
+        this.upButton = textureHandler.loadTexture("textures/upButton.png");
+        Button button = uiFactory.buildButton("Hello", upButton, downButton).with(325, 300, 150, 50);
+        window.addObject(button);
+
         super.init();
     }
 
@@ -63,6 +71,8 @@ public class UiScene extends BaseScene {
         TextureHandler textureHandler = getGame().getInjector().getInstance(TextureHandler.class);
         textureHandler.disposeTexture(windowTexture);
         textureHandler.disposeTexture(textboxTexture);
+        textureHandler.disposeTexture(downButton);
+        textureHandler.disposeTexture(upButton);
         windowTexture = null;
 
         super.dispose();

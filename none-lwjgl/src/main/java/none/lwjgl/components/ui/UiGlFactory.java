@@ -23,6 +23,11 @@ public class UiGlFactory implements UiFactory {
     }
 
     @Override
+    public DimensionFactory<Button> buildButton(String text, Texture upTexture, Texture downTexture) {
+        return new DimensionFactory<>(new GlButton("text", uuidFactory.createUUID(), game, initUiTexture(upTexture), initUiTexture(downTexture)));
+    }
+
+    @Override
     public <T extends Uiable> DimensionFactory<T> build(Class<T> clazz, Texture texture) {
         T uiElement;
 
@@ -32,11 +37,14 @@ public class UiGlFactory implements UiFactory {
         } else if (clazz.equals(Textbox.class)) {
             uiElement = (T) new GlTextbox("Textbox", uuidFactory.createUUID(), game, initUiTexture(texture));
 
+        } else if (clazz.equals(Button.class)) {
+            uiElement = (T) new GlButton("Button", uuidFactory.createUUID(), game, initUiTexture(texture), initUiTexture(texture));
+
         } else {
             throw new IllegalStateException("Unknown Ui Element");
         }
 
-        return new DimensionFactory<T>(uiElement);
+        return new DimensionFactory<>(uiElement);
     }
 
     private UiTexture initUiTexture(Texture texture) {
