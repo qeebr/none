@@ -8,7 +8,7 @@ import none.engine.component.input.Mouse;
 import none.engine.component.physic.MasterPhysic;
 import none.engine.component.renderer.MasterRenderer;
 import none.engine.component.sound.MasterPlayer;
-import none.engine.component.ui.UiFactory;
+import none.engine.component.ui.factories.UiFactory;
 import none.lwjgl.components.assets.*;
 import none.lwjgl.components.input.KeyboardImpl;
 import none.lwjgl.components.input.MouseImpl;

@@ -5,6 +5,8 @@ import none.engine.Game;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Texture;
 import none.engine.component.ui.*;
+import none.engine.component.ui.factories.DimensionFactory;
+import none.engine.component.ui.factories.UiFactory;
 
 import java.util.Objects;
 
@@ -23,28 +25,18 @@ public class UiGlFactory implements UiFactory {
     }
 
     @Override
-    public DimensionFactory<Button> buildButton(String text, Texture upTexture, Texture downTexture) {
-        return new DimensionFactory<>(new GlButton("text", uuidFactory.createUUID(), game, initUiTexture(upTexture), initUiTexture(downTexture)));
+    public DimensionFactory<Button> buildButton(String name, Texture upTexture, Texture downTexture) {
+        return new DimensionFactory<>(new GlButton(name, uuidFactory.createUUID(), game, initUiTexture(upTexture), initUiTexture(downTexture)));
     }
 
     @Override
-    public <T extends Uiable> DimensionFactory<T> build(Class<T> clazz, Texture texture) {
-        T uiElement;
+    public DimensionFactory<Textbox> buildTextbox(String name, Texture texture) {
+        return new DimensionFactory<>(new GlTextbox(name, uuidFactory.createUUID(), game, initUiTexture(texture)));
+    }
 
-        if (clazz.equals(Window.class)) {
-            uiElement = (T) new Window("Window", uuidFactory.createUUID(), game, initUiTexture(texture));
-
-        } else if (clazz.equals(Textbox.class)) {
-            uiElement = (T) new GlTextbox("Textbox", uuidFactory.createUUID(), game, initUiTexture(texture));
-
-        } else if (clazz.equals(Button.class)) {
-            uiElement = (T) new GlButton("Button", uuidFactory.createUUID(), game, initUiTexture(texture), initUiTexture(texture));
-
-        } else {
-            throw new IllegalStateException("Unknown Ui Element");
-        }
-
-        return new DimensionFactory<>(uiElement);
+    @Override
+    public DimensionFactory<Window> buildWindow(String name, Texture texture) {
+        return new DimensionFactory<>(new Window(name, uuidFactory.createUUID(), game, initUiTexture(texture)));
     }
 
     private UiTexture initUiTexture(Texture texture) {

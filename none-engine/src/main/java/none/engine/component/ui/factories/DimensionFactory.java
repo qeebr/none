@@ -1,4 +1,6 @@
-package none.engine.component.ui;
+package none.engine.component.ui.factories;
+
+import none.engine.component.ui.Uiable;
 
 import java.util.Objects;
 

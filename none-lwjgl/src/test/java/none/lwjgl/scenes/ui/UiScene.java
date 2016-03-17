@@ -9,8 +9,8 @@ import none.engine.component.renderer.camera.Camera;
 import none.engine.component.renderer.camera.OrthographicCamera;
 import none.engine.component.ui.Button;
 import none.engine.component.ui.Textbox;
-import none.engine.component.ui.UiFactory;
 import none.engine.component.ui.Window;
+import none.engine.component.ui.factories.UiFactory;
 import none.engine.scenes.BaseScene;
 
 /**
@@ -46,11 +46,11 @@ public class UiScene extends BaseScene {
         UiFactory uiFactory = getGame().getInjector().getInstance(UiFactory.class);
         TextureHandler textureHandler = getGame().getInjector().getInstance(TextureHandler.class);
         this.windowTexture = textureHandler.loadTexture("textures/window.png");
-        Window window = uiFactory.build(Window.class, windowTexture).with(300, 400, 200, 200);
+        Window window = uiFactory.buildWindow("MainWindow", windowTexture).with(300, 400, 200, 200);
         addObject(window);
 
         this.textboxTexture = textureHandler.loadTexture("textures/textbox.png");
-        Textbox textbox = uiFactory.build(Textbox.class, textboxTexture).with(325, 375, 150, 50);
+        Textbox textbox = uiFactory.buildTextbox("txtUserInput", textboxTexture).with(325, 375, 150, 50);
         window.addObject(textbox);
 
         this.downButton = textureHandler.loadTexture("textures/downButton.png");
