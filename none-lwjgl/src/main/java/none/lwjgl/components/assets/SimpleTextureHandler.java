@@ -1,5 +1,6 @@
 package none.lwjgl.components.assets;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -8,6 +9,7 @@ import none.engine.component.assets.Assets;
 import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Texture;
+import none.engine.component.renderer.TextureMap;
 import none.lwjgl.components.renderer.GlTexture;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -17,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Simple PNG TextureHandler.
@@ -87,6 +91,22 @@ public class SimpleTextureHandler extends BaseHandler<GlTexture, String> impleme
             throw new IllegalStateException("To disposing texture is not a GlTexture.");
         }
         disposeTexture((GlTexture) texture);
+    }
+
+    @Override
+    public TextureMap loadTextureMap(String textureMap) {
+        try {
+            TextureMap texture;
+
+            byte[] jsonData = Files.readAllBytes(Paths.get(getAssets().getClass().getResource(textureMap).toURI()));
+            ObjectMapper objectMapper = new ObjectMapper();
+            texture = objectMapper.readValue(jsonData, TextureMap.class);
+
+            return texture;
+
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     private void disposeTexture(GlTexture texture) {

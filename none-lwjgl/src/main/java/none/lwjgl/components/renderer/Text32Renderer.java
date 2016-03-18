@@ -5,6 +5,8 @@ import none.engine.component.AbsObject;
 import none.engine.component.Transform;
 import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.UUIDFactory;
+import none.engine.component.renderer.TextureMap;
+import none.engine.component.renderer.TexturePosition;
 import none.engine.component.renderer.primitives.Text;
 import org.apache.commons.lang3.Validate;
 import org.joml.Vector2f;
@@ -24,6 +26,7 @@ public class Text32Renderer extends AbsObject {
     public static final String NAME = "Text32Renderer";
 
     private GlTexture texture;
+    private TextureMap textureMap;
 
     private int vaoId;
     private int verticesBufferId;
@@ -37,6 +40,7 @@ public class Text32Renderer extends AbsObject {
     public void init() {
         TextureHandler<GlTexture> textureHandler = this.getGame().getInjector().getInstance(TextureHandler.class);
         texture = textureHandler.loadTexture("fonts/simpleFont.png");
+        textureMap = textureHandler.loadTextureMap("fonts/fontMap.json");
 
         vaoId = GL30.glGenVertexArrays();
         verticesBufferId = GL15.glGenBuffers();
@@ -58,11 +62,20 @@ public class Text32Renderer extends AbsObject {
         List<Vector3f> vertices = new ArrayList<>();
         List<Vector2f> uvs = new ArrayList<>();
 
+        float width;
+        float height;
+
         for (int i = 0; i < text.length(); i++) {
-            Vector3f vertexUpLeft = new Vector3f(x + i * size, y + size, z);
-            Vector3f vertexUpRight = new Vector3f(x + i * size + size, y + size, z);
-            Vector3f vertexDownRight = new Vector3f(x + i * size + size, y, z);
-            Vector3f vertexDownLeft = new Vector3f(x + i * size, y, z);
+            TexturePosition part = findPart(text.charAt(i));
+            width = size * part.getWidth() / part.getHeight();
+            height = size;
+
+            Vector3f vertexUpLeft = new Vector3f(x, y + height, z);
+            Vector3f vertexUpRight = new Vector3f(x + width, y + height, z);
+            Vector3f vertexDownRight = new Vector3f(x + width, y, z);
+            Vector3f vertexDownLeft = new Vector3f(x, y, z);
+            x = x + width;
+
 
             vertices.add(vertexUpLeft);
             vertices.add(vertexDownLeft);
@@ -72,14 +85,16 @@ public class Text32Renderer extends AbsObject {
             vertices.add(vertexUpRight);
             vertices.add(vertexDownLeft);
 
-            char character = text.charAt(i);
-            float uv_x = (character % 16) / 16.0f;
-            float uv_y = (character / 16) / 16.0f;
+            float uvX = (float) part.getX() / textureMap.getWidth();
+            float uvY = (float) part.getY() / textureMap.getHeight();
+            float uvWidth = (float) part.getWidth() / textureMap.getWidth();
+            float uvHeight = (float) part.getHeight() / textureMap.getHeight();
 
-            Vector2f uvUpLeft = new Vector2f(uv_x, uv_y);
-            Vector2f uvUpRight = new Vector2f(uv_x + 1.0f / 16.0f, uv_y);
-            Vector2f uvDownRight = new Vector2f(uv_x + 1.0f / 16.0f, uv_y + 1.0f / 16.0f);
-            Vector2f uvDownLeft = new Vector2f(uv_x, uv_y + 1.0f / 16.0f);
+            Vector2f uvUpLeft = new Vector2f(uvX, uvY);
+            Vector2f uvUpRight = new Vector2f(uvX + uvWidth, uvY);
+            Vector2f uvDownRight = new Vector2f(uvX + uvWidth, uvY + uvHeight);
+            Vector2f uvDownLeft = new Vector2f(uvX, uvY + uvHeight);
+
             uvs.add(uvUpLeft);
             uvs.add(uvDownLeft);
             uvs.add(uvUpRight);
@@ -116,7 +131,16 @@ public class Text32Renderer extends AbsObject {
 
         GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
+    }
 
+    private TexturePosition findPart(char c) {
+        for (TexturePosition part : textureMap.getPositions()) {
+            if (part.getId().equals(String.valueOf(c))) {
+                return part;
+            }
+        }
+
+        return textureMap.getPositions().get(0);
     }
 
     private FloatBuffer createBuffer2(List<Vector2f> vertices) {

@@ -54,7 +54,7 @@ public class UiScene extends BaseScene {
         Textbox textbox = uiFactory.buildTextbox("txtUserInput", textboxTexture).with(325, 375, 150, 50);
         window.addObject(textbox);
 
-        Label label = uiFactory.builLabel("lbl", "ABCDEFGHIJKLMNOPQRSTUVWXYZ").with(325, 250, 150, 50);
+        Label label = uiFactory.builLabel("label", "").with(325, 250, 150, 50);
         window.addObject(label);
 
         this.downButton = textureHandler.loadTexture("textures/downButton.png");
