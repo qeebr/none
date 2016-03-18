@@ -25,6 +25,11 @@ public class UiGlFactory implements UiFactory {
     }
 
     @Override
+    public DimensionFactory<Label> builLabel(String name, String text) {
+        return new DimensionFactory<>(new Label(name, text, uuidFactory.createUUID(), game));
+    }
+
+    @Override
     public DimensionFactory<Button> buildButton(String name, String buttonText, Texture upTexture, Texture downTexture) {
         return new DimensionFactory<>(new GlButton(name, buttonText, uuidFactory.createUUID(), game, initUiTexture(upTexture), initUiTexture(downTexture)));
     }

@@ -4,10 +4,7 @@ import none.engine.Game;
 import none.engine.component.AbsObject;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Texture;
-import none.engine.component.ui.TexturePart;
-import none.engine.component.ui.UiTexture;
-import none.engine.component.ui.Uiable;
-import none.engine.component.ui.Window;
+import none.engine.component.ui.*;
 import none.lwjgl.components.ui.GlButton;
 import none.lwjgl.components.ui.GlTextbox;
 import org.joml.Vector2f;
@@ -98,8 +95,16 @@ public class UiRenderer extends AbsObject {
                 drawTextbox((GlTextbox) uiable, layer);
             } else if (uiable instanceof GlButton) {
                 drawButton((GlButton) uiable, layer);
+            } else if (uiable instanceof Label) {
+                drawLabel((Label) uiable, layer);
             }
         }
+    }
+
+    private void drawLabel(Label uiable, int layer) {
+        uiable.getTextTransform().getPosition().z = layer + 0.5;
+
+        textRenderer.draw(uiable.getTextContent(), uiable.getTextTransform());
     }
 
     private void drawButton(GlButton uiable, int layer) {

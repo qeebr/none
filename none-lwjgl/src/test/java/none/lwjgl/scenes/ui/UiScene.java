@@ -8,6 +8,7 @@ import none.engine.component.renderer.Texture;
 import none.engine.component.renderer.camera.Camera;
 import none.engine.component.renderer.camera.OrthographicCamera;
 import none.engine.component.ui.Button;
+import none.engine.component.ui.Label;
 import none.engine.component.ui.Textbox;
 import none.engine.component.ui.Window;
 import none.engine.component.ui.factories.UiFactory;
@@ -53,10 +54,15 @@ public class UiScene extends BaseScene {
         Textbox textbox = uiFactory.buildTextbox("txtUserInput", textboxTexture).with(325, 375, 150, 50);
         window.addObject(textbox);
 
+        Label label = uiFactory.builLabel("lbl", "ABCDEFGHIJKLMNOPQRSTUVWXYZ").with(325, 250, 150, 50);
+        window.addObject(label);
+
         this.downButton = textureHandler.loadTexture("textures/downButton.png");
         this.upButton = textureHandler.loadTexture("textures/upButton.png");
         Button button = uiFactory.buildButton("btnAction", "Hello", upButton, downButton).with(325, 300, 150, 50);
         window.addObject(button);
+
+        button.registerButtonHandler(() -> label.getTextContent().setText(textbox.getTextContent().getText()));
 
         super.init();
     }
