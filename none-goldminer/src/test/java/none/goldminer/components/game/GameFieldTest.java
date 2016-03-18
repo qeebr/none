@@ -9,6 +9,7 @@ import none.engine.component.assets.TextureHandler;
 import none.engine.component.common.uuid.RandomUUID;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Texture;
+import none.engine.component.renderer.TextureMap;
 import none.goldminer.components.game.bricks.Brick;
 import none.goldminer.components.game.bricks.BrickColor;
 import none.goldminer.components.game.bricks.BrickFactory;
@@ -119,6 +120,11 @@ public class GameFieldTest {
         @Override
         public void disposeTexture(Texture texture) {
             //just do nothing.
+        }
+
+        @Override
+        public TextureMap loadTextureMap(String textureMap) {
+            return null;
         }
     }
 
