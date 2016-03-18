@@ -12,8 +12,8 @@ import java.util.UUID;
 public class GlButton extends Button {
     private GlComponent glComponent;
 
-    public GlButton(String name, UUID id, Game game, UiTexture up, UiTexture down) {
-        super(name, id, game, up, down);
+    public GlButton(String name, String text, UUID id, Game game, UiTexture up, UiTexture down) {
+        super(name, text, id, game, up, down);
 
         glComponent = new GlComponent();
     }

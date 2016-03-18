@@ -1,6 +1,8 @@
 package none.engine.component.ui;
 
 import none.engine.Game;
+import none.engine.component.Transform;
+import none.engine.component.renderer.primitives.Text;
 
 import java.util.UUID;
 
@@ -15,12 +17,29 @@ public class Button extends Uiable {
 
     private Action action;
 
-    public Button(String name, UUID id, Game game, UiTexture up, UiTexture down) {
+    private Text textContent;
+    private Transform textTransform;
+
+    public Button(String name, String text, UUID id, Game game, UiTexture up, UiTexture down) {
         super(name, id, game, up);
 
         isDown = false;
         this.upTexture = up;
         this.downTexture = down;
+
+        this.textContent = new Text(UUID.randomUUID(), text, 40);
+        this.textTransform = new Transform(UUID.randomUUID());
+    }
+
+    public Text getTextContent() {
+        return textContent;
+    }
+
+    public Transform getTextTransform() {
+        textTransform.getPosition().x = getX();
+        textTransform.getPosition().y = getY() - (textContent.getTextSize());
+
+        return textTransform;
     }
 
     @Override

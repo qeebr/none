@@ -55,7 +55,7 @@ public class UiScene extends BaseScene {
 
         this.downButton = textureHandler.loadTexture("textures/downButton.png");
         this.upButton = textureHandler.loadTexture("textures/upButton.png");
-        Button button = uiFactory.buildButton("Hello", upButton, downButton).with(325, 300, 150, 50);
+        Button button = uiFactory.buildButton("btnAction", "Hello", upButton, downButton).with(325, 300, 150, 50);
         window.addObject(button);
 
         super.init();

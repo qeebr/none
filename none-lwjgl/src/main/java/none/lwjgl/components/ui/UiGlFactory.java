@@ -25,8 +25,8 @@ public class UiGlFactory implements UiFactory {
     }
 
     @Override
-    public DimensionFactory<Button> buildButton(String name, Texture upTexture, Texture downTexture) {
-        return new DimensionFactory<>(new GlButton(name, uuidFactory.createUUID(), game, initUiTexture(upTexture), initUiTexture(downTexture)));
+    public DimensionFactory<Button> buildButton(String name, String buttonText, Texture upTexture, Texture downTexture) {
+        return new DimensionFactory<>(new GlButton(name, buttonText, uuidFactory.createUUID(), game, initUiTexture(upTexture), initUiTexture(downTexture)));
     }
 
     @Override

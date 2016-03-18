@@ -110,6 +110,10 @@ public class UiRenderer extends AbsObject {
                 uiable.getGlComponent().getuVs(), uiable.getGlComponent().getuVsBuffer());
         drawUiable(uiable.getGlComponent().getVaoId(), uiable.getGlComponent().getVerticesId(), uiable.getGlComponent().getVerticesBuffer(),
                 uiable.getGlComponent().getuVId(), uiable.getGlComponent().getuVsBuffer(), texture);
+
+        uiable.getTextTransform().getPosition().z = layer + 0.5;
+
+        textRenderer.draw(uiable.getTextContent(), uiable.getTextTransform());
     }
 
     private void drawTextbox(GlTextbox uiable, int layer) {

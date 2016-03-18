@@ -10,7 +10,7 @@ import none.engine.component.ui.Window;
  */
 public interface UiFactory {
 
-    DimensionFactory<Button> buildButton(String text, Texture upTexture, Texture downTexture);
+    DimensionFactory<Button> buildButton(String name, String buttonText, Texture upTexture, Texture downTexture);
 
     DimensionFactory<Textbox> buildTextbox(String name, Texture texture);
 
