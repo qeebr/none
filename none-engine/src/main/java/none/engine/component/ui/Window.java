@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * The Ui-Window.
  */
-public class Window extends Uiable<UiTexture> {
+public class Window extends Uiable {
     private final MouseClick mouseClick = new MouseClick();
     private Mouse mouse;
 

@@ -4,15 +4,14 @@ import none.engine.Game;
 import none.engine.component.AbsStructObject;
 import org.joml.Vector2d;
 
-import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Base-Class for all UI classes.
  */
-public class Uiable<T extends UiTexture> extends AbsStructObject<Uiable> {
+public class Uiable extends AbsStructObject<Uiable> {
 
-    private final T uiTexture;
+    private final UiTexture uiTexture;
 
     private int x;
     private int y;
@@ -20,12 +19,12 @@ public class Uiable<T extends UiTexture> extends AbsStructObject<Uiable> {
     private int width;
     private int layer;
 
-    public Uiable(String name, UUID id, Game game, T uiTexture) {
+    public Uiable(String name, UUID id, Game game, UiTexture uiTexture) {
         super(name, id, game);
-        this.uiTexture = Objects.requireNonNull(uiTexture);
+        this.uiTexture = uiTexture;
     }
 
-    public T getUiTexture() {
+    public UiTexture getUiTexture() {
         return uiTexture;
     }
 

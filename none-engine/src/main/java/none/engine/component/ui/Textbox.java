@@ -14,7 +14,7 @@ import java.util.UUID;
 /**
  * A Textbox. Contains an String.
  */
-public class Textbox extends Uiable<UiTexture> {
+public class Textbox extends Uiable {
     public static final int MARGIN = 5;
 
     private final List<KeyPressed> keys = new ArrayList<>();
