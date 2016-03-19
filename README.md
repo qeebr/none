@@ -20,18 +20,18 @@ cd /path/to/none/none-goldminer/target
 java -Djava.library.path="natives/" -jar none-goldminer-0.1-SNAPSHOT.jar
 ```
 
-Developed and tested on Linux/Fedora 22 (with Nouveau driver)
+Developed and tested on Linux/Fedora 23 (with Nouveau driver)
 
 ## Want to find out whats needed to build own game?
 
-Have a look at.
+Have a look at:
 
 * none/none-lwjgl/src/test/none/lwjgl/apps/physic/PhysicSandbox
 * none/none-lwjgl/src/test/none/lwjgl/apps/sound/PlayerApp
 * none/none-lwjgl/src/test/none/lwjgl/apps/renderer/RendererApp
 
-Basically you describe your game in an composite-Pattern of EngineObject's, what you have to do:
+Basically you describe your game in an composite-pattern of EngineObject's, what you have to do:
 
 * Write at least one class implementing the Scene-Interface. (Containing the Tree)
 * In case you want something rendered, you need one EngineObject with a Renderable as a child
-* In case you want keyboard input, create a class that implements the Command-Interface. Register this class to the KeyboardComponent
+* In case you want keyboard input, create a class that implements the Command-Interface. Register this class to the Keyboard-Class
