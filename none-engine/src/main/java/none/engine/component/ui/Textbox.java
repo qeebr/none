@@ -13,7 +13,6 @@ import java.util.UUID;
  * A Textbox. Contains an String.
  */
 public class Textbox extends Uiable {
-    public static final int MARGIN = 5;
     private final static String BLINKY = String.valueOf((char) 1);
     private static char[] READABLE_CHARACTER = new char[]{'q', 'w', 'e', 'r', 't', 'y', 'u',
             'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z',
@@ -45,7 +44,7 @@ public class Textbox extends Uiable {
 
     public Transform getTextPosition() {
         textPosition.getPosition().x = getX();
-        textPosition.getPosition().y = getY() - (textContent.getTextSize() + MARGIN);
+        textPosition.getPosition().y = getY() - textContent.getTextSize();
 
         return textPosition;
     }

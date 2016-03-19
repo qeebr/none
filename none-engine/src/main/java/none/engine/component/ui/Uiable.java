@@ -17,15 +17,20 @@ public class Uiable extends AbsStructObject<Uiable> {
     private int y;
     private int height;
     private int width;
-    private int layer;
+    private Padding padding;
 
     public Uiable(String name, UUID id, Game game, UiTexture uiTexture) {
         super(name, id, game);
         this.uiTexture = uiTexture;
+        padding = new Padding();
     }
 
     public UiTexture getUiTexture() {
         return uiTexture;
+    }
+
+    public Padding getPadding() {
+        return padding;
     }
 
     public int getX() {
@@ -58,14 +63,6 @@ public class Uiable extends AbsStructObject<Uiable> {
 
     public void setWidth(int width) {
         this.width = width;
-    }
-
-    public int getLayer() {
-        return layer;
-    }
-
-    public void setLayer(int layer) {
-        this.layer = layer;
     }
 
     public void onMouseDown() {

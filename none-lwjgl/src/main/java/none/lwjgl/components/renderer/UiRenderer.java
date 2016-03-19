@@ -2,10 +2,13 @@ package none.lwjgl.components.renderer;
 
 import none.engine.Game;
 import none.engine.component.AbsObject;
+import none.engine.component.Transform;
 import none.engine.component.common.uuid.UUIDFactory;
 import none.engine.component.renderer.Texture;
+import none.engine.component.renderer.primitives.Text;
 import none.engine.component.ui.*;
 import none.lwjgl.components.ui.GlButton;
+import none.lwjgl.components.ui.GlComponent;
 import none.lwjgl.components.ui.GlTextbox;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
@@ -102,37 +105,42 @@ public class UiRenderer extends AbsObject {
     }
 
     private void drawLabel(Label uiable, int layer) {
-        uiable.getTextTransform().getPosition().z = layer + 0.5;
-
-        textRenderer.draw(uiable.getTextContent(), uiable.getTextTransform());
+        drawText(uiable.getTextTransform(), uiable.getTextContent(), uiable.getPadding(), layer);
     }
 
     private void drawButton(GlButton uiable, int layer) {
         GlTexture texture = (GlTexture) uiable.getUiTexture().getTexture();
+        drawUiable(uiable, uiable.getGlComponent(), layer, texture);
 
-        setupUiable(uiable, uiable.getGlComponent().getVertices(), uiable.getGlComponent().getuVs(), layer);
-        fillUiableBuffers(uiable.getGlComponent().getVertices(), uiable.getGlComponent().getVerticesBuffer(),
-                uiable.getGlComponent().getuVs(), uiable.getGlComponent().getuVsBuffer());
-        drawUiable(uiable.getGlComponent().getVaoId(), uiable.getGlComponent().getVerticesId(), uiable.getGlComponent().getVerticesBuffer(),
-                uiable.getGlComponent().getuVId(), uiable.getGlComponent().getuVsBuffer(), texture);
-
-        uiable.getTextTransform().getPosition().z = layer + 0.5;
-
-        textRenderer.draw(uiable.getTextContent(), uiable.getTextTransform());
+        drawText(uiable.getTextTransform(), uiable.getTextContent(), uiable.getPadding(), layer);
     }
 
     private void drawTextbox(GlTextbox uiable, int layer) {
         GlTexture texture = (GlTexture) uiable.getUiTexture().getTexture();
+        drawUiable(uiable, uiable.getGlComponent(), layer, texture);
 
-        setupUiable(uiable, uiable.getGlComponent().getVertices(), uiable.getGlComponent().getuVs(), layer);
-        fillUiableBuffers(uiable.getGlComponent().getVertices(), uiable.getGlComponent().getVerticesBuffer(),
-                uiable.getGlComponent().getuVs(), uiable.getGlComponent().getuVsBuffer());
-        drawUiable(uiable.getGlComponent().getVaoId(), uiable.getGlComponent().getVerticesId(), uiable.getGlComponent().getVerticesBuffer(),
-                uiable.getGlComponent().getuVId(), uiable.getGlComponent().getuVsBuffer(), texture);
+        drawText(uiable.getTextPosition(), uiable.getTextContent(), uiable.getPadding(), layer);
+    }
 
-        uiable.getTextPosition().getPosition().z = layer + 0.5;
+    private void drawText(Transform textPosition, Text textContent, Padding padding, int layer) {
+        updateTransform(textPosition, padding);
+        textPosition.getPosition().z = layer + 0.5;
 
-        textRenderer.draw(uiable.getTextContent(), uiable.getTextPosition());
+        textRenderer.draw(textContent, textPosition);
+    }
+
+    private void drawUiable(Uiable uiable, GlComponent glComponent, int layer, GlTexture texture) {
+        setupUiable(uiable, glComponent.getVertices(), glComponent.getuVs(), layer);
+        fillUiableBuffers(glComponent.getVertices(), glComponent.getVerticesBuffer(),
+                glComponent.getuVs(), glComponent.getuVsBuffer());
+        drawUiable(glComponent.getVaoId(), glComponent.getVerticesId(), glComponent.getVerticesBuffer(),
+                glComponent.getuVId(), glComponent.getuVsBuffer(), texture);
+    }
+
+    private void updateTransform(Transform transform, Padding padding) {
+        transform.getPosition().x += padding.getLeft();
+        transform.getPosition().y -= padding.getTop();
+
     }
 
     private void drawWindow(Window window) {

@@ -52,14 +52,19 @@ public class UiScene extends BaseScene {
 
         this.textboxTexture = textureHandler.loadTexture("textures/textbox.png");
         Textbox textbox = uiFactory.buildTextbox("txtUserInput", textboxTexture).with(325, 375, 150, 50);
+        textbox.getPadding().setLeft(15);
+        textbox.getPadding().setTop(6);
         window.addObject(textbox);
 
-        Label label = uiFactory.builLabel("label", "").with(325, 250, 150, 50);
+        Label label = uiFactory.builLabel("label", "Text").with(325, 250, 150, 50);
+        label.getPadding().setLeft(15);
         window.addObject(label);
 
         this.downButton = textureHandler.loadTexture("textures/downButton.png");
         this.upButton = textureHandler.loadTexture("textures/upButton.png");
         Button button = uiFactory.buildButton("btnAction", "Hello", upButton, downButton).with(325, 300, 150, 50);
+        button.getPadding().setLeft(40);
+        button.getPadding().setTop(4);
         window.addObject(button);
 
         button.registerButtonHandler(() -> label.getTextContent().setText(textbox.getTextContent().getText()));
