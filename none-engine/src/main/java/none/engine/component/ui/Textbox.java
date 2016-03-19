@@ -7,8 +7,6 @@ import none.engine.component.input.Key;
 import none.engine.component.input.Keyboard;
 import none.engine.component.renderer.primitives.Text;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -16,11 +14,18 @@ import java.util.UUID;
  */
 public class Textbox extends Uiable {
     public static final int MARGIN = 5;
-
-    private final List<KeyPressed> keys = new ArrayList<>();
-    private final ShiftKey shift = new ShiftKey();
+    private final static String BLINKY = String.valueOf((char) 1);
+    private static char[] READABLE_CHARACTER = new char[]{'q', 'w', 'e', 'r', 't', 'y', 'u',
+            'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z',
+            'x', 'c', 'v', 'b', 'n', 'm', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U',
+            'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z',
+            'X', 'C', 'V', 'B', 'N', 'M', '1', '2', '3', '4', '5', '6', '7',
+            '8', '9', '0', '!', '\"', '#', '$', '%', '&', '\'', '(', ')', '*',
+            '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[',
+            '\\', ']', '^', '_', '`', '{', '|', '}', '~', '€',
+    };
     private final BackspaceKey backspace = new BackspaceKey();
-    private final String blinky = String.valueOf((char) 1);
+
 
     private Text textContent;
     private Transform textPosition;
@@ -49,72 +54,59 @@ public class Textbox extends Uiable {
     public void init() {
         keyboard = getGame().getInjector().getInstance(Keyboard.class);
 
-        for (int index = 'A'; index <= 'Z'; index++) {
-            String character = String.valueOf((char) index);
-            KeyPressed pressed = new KeyPressed(character.toLowerCase(), Key.valueOf(character));
-            keys.add(pressed);
-        }
-
         super.init();
     }
 
     @Override
     public void update(int deltaInMs) {
-        for (KeyPressed key : keys) {
-            String character = null;
-
-            if (keyboard.isCommandClicked(key) && keyboard.isCommandDown(shift)) {
-                character = key.getKey().toUpperCase();
-            } else if (keyboard.isCommandClicked(key)) {
-                character = key.getKey().toLowerCase();
-            }
-
-            if (character != null) {
-                addCharacter(character);
+        for (Character character : keyboard.getCurrentCharacters()) {
+            if (isReadable(character)) {
+                addCharacter(String.valueOf(character));
             }
         }
 
         if (keyboard.isCommandClicked(backspace)) {
             if (textContent.getText().length() != 1) {
-                textContent.setText(textContent.getText().substring(0, textContent.getText().length() - 2) + blinky);
+                textContent.setText(textContent.getText().substring(0, textContent.getText().length() - 2) + BLINKY);
             }
         }
 
         super.update(deltaInMs);
     }
 
+    private boolean isReadable(Character character) {
+        for (Character readable : READABLE_CHARACTER) {
+            if (readable.equals(character)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void addCharacter(String character) {
         if (textContent.getText().length() == 1) {
             textContent.setText(character + textContent.getText());
         } else {
-            textContent.setText(textContent.getText().substring(0, textContent.getText().length() - 1) + character + blinky);
+            textContent.setText(textContent.getText().substring(0, textContent.getText().length() - 1) + character + BLINKY);
         }
     }
 
     @Override
     public void dispose() {
-
+        keyboard = null;
 
         super.dispose();
     }
 
     @Override
     public void onElementEntered() {
-        for (KeyPressed key : keys) {
-            keyboard.registerCommand(key, key.getEkey());
-        }
-        keyboard.registerCommand(shift, Key.LEFT_SHIFT);
         keyboard.registerCommand(backspace, Key.BACKSPACE);
 
-        textContent.setText(textContent.getText() + blinky);
+        textContent.setText(textContent.getText() + BLINKY);
     }
 
     @Override
     public void onElementLeft() {
-        for (KeyPressed key : keys) {
-            keyboard.deregisterCommand(key);
-        }
-        keyboard.deregisterCommand(shift);
         keyboard.deregisterCommand(backspace);
 
         if (textContent.getText().length() == 1) {
@@ -122,28 +114,6 @@ public class Textbox extends Uiable {
         } else {
             textContent.setText(textContent.getText().substring(0, textContent.getText().length() - 1));
         }
-    }
-
-    class KeyPressed implements Command {
-        private final Key ekey;
-        private String key;
-
-        public KeyPressed(String key, Key eKey) {
-            this.key = key;
-            this.ekey = eKey;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public Key getEkey() {
-            return ekey;
-        }
-    }
-
-    class ShiftKey implements Command {
-
     }
 
     class BackspaceKey implements Command {

@@ -1,5 +1,6 @@
 package none.engine.component.input;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -11,4 +12,11 @@ public abstract class Keyboard extends Commandable<Key> {
     protected Keyboard() {
         super(NAME, UUID.randomUUID());
     }
+
+    /**
+     * A List of Character which are where pressed.
+     *
+     * @return List of pressed characters.
+     */
+    public abstract List<Character> getCurrentCharacters();
 }

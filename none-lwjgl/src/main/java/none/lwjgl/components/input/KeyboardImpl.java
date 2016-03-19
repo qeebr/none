@@ -7,6 +7,9 @@ import none.engine.component.input.Keyboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * LWJGl implementation for Keyboard.
  */
@@ -14,9 +17,28 @@ import org.slf4j.LoggerFactory;
 public class KeyboardImpl extends Keyboard {
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyboardImpl.class);
 
+    private List<Character> currentPressedCharacters;
+
     @Inject
     public KeyboardImpl() {
+        currentPressedCharacters = new ArrayList<>();
+    }
 
+    @Override
+    public List<Character> getCurrentCharacters() {
+        return currentPressedCharacters;
+    }
+
+    @Override
+    public void update(int deltaInMs) {
+        currentPressedCharacters.clear();
+        while (org.lwjgl.input.Keyboard.next()) {
+            if (org.lwjgl.input.Keyboard.getEventKeyState()) {
+                currentPressedCharacters.add(org.lwjgl.input.Keyboard.getEventCharacter());
+            }
+        }
+
+        super.update(deltaInMs);
     }
 
     @Override
