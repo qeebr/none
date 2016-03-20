@@ -35,4 +35,8 @@ public class Text extends AbsObject {
     public int getTextSize() {
         return textSize;
     }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
 }
