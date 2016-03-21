@@ -54,6 +54,7 @@ public class UiScene extends BaseScene {
         Textbox textbox = uiFactory.buildTextbox("txtUserInput", textboxTexture).with(325, 375, 150, 50);
         textbox.getPadding().setLeft(15);
         textbox.getPadding().setTop(6);
+        textbox.setMaxLength(5);
         window.addObject(textbox);
 
         Label label = uiFactory.builLabel("label", "Text").with(325, 250, 150, 50);

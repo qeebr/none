@@ -24,10 +24,11 @@ public class Textbox extends Uiable {
             '\\', ']', '^', '_', '`', '{', '|', '}', '~', '€',
     };
     private final BackspaceKey backspace = new BackspaceKey();
-
+    private boolean editable;
 
     private Text textContent;
     private Transform textPosition;
+    private int maxLength;
 
     private Keyboard keyboard;
 
@@ -36,6 +37,16 @@ public class Textbox extends Uiable {
 
         textContent = new Text(UUID.randomUUID(), "", 40);
         textPosition = new Transform(UUID.randomUUID());
+        maxLength = Integer.MAX_VALUE;
+        editable = false;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.maxLength = maxLength;
     }
 
     public Text getTextContent() {
@@ -58,15 +69,17 @@ public class Textbox extends Uiable {
 
     @Override
     public void update(int deltaInMs) {
-        for (Character character : keyboard.getCurrentCharacters()) {
-            if (isReadable(character)) {
-                addCharacter(String.valueOf(character));
+        if (editable) {
+            for (Character character : keyboard.getCurrentCharacters()) {
+                if (isReadable(character)) {
+                    addCharacter(String.valueOf(character));
+                }
             }
-        }
 
-        if (keyboard.isCommandClicked(backspace)) {
-            if (textContent.getText().length() != 1) {
-                textContent.setText(textContent.getText().substring(0, textContent.getText().length() - 2) + BLINKY);
+            if (keyboard.isCommandClicked(backspace)) {
+                if (textContent.getText().length() != 1) {
+                    textContent.setText(textContent.getText().substring(0, textContent.getText().length() - 2) + BLINKY);
+                }
             }
         }
 
@@ -85,7 +98,7 @@ public class Textbox extends Uiable {
     private void addCharacter(String character) {
         if (textContent.getText().length() == 1) {
             textContent.setText(character + textContent.getText());
-        } else {
+        } else if (textContent.getText().length() <= maxLength) {
             textContent.setText(textContent.getText().substring(0, textContent.getText().length() - 1) + character + BLINKY);
         }
     }
@@ -99,6 +112,7 @@ public class Textbox extends Uiable {
 
     @Override
     public void onElementEntered() {
+        editable = true;
         keyboard.registerCommand(backspace, Key.BACKSPACE);
 
         textContent.setText(textContent.getText() + BLINKY);
@@ -106,6 +120,7 @@ public class Textbox extends Uiable {
 
     @Override
     public void onElementLeft() {
+        editable = false;
         keyboard.deregisterCommand(backspace);
 
         if (textContent.getText().length() == 1) {
